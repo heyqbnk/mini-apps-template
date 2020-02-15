@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux'
 type TActions = ActionCreatorsMapObject<any> | ActionCreator<any>;
 
 /**
- * Привязывает переданные функцию к текушему dispatch.
+ * Binds passed action creators to current dispatch.
  * @param actions
  */
 function useActions<C extends TActions>(

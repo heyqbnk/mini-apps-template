@@ -1,15 +1,9 @@
 interface IConfig {
-  apiBaseUrl: string;
 }
 
-const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-
-if (!apiBaseUrl) {
-  throw new Error('REACT_APP_API_BASE_URL not passed');
-}
-
-const config: IConfig = {
-  apiBaseUrl,
-};
+// Here we are loading config depending on environment variables. Dont
+// forget that variables starting only with REACT_APP will be loaded
+// by react-scripts
+const config: IConfig = {};
 
 export default config;

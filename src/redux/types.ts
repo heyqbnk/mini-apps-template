@@ -1,9 +1,5 @@
-import {ILayoutReducerState} from './fields/layout';
-import {IMetaReducerState} from './fields/meta';
-import {IUserReducerState} from './fields/user';
+import {IAppConfigReducerState} from './reducers/app-config';
 
 export interface IReduxState {
-  layout: ILayoutReducerState;
-  meta: IMetaReducerState;
-  user: IUserReducerState;
+  appConfig: IAppConfigReducerState;
 }

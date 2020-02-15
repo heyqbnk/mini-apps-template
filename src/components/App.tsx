@@ -1,17 +1,7 @@
 import React, {memo} from 'react';
 
-import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
-
-const useStyles = makeStyles({});
-
-const App = () => {
-  const mc = useStyles();
-
-  return (
-    <div>
-
-    </div>
-  );
-};
+const App = memo(() => {
+  return <div>Hello world!</div>;
+});
 
 export default App;

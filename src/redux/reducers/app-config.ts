@@ -30,9 +30,9 @@ const initialState: IAppConfigReducerState = {
 };
 
 /**
- * Отвечает за настройки приложения, приходящие из ВКонтакте.
+ * Reducer responsible for application config coming from VKontakte.
  */
-export function appConfigReducer(
+function appConfigReducer(
   state: IAppConfigReducerState = initialState,
   action: TAppConfigAction,
 ) {
@@ -47,3 +47,5 @@ export function appConfigReducer(
     default: () => state,
   });
 }
+
+export default appConfigReducer;

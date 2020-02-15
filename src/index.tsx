@@ -3,18 +3,15 @@ import ReactDOM from 'react-dom';
 import Root from './components/Root/Root';
 import vkConnect from '@vkontakte/vk-connect';
 
+// TODO: Preload assets
+
+// We are waiting for all assets to be loaded to make sure, we have all of
+// css and fonts loaded. You can remove this logic if needed.
 window.onload = () => {
-  // Уведомляем нативное приложение о том, что мы загрузились.
+  // Notify native application, initialization is completed. It will make
+  // native application loader disappear and show our application.
   vkConnect.send('VKWebAppInit');
 
-  // Устанавливаем цвет контролов интерфейса темными
-  if (vkConnect.supports('VKWebAppSetViewSettings')) {
-    vkConnect.send('VKWebAppSetViewSettings', {
-      status_bar_style: 'light',
-      action_bar_color: '#000',
-      navigation_bar_color: '#000',
-    });
-  }
-
+  // Render root component.
   ReactDOM.render(<Root/>, document.getElementById('root'));
 };

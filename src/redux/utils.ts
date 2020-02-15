@@ -1,4 +1,7 @@
+/**
+ * Types hack required for stable work of unionize.
+ */
 export const unionizeConfig = {
-  tag: 'type' as 'type',
-  value: 'payload' as 'payload',
-};
+  tag: 'type',
+  value: 'payload',
+} as {tag: 'type'; value: 'payload'};

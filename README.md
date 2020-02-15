@@ -1,44 +1,54 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Mini Apps template
 
-## Available Scripts
+This project is a boilerplate for creating new application on 
+[VK Mini Apps](https://vk.com/vkappsdev) platform. We tried to escape all
+currently existing problems in development and offer this project as a base
+for your new application.
 
-In the project directory, you can run:
+Boilerplate is based on this stack:
+- Create React App
+- VK Connect
+- React Redux (with devtools extension and `unionize`)
+- Typescript
 
-### `yarn start`
+## Starting project on vk.com and m.vk.com
+At this time VKontakte requires HTTPS address of your application. To get this
+address we need to launch CRA in secure mode. For this, we used HTTPS=true
+variable before launching react-scripts. 
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+In this project, to launch project in secure mode use command:
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+ ```bash 
+yarn start:https
+```
 
-### `yarn test`
+After project started, you will get 2 addresses - `Local` and `On Your Network`.
+You have to use `On Your Network` address. Directly open it in your browser
+and press `Trust certificate`. Then, you can use this address in settings
+of your application, sections for `vk.com` and `m.vk.com`.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Starting project on native application
 
-### `yarn build`
+There is a problem launching project in native application. Guide from previous
+section will not work due to WebView works the other way. To get correct
+https address we have to launch project in http mode and create ngrok runnel
+which will give us https address.
+ 
+To launch project in http mode:
+```bash
+yarn start:http
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To launch ngrok tunnel:
+```bash
+yarn tunnel
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+After ngrok tunnel is created, take https address and use it in settings.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+> **WARNING**
+>
+> Ngrok has limitations on concurrent connections and requests per certain
+> period of time. So, if you will try to load a lot of assets through
+> short period of time, tunnel will be blocked and you will have to create a
+> new one.

@@ -1,77 +1,68 @@
-import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 
 import AppLoadingView from '../AppLoadingView';
-import HttpProvider from '../HttpProvider';
+import App from '../App';
 import {Provider as StoreProvider} from 'react-redux';
 
-import config from '../../config';
 import createReduxStore from '../../redux';
 import vkConnect, {VKConnectSubscribeHandler} from '@vkontakte/vk-connect';
+import {appConfigActions} from '../../redux/reducers/app-config';
+import {isUpdateConfigEvent, isUpdateInsetsEvent} from './utils';
 
-import Http from '../../lib/Http';
 import {Store} from 'redux';
 import {IReduxState} from '../../redux/types';
-import {appConfigActions} from '../../redux/fields/app-config';
 
 const Root = memo(() => {
   const [loading, setLoading] = useState(true);
-  const http = useMemo(() => new Http(
-    config.apiBaseUrl,
-    window.location.search.slice(1),
-  ), [config.apiBaseUrl]);
   const [store, setStore] = useState<null | Store<IReduxState>>(null);
 
+  // Function responsible for initializing an application. We created a separate
+  // function to use it in future. For example, in case when application
+  // crashed and we need re-initialize. We will just have to call this function.
   const init = useCallback(async () => {
     setLoading(true);
-    const cities = await http.fetchCities();
 
-    setStore(
-      createReduxStore({
-        layout: {},
-        user: {},
-        meta: {
-          cities,
-        },
-      }),
-    );
+    // Do all requests and operations required to launch application here and
+    // then create redux store.
+    setStore(createReduxStore());
+
     setLoading(false);
-  }, [http]);
-
-  useEffect(() => {
-    init();
   }, []);
 
+  // When component did mount, initialize application.
+  useEffect(() => {
+    init();
+  }, [init]);
+
+  // Listen for events coming from vkconnect. We need to detect all
+  // changes in AppConfig and watch for new insets for appropriate work
+  // of application.
   useEffect(() => {
     const listener: VKConnectSubscribeHandler = event => {
-      if (store) {
-        if (event.detail) {
-          const {type, data} = event.detail;
-
-          if (type === 'VKWebAppUpdateConfig') {
-            store.dispatch(appConfigActions.updateConfig(data));
-          }
-          // TODO: Create github issue. Not ReceiveDataMap key for type
-          else if (type === 'VKWebAppUpdateInsets') {
-            store.dispatch(appConfigActions.updateInsets(data.insets));
-          }
+      if (store && event.detail) {
+        if (isUpdateConfigEvent(event)) {
+          store.dispatch(appConfigActions.updateConfig(event.detail.data));
+        } else if (isUpdateInsetsEvent(event)) {
+          store.dispatch(
+            appConfigActions.updateInsets(event.detail.data.insets),
+          );
         }
       }
     };
 
     vkConnect.subscribe(listener);
-
     return () => vkConnect.unsubscribe(listener);
   }, [store]);
 
+  // Show loader if application is still loading.
   if (loading || !store) {
     return <AppLoadingView/>;
   }
 
+  // Show application when we got everything we need.
   return (
     <StoreProvider store={store}>
-      <HttpProvider http={http}>
-        Root
-      </HttpProvider>
+      <App/>
     </StoreProvider>
   );
 });

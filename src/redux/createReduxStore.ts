@@ -2,17 +2,13 @@ import {IReduxState} from './types';
 import {Store, createStore, combineReducers} from 'redux';
 import {devToolsEnhancer} from 'redux-devtools-extension';
 
-import {layoutReducer} from './fields/layout';
-import {metaReducer} from './fields/meta';
-import {userReducer} from './fields/user';
+import appConfigReducer from './reducers/app-config';
 
 const reducers = combineReducers<IReduxState>({
-  layout: layoutReducer,
-  meta: metaReducer,
-  user: userReducer,
+  appConfig: appConfigReducer,
 });
 
-function createReduxStore(state?: IReduxState): Store<IReduxState> {
+function createReduxStore(state?: Partial<IReduxState>): Store<IReduxState> {
   return createStore(reducers, state, devToolsEnhancer({}));
 }
 

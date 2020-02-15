@@ -1,9 +1,9 @@
 {
-  "name": "colizeum-frontend",
+  "name": "mini-apps-template",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/wolframdeus/colizeum-frontend.git",
-  "author": "vdkfrost <vlad.kibenko2@hotmail.com>",
+  "repository": "https://github.com/wolframdeus/mini-apps-template.git",
+  "author": "Vladislav Kibenko <wolframdeus@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@material-ui/styles": "^4.9.0",
@@ -12,7 +12,6 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.7",
     "@vkontakte/vk-connect": "^1.8.7",
-    "axios": "^0.19.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-redux": "^7.1.3",
@@ -23,7 +22,9 @@
     "unionize": "^3.0.2"
   },
   "scripts": {
-    "start": "cross-env HTTPS=true react-scripts start",
+    "start:http": "cross-env PORT=10888 react-scripts start",
+    "start:https": "cross-env HTTPS=true PORT=10888 react-scripts start",
+    "tunnel": "ngrok http --region eu 10888",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -48,6 +49,7 @@
     "@typescript-eslint/parser": "^2.19.2",
     "cross-env": "^7.0.0",
     "eslint": "^6.8.0",
-    "eslint-plugin-react": "^7.18.3"
+    "eslint-plugin-react": "^7.18.3",
+    "ngrok": "^3.2.7"
   }
 }
