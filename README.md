@@ -12,11 +12,11 @@ Boilerplate is based on this stack:
 - Typescript
 
 ## Starting project on vk.com and m.vk.com
-At this time VKontakte requires HTTPS address of your application. To get this
-address we need to launch CRA in secure mode. For this, we used HTTPS=true
+At this time VKontakte requires https address of your application. To get it we 
+need to launch CRA in secure mode. For this, we used HTTPS=true
 variable before launching react-scripts. 
 
-In this project, to launch project in secure mode use command:
+In this project, to launch secure mode use command:
 
  ```bash 
 yarn start:https
@@ -27,7 +27,7 @@ You have to use `On Your Network` address. Directly open it in your browser
 and press `Trust certificate`. Then, you can use this address in settings
 of your application, sections for `vk.com` and `m.vk.com`.
 
-## Starting project on native application
+## Starting project in native application
 
 There is a problem launching project in native application. Guide from previous
 section will not work due to WebView works the other way. To get correct
