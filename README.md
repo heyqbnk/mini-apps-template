@@ -1,15 +1,16 @@
 # Mini Apps template
 
-This project is a boilerplate for creating new application on 
+Boilerplate for creating new application on 
 [VK Mini Apps](https://vk.com/vkappsdev) platform. We tried to escape all
 currently existing problems in development and offer this project as a base
 for your new application.
 
-Boilerplate is based on this stack:
+Boilerplate is based stack:
 - Create React App
 - VK Connect
 - React Redux (with devtools extension and `unionize`)
 - Typescript
+- Material UI Styles
 
 ## Starting project on vk.com and m.vk.com
 At this time VKontakte requires https address of your application. To get it we 
