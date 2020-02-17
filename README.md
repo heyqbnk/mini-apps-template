@@ -28,11 +28,11 @@ You have to use `On Your Network` address. Directly open it in your browser
 and press `Trust certificate`. Then, you can use this address in settings
 of your application, sections for `vk.com` and `m.vk.com`.
 
-## Starting project in native application
+## Starting project in mobile client version
 
 There is a problem launching project in native application. Guide from previous
 section will not work due to WebView works the other way. To get correct
-https address we have to launch project in http mode and create ngrok runnel
+https address we have to launch project in http mode and create ngrok tunnel
 which will give us https address.
  
 To launch project in http mode:
@@ -48,6 +48,9 @@ yarn tunnel
 After ngrok tunnel is created, take https address and use it in settings.
 
 > **WARNING**
+>
+> Currently, "URL for developers" in Mobile client version does not work.
+> You have to use "URL" field.
 >
 > Ngrok has limitations on concurrent connections and requests per certain
 > period of time. So, if you will try to load a lot of assets through
