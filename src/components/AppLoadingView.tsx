@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 
 import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
 
-import Loader from './Loader';
+import Spinner from '@vkontakte/vkui/dist/components/Spinner/Spinner';
 
 const useStyles = makeStyles({
   root: {
@@ -22,7 +22,7 @@ const AppLoadingView = memo(() => {
 
   return (
     <div className={mc.root}>
-      <Loader size={40}/>
+      <Spinner size={'large'}/>
     </div>
   );
 });
