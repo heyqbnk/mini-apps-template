@@ -5,14 +5,40 @@ Boilerplate for creating new application on
 currently existing problems in development and offer this project as a base
 for your new application.
 
-Boilerplate is based stack:
+Boilerplate is based on stack:
 - Create React App
 - VK Connect
+- VK UI
+- VK Icons
 - React Redux (with devtools extension and `unionize`)
 - Typescript
-- Material UI Styles
+- JSS
 
-## Starting project on vk.com and m.vk.com
+## Features
+
+Currently, this template contains best practices needed for comfortable 
+development. Code contains certain intuitive workflow and comments for
+almost every line of code. There are these features inside:
+
+- Preloading of assets to imitate real native application behaviour. It means,
+when we are using native application, we download it, we download every asset
+not to do it during the application lifetime. So it will not make our screen
+blink and look much better;
+- Config creation via environment variables;
+- Codeflow
+    - Wait for assets;
+    - Loading view while appilcation is loading;
+    - Error view if error occurred while initialization;
+    - Application if initialization is complete;
+- Automatic detection of insets. Useful for iPhone X and other phones with
+insets;
+- Automatic application config detection via vkconnect;
+- Automatic theming via JSS. JSS is watching for current appearance and color
+scheme of device and returns appropriate theme;
+
+## Development
+
+### Starting project on vk.com and m.vk.com
 At this time VKontakte requires https address of your application. To get it we 
 need to launch CRA in secure mode. For this, we used HTTPS=true
 variable before launching react-scripts. 
@@ -28,7 +54,7 @@ You have to use `On Your Network` address. Directly open it in your browser
 and press `Trust certificate`. Then, you can use this address in settings
 of your application, sections for `vk.com` and `m.vk.com`.
 
-## Starting project in mobile client version
+### Starting project in mobile client version
 
 There is a problem launching project in native application. Guide from previous
 section will not work due to WebView works the other way. To get correct
