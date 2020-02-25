@@ -26,7 +26,7 @@ not to do it during the application lifetime. So it will not make our screen
 blink and look much better;
 - Config creation via environment variables;
 - Codeflow
-    - Wait for assets;
+    - Wait for assets to be loaded;
     - Loading view while appilcation is loading;
     - Error view if error occurred while initialization;
     - Application if initialization is complete;

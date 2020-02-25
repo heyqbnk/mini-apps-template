@@ -1479,15 +1479,15 @@
     es6-object-assign "^1.1.0"
     svg-baker-runtime "^1.4.2"
 
-"@vkontakte/vk-connect@^1.8.7":
-  version "1.8.7"
-  resolved "https://registry.yarnpkg.com/@vkontakte/vk-connect/-/vk-connect-1.8.7.tgz#c9c0db08db85d95aadb4de57eb63445690c616b1"
-  integrity sha512-5Fl1ZEq1nT0QAkoZPdfuJscvS1xTn+fcL3BYMNg9VmTQopMBPugByivlD4XvIH07LVJ7OB+TNUjNke5dnQFMLg==
+"@vkontakte/vk-connect@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@vkontakte/vk-connect/-/vk-connect-1.9.1.tgz#e2ef892888071eac7252324e70da039c37ca58e3"
+  integrity sha512-a8tPp480/QVP2kR3beFQUJGBEaNegUS1JeJze5/G6i3jJQcK5Q+Yz+xtLy4YopDgy+24nQ8OZRjh3PUkvIrcfA==
 
-"@vkontakte/vkui@^3.3.6":
-  version "3.3.6"
-  resolved "https://registry.yarnpkg.com/@vkontakte/vkui/-/vkui-3.3.6.tgz#b1d4235572a67068d94ada3a21eaa0c012c0b0fc"
-  integrity sha512-/zbOLuPXQu3dHewLg0psGGCZ/hZhpVy4ZQIUNMffLk6pqxUyY20QOy26gt85JgRTakYM/I9bQ0LpHAiAyk6w5A==
+"@vkontakte/vkui@^3.3.7":
+  version "3.3.7"
+  resolved "https://registry.yarnpkg.com/@vkontakte/vkui/-/vkui-3.3.7.tgz#15a0ff0b4573eefbb6babc7828f2338941c4ec1e"
+  integrity sha512-jqSfLjuOECo4tw0wfWyYYs+/Ik8HFYkR+5S0jhz9tVbacyp2Zfxcx+xOgkCpCZG0oHlgq8hZXvLkgCO4fRJSkA==
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"

@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect, useState} from 'react';
+import React, {PureComponent} from 'react';
 
 import AppLoadingView from '../AppLoadingView';
 import App from '../App';
@@ -14,85 +14,111 @@ import {isUpdateConfigEvent, isUpdateInsetsEvent} from './utils';
 import {Store} from 'redux';
 import {IReduxState} from '../../redux/types';
 
-const Root = memo(() => {
-  const [loading, setLoading] = useState(true);
-  const [store, setStore] = useState<null | Store<IReduxState>>(null);
-  const [error, setError] = useState<null | string>(null);
+interface IState {
+  loading: boolean;
+  error: string | null;
+  store: Store<IReduxState> | null;
+}
 
-  // Function responsible for initializing an application. We created a separate
-  // function to use it in future. For example, in case when application
-  // crashed and we need re-initialize. We will just have to call this function.
-  const init = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+class Root extends PureComponent<{}, IState> {
+  public state: Readonly<IState> = {
+    loading: true,
+    error: null,
+    store: null,
+  };
+
+  /**
+   * Initializes application.
+   */
+  private async init() {
+    this.setState({loading: true, error: null});
+
+    let error: string | null = null;
+    let store: Store<IReduxState> | null = null;
 
     try {
       // Do all requests and operations required to launch application here and
       // then create redux store.
-      setStore(createReduxStore());
+      store = createReduxStore();
     } catch (e) {
       const err = e as Error;
-      setError(err.message);
+      error = err.message;
     }
 
-    setLoading(false);
-  }, []);
+    this.setState({store, error, loading: false});
+  }
 
-  // Listen for events coming from vkconnect. We need to detect all
-  // changes in AppConfig and watch for new insets for appropriate work
-  // of application.
-  useEffect(() => {
-    const listener: VKConnectSubscribeHandler = event => {
-      if (store && event.detail) {
-        if (isUpdateConfigEvent(event)) {
-          store.dispatch(appConfigActions.updateConfig(event.detail.data));
-        } else if (isUpdateInsetsEvent(event)) {
-          store.dispatch(
-            appConfigActions.updateInsets(event.detail.data.insets),
-          );
-        }
+  /**
+   * Checks if event is VKWebAppUpdateConfig or VKWebAppUpdateInsets to
+   * know what app config and insets are.
+   * @param event
+   */
+  private handleVkConnectEvent: VKConnectSubscribeHandler = event => {
+    const {store} = this.state;
+
+    if (store && event.detail) {
+      if (isUpdateConfigEvent(event)) {
+        store.dispatch(appConfigActions.updateConfig(event.detail.data));
+      } else if (isUpdateInsetsEvent(event)) {
+        store.dispatch(
+          appConfigActions.updateInsets(event.detail.data.insets),
+        );
       }
-    };
+    }
+  };
 
-    vkConnect.subscribe(listener);
-    return () => vkConnect.unsubscribe(listener);
-  }, [store]);
+  public componentDidMount() {
+    // When component did mount, we are waiting for update insets and update
+    // config events to know what config is.
+    vkConnect.subscribe(this.handleVkConnectEvent);
 
-  // Notify native application, initialization is completed. It will make
-  // native application loader disappear and show our application.
-  useEffect(() => {
+    // Notify native application, initialization is completed. It will make
+    // native application loader disappear and show our application.
     // The reason we initialize here is native application automatically
     // sends VKWebAppUpdateConfig and VKWebAppUpdateInsets events when
     // initialization is complete and we dont want to skip them.
     vkConnect.send('VKWebAppInit');
-  }, []);
 
-  // When component did mount, initialize application.
-  useEffect(() => {
-    init();
-  }, [init]);
-
-  // Show loader if application is still loading.
-  if (loading || !store) {
-    return <AppLoadingView/>;
+    // Init application.
+    this.init();
   }
 
-  if (error) {
+  public componentDidCatch(error: Error) {
+    // Catch error and show error screen if something went wrong.
+    this.setState({error: error.message});
+  }
+
+  public componentWillUnmount() {
+    // Dont forget to cleanup.
+    vkConnect.unsubscribe(this.handleVkConnectEvent);
+  }
+
+  public render() {
+    const {loading, error, store} = this.state;
+
+    // Show loader if application is still loading.
+    if (loading || !store) {
+      return <AppLoadingView/>;
+    }
+
+    // Show error view if error occurred.
+    if (error) {
+      return (
+        <ThemeProvider>
+          <AppCrashView onRestartClick={this.init} error={error}/>
+        </ThemeProvider>
+      );
+    }
+
+    // Show application when we got everything we need.
     return (
-      <ThemeProvider>
-        <AppCrashView onRestartClick={init} error={error}/>
-      </ThemeProvider>
+      <StoreProvider store={store}>
+        <ThemeProvider>
+          <App/>
+        </ThemeProvider>
+      </StoreProvider>
     );
   }
-
-  // Show application when we got everything we need.
-  return (
-    <StoreProvider store={store}>
-      <ThemeProvider>
-        <App/>
-      </ThemeProvider>
-    </StoreProvider>
-  );
-});
+}
 
 export default Root;

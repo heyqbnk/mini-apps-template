@@ -4,6 +4,7 @@ import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
 import {ITheme} from '../theme/types';
 
 import {toSrcSet} from '../utils/dom';
+import {copyToClipboard} from '../utils/copying';
 
 import FixedLayout
   from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
@@ -12,6 +13,8 @@ import Div from '@vkontakte/vkui/dist/components/Div/Div';
 import ModalPage from '@vkontakte/vkui/dist/components/ModalPage/ModalPage';
 import ModalRoot from '@vkontakte/vkui/dist/components/ModalRoot/ModalRoot';
 import ModalPageHeader from './ModalPageHeader';
+import PanelHeaderButton
+  from '@vkontakte/vkui/dist/components/PanelHeaderButton/PanelHeaderButton';
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
 import CopyIcon from '@vkontakte/icons/dist/24/copy';
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
@@ -20,7 +23,6 @@ import DismissIcon from '@vkontakte/icons/dist/24/dismiss';
 import x1Url from '../assets/emoji/sad/1x.png';
 import x2Url from '../assets/emoji/sad/2x.png';
 import x4Url from '../assets/emoji/sad/4x.png';
-import {copyToClipboard} from '../utils/copying';
 
 interface IProps {
   onRestartClick(): void;
@@ -113,23 +115,20 @@ const AppCrashedView = memo((props: IProps) => {
           </Div>
         </FixedLayout>
       </div>
-      {/*// FIXME: https://github.com/VKCOM/VKUI/issues/533*/}
-      <ModalRoot activeModal={(showError ? '1' : null) as any}>
+      <ModalRoot activeModal={showError ? '1' : null}>
+        {/*// FIXME: https://github.com/VKCOM/VKUI/issues/537*/}
         <ModalPage
           id={'1'}
           header={
-            <ModalPageHeader
-              right={
-                <Div onClick={() => setShowError(false)}>
-                  <DismissIcon className={mc.dismissIcon}/>
-                </Div>
-              }
-            >
+            <ModalPageHeader right={
+              <PanelHeaderButton onClick={() => setShowError(false)}>
+                <DismissIcon className={mc.dismissIcon}/>
+              </PanelHeaderButton>
+            }>
               Ошибка
             </ModalPageHeader>
           }
-          // FIXME: https://github.com/VKCOM/VKUI/issues/531
-          onClose={(() => setShowError(false)) as any}
+          onClose={() => setShowError(false)}
         >
           <Div className={mc.error}>
             {error}

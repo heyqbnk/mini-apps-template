@@ -37,7 +37,6 @@ async function fallbackCopyToClipboard(text: string) {
  */
 export async function copyToClipboard(text: string) {
   if (vkConnect.supports('VKWebAppCopyText')) {
-    // @ts-ignore FIXME: https://github.com/VKCOM/vk-connect/issues/45
     return vkConnect.send('VKWebAppCopyText', {text});
   }
 
