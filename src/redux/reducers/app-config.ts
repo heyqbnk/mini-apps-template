@@ -1,6 +1,6 @@
 import {ofType, unionize, UnionOf} from 'unionize';
 import {unionizeConfig} from '../utils';
-import {UpdateConfigData} from '@vkontakte/vk-connect';
+import {UpdateConfigData} from '@vkontakte/vk-bridge';
 
 export interface IAppConfigReducerState
   extends Omit<UpdateConfigData, 'app_id' | 'start_time'> {

@@ -1,5 +1,5 @@
 /**
- * Types hack required for stable work of unionize.
+ * Хак типов нужный для стабильной работы unionize.
  */
 export const unionizeConfig = {
   tag: 'type',

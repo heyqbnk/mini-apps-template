@@ -7,12 +7,13 @@ import {preloadAssets} from './utils/dom';
 
 import '@vkontakte/vkui/dist/vkui.css';
 
-// Preload assets to make sure, application will not blink during lifetime.
+// Предзагружаем ассеты чтобы убедиться, что приложение не будет моргать
+// в процессе работы.
 preloadAssets();
 
-// We are waiting for all assets to be loaded to make sure, we have all of
-// css and fonts loaded. You can remove this logic if needed.
+// Ожидаем загрузки всех ассетов чтобы убедиться, что все шрифты, css и js
+// загружены.
 window.onload = () => {
-  // Render root component.
+  // Отображаем приложение.
   ReactDOM.render(<Root/>, document.getElementById('root'));
 };

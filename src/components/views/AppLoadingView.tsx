@@ -18,6 +18,10 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * Вью которая отображается в случае, когда приложение загружается.
+ * @type {React.NamedExoticComponent<object>}
+ */
 const AppLoadingView = memo(() => {
   const mc = useStyles();
 

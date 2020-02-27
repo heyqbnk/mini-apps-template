@@ -1,25 +1,27 @@
 import {
   ReceiveMethodName,
-  VKConnectEvent,
-  VKConnectSuccessEvent,
-} from '@vkontakte/vk-connect';
+  VKBridgeEvent,
+  VKBridgeSuccessEvent,
+} from '@vkontakte/vk-bridge';
 
+// FIXME: https://github.com/VKCOM/vk-bridge/issues/55
 /**
- * Claims if event is VKWebAppUpdateConfig.
+ * Утверждает что событие является VKWebAppUpdateConfig.
  * @param event
  */
 export function isUpdateConfigEvent(
-  event: VKConnectEvent<ReceiveMethodName>,
-): event is VKConnectSuccessEvent<'VKWebAppUpdateConfig'> {
+  event: VKBridgeEvent<ReceiveMethodName>,
+): event is VKBridgeSuccessEvent<'VKWebAppUpdateConfig'> {
   return event.detail && event.detail.type === 'VKWebAppUpdateConfig';
 }
 
+// FIXME: https://github.com/VKCOM/vk-bridge/issues/55
 /**
- * Claims if event is VKWebAppUpdateInsets.
+ * Утверждает что событие является VKWebAppUpdateInsets.
  * @param event
  */
 export function isUpdateInsetsEvent(
-  event: VKConnectEvent<ReceiveMethodName>,
-): event is VKConnectSuccessEvent<'VKWebAppUpdateInsets'>  {
+  event: VKBridgeEvent<ReceiveMethodName>,
+): event is VKBridgeSuccessEvent<'VKWebAppUpdateInsets'>  {
   return event.detail && event.detail.type === 'VKWebAppUpdateInsets';
 }

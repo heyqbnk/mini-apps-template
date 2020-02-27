@@ -1,4 +1,4 @@
-import vkConnect from '@vkontakte/vk-connect';
+import vkBridge from '@vkontakte/vk-bridge';
 
 /**
  * Legacy way of copying.
@@ -36,8 +36,8 @@ async function fallbackCopyToClipboard(text: string) {
  * @param text
  */
 export async function copyToClipboard(text: string) {
-  if (vkConnect.supports('VKWebAppCopyText')) {
-    return vkConnect.send('VKWebAppCopyText', {text});
+  if (vkBridge.supports('VKWebAppCopyText')) {
+    return vkBridge.send('VKWebAppCopyText', {text});
   }
 
   if (!navigator.clipboard) {

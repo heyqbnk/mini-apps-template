@@ -1,10 +1,10 @@
 import React, {memo, useCallback, useMemo, useState} from 'react';
 
 import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
-import {ITheme} from '../theme/types';
+import {ITheme} from '../../theme/types';
 
-import {toSrcSet} from '../utils/dom';
-import {copyToClipboard} from '../utils/copying';
+import {toSrcSet} from '../../utils/dom';
+import {copyToClipboard} from '../../utils/copying';
 
 import FixedLayout
   from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
@@ -12,7 +12,7 @@ import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import Div from '@vkontakte/vkui/dist/components/Div/Div';
 import ModalPage from '@vkontakte/vkui/dist/components/ModalPage/ModalPage';
 import ModalRoot from '@vkontakte/vkui/dist/components/ModalRoot/ModalRoot';
-import ModalPageHeader from './ModalPageHeader';
+import ModalPageHeader from '../ModalPageHeader';
 import PanelHeaderButton
   from '@vkontakte/vkui/dist/components/PanelHeaderButton/PanelHeaderButton';
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
@@ -20,9 +20,9 @@ import CopyIcon from '@vkontakte/icons/dist/24/copy';
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
 import DismissIcon from '@vkontakte/icons/dist/24/dismiss';
 
-import x1Url from '../assets/emoji/sad/1x.png';
-import x2Url from '../assets/emoji/sad/2x.png';
-import x4Url from '../assets/emoji/sad/4x.png';
+import x1Url from '../../assets/emoji/sad/1x.png';
+import x2Url from '../../assets/emoji/sad/2x.png';
+import x4Url from '../../assets/emoji/sad/4x.png';
 
 interface IProps {
   onRestartClick(): void;
@@ -71,6 +71,10 @@ const useStyles = makeStyles((theme: ITheme) => ({
   },
 }));
 
+/**
+ * Вью которая отображается в случае, когда в приложении произошла ошибка.
+ * @type {React.NamedExoticComponent<IProps>}
+ */
 const AppCrashedView = memo((props: IProps) => {
   const {onRestartClick, error} = props;
   const mc = useStyles(props);
@@ -115,8 +119,8 @@ const AppCrashedView = memo((props: IProps) => {
           </Div>
         </FixedLayout>
       </div>
+      {/*// TODO ModalRoot global context */}
       <ModalRoot activeModal={showError ? '1' : null}>
-        {/*// FIXME: https://github.com/VKCOM/VKUI/issues/537*/}
         <ModalPage
           id={'1'}
           header={
@@ -130,9 +134,7 @@ const AppCrashedView = memo((props: IProps) => {
           }
           onClose={() => setShowError(false)}
         >
-          <Div className={mc.error}>
-            {error}
-          </Div>
+          <Div className={mc.error}>{error}</Div>
           <Div>
             <Button
               size={'xl'}

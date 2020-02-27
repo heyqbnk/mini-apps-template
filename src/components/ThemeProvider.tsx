@@ -13,16 +13,17 @@ interface IProps {
   children?: ReactNode | ReactNodeArray;
 }
 
+/**
+ * Провайдер темы для приложения.
+ * @type {React.NamedExoticComponent<IProps>}
+ */
 const ThemeProvider = memo((props: IProps) => {
   const {children} = props;
-  // TODO: Switch between themes according to current Appearance.
+  // TODO: Переключаться между темами в зависимости от того, какая тема
+  //  записана в appConfig.
   const theme = useMemo(() => defaultTheme, []);
 
-  return (
-    <MuiThemeProvider theme={theme}>
-      {children}
-    </MuiThemeProvider>
-  );
+  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
 });
 
 export default ThemeProvider;

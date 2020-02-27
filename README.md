@@ -1,84 +1,85 @@
 # Mini Apps template
 
-Boilerplate for creating new application on 
-[VK Mini Apps](https://vk.com/vkappsdev) platform. We tried to escape all
-currently existing problems in development and offer this project as a base
-for your new application.
+Шаблон для создания нового приложения на базе [VK Mini Apps](https://vk.com/vkappsdev).
 
-Boilerplate is based on stack:
+Стек технологий:
 - Create React App
-- VK Connect
+- VK Bridge
 - VK UI
 - VK Icons
 - React Redux (with devtools extension and `unionize`)
 - Typescript
 - JSS
 
-## Features
+## Преимущества
 
-Currently, this template contains best practices needed for comfortable 
-development. Code contains certain intuitive workflow and comments for
-almost every line of code. There are these features inside:
+В данный момент шаблон содержит все необходимые best practice для комфортной
+разработки. Код содержит конкретный интуитивно понятный флоу, а также 
+комментарии к практически каждой строке кода. 
 
-- Preloading of assets to imitate real native application behaviour. It means,
-when we are using native application, we download it, we download every asset
-not to do it during the application lifetime. So it will not make our screen
-blink and look much better;
-- Config creation via environment variables;
-- Codeflow
-    - Wait for assets to be loaded;
-    - Loading view while appilcation is loading;
-    - Error view if error occurred while initialization;
-    - Application if initialization is complete;
-- Automatic detection of insets. Useful for iPhone X and other phones with
-insets;
-- Automatic application config detection via vkconnect;
-- Automatic theming via JSS. JSS is watching for current appearance and color
-scheme of device and returns appropriate theme;
+Чуть более конкретно: 
+- Предзагрузка ассетов для имитации поведения загрузки нативного приложения. 
+Это означает, что когда мы хотим использовать какое-либо приложение, нам 
+необходимо сначала его полностью загрузить, загрузить каждый ассет чтобы не 
+делать это в процессе работы приложения, т.к. тогда это будет похоже на 
+веб-приложение. Таким образом мы не заставим некоторые блоки моргать из-за 
+загрузки;
+- Создание [конфига](/src/config.ts) через переменные окружения;
+- Флоу
+    - Ожидание загрузки всех ассетов;
+    - Отображение лоадера в процессе загрузки приложения;
+    - Отображение ошибки в случае её возникновения где-то в React-дереве;
+    - Отображение "лица" когда загрузка прошла успешно;
+- Автоматиечски обнаружение внутренних рамок (инсетов). Полезно для iPhone X
+и выше;
+- Автоматическое обнаружение конфига приложения отправляемого vkbridge;
+- Стилизация через JSS. Автоматическая установки темы в зависимости от цветовой 
+схемы (to be done);
 
-## Development
+## Разработка
 
-### Starting project on vk.com and m.vk.com
-At this time VKontakte requires https address of your application. To get it we 
-need to launch CRA in secure mode. For this, we used HTTPS=true
-variable before launching react-scripts. 
+### Запуск проекта на vk.com и m.vk.com
+В данный момент ВКонтакте требует https-адрес вашего приложения. Чтобы его 
+получить, необходимо запустить CRA в безопасном режиме. Для этого мы используем
+переменную HTTPS=true перед запуском скрипта react-scripts.
 
-In this project, to launch secure mode use command:
+Для запуска в безопасном режиме использовать команду:
 
  ```bash 
 yarn start:https
 ```
 
-After project started, you will get 2 addresses - `Local` and `On Your Network`.
-You have to use `On Your Network` address. Directly open it in your browser
-and press `Trust certificate`. Then, you can use this address in settings
-of your application, sections for `vk.com` and `m.vk.com`.
+После того как проект запущен, мы получаем 2 адреса - `Local` и 
+`On Your Network`. Необходимо использовать адрес `On Your Network`. Откройте
+его в новой вкладке браузера и нажмите `Доверять сертификату`. Затем этот
+адрес можно использовать в настройках вашего приложения в секциях для
+`vk.com` и `m.vk.com`.
 
-### Starting project in mobile client version
+### Запуск проекта в нативной версии
 
-There is a problem launching project in native application. Guide from previous
-section will not work due to WebView works the other way. To get correct
-https address we have to launch project in http mode and create ngrok tunnel
-which will give us https address.
+Для запуска проекта необходимо запустить его в обычном режиме и создать ngrok 
+туннель, который и даст нам https-адрес.
  
-To launch project in http mode:
+Запуск проекта в обычном режиме:
+
 ```bash
 yarn start:http
 ```
 
-To launch ngrok tunnel:
+Запуск туннеля ngrok:
 ```bash
 yarn tunnel
 ```
 
-After ngrok tunnel is created, take https address and use it in settings.
+После того как туннель создан, его адрес можно использовать в настройках 
+приложения.
 
-> **WARNING**
+> **ВНИМАНИЕ**
 >
-> Currently, "URL for developers" in Mobile client version does not work.
-> You have to use "URL" field.
->
-> Ngrok has limitations on concurrent connections and requests per certain
-> period of time. So, if you will try to load a lot of assets through
-> short period of time, tunnel will be blocked and you will have to create a
-> new one.
+> Сейчас "URL для разработчиков" в нативной версии не работает. Необходимо
+> использовать поле "URL".
+> 
+> Ngrok имеет ограничения на количество одновременных подключений и запросов
+> за определенный промежуток времени. Поэтому если вы попробуете загрузить
+> большое кол-во запросов за короткий промежуток времени, туннель будет
+> временно заблокирован. Вы можете подождать либо создать новый.

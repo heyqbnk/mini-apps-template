@@ -1,18 +1,24 @@
 import React, {PureComponent} from 'react';
 
-import AppLoadingView from '../AppLoadingView';
+import AppLoadingView from '../views/AppLoadingView';
 import App from '../App';
 import {Provider as StoreProvider} from 'react-redux';
 import ThemeProvider from '../ThemeProvider';
-import AppCrashView from '../AppCrashView';
+import AppCrashView from '../views/AppCrashView';
 
 import createReduxStore from '../../redux';
-import vkConnect, {VKConnectSubscribeHandler} from '@vkontakte/vk-connect';
+import vkBridge, {
+  Insets,
+  UpdateConfigData,
+  VKBridgeSubscribeHandler,
+} from '@vkontakte/vk-bridge';
 import {appConfigActions} from '../../redux/reducers/app-config';
 import {isUpdateConfigEvent, isUpdateInsetsEvent} from './utils';
 
 import {Store} from 'redux';
 import {IReduxState} from '../../redux/types';
+import {getStorageValues} from '../../utils/bridge';
+import {EStorageField} from '../../types/bridge';
 
 interface IState {
   loading: boolean;
@@ -20,6 +26,11 @@ interface IState {
   store: Store<IReduxState> | null;
 }
 
+/**
+ * Является "мозгом" нашего приложение. Если быть более конкретным - его
+ * корнем. Здесь подгружаются все необходимые для работы приложения данные,
+ * а также создаются основные контексты.
+ */
 class Root extends PureComponent<{}, IState> {
   public state: Readonly<IState> = {
     loading: true,
@@ -28,7 +39,21 @@ class Root extends PureComponent<{}, IState> {
   };
 
   /**
-   * Initializes application.
+   * Переменная которая отвечает за то, что было ли отправлено событие
+   * обновления конфига приложения. Необходимо в случае, когда это событие
+   * успели отловить но в тот момент Redux-хранилища еще не существовало.
+   * @type {null}
+   */
+  private initialAppConfig: UpdateConfigData | null = null;
+
+  /**
+   * Аналогично initialAppConfigSent.
+   * @type {null}
+   */
+  private initialAppInsets: Insets | null = null;
+
+  /**
+   * Иницилизирует приложение.
    */
   private async init() {
     this.setState({loading: true, error: null});
@@ -37,10 +62,15 @@ class Root extends PureComponent<{}, IState> {
     let store: Store<IReduxState> | null = null;
 
     try {
-      // Do all requests and operations required to launch application here and
-      // then create redux store.
-      store = createReduxStore();
+      // Здесь необходимо выполнить все асинхронные операции и получить
+      // данные для запуска приложения, после чего создать хранилище Redux.
+      const [storage] = await Promise.all([
+        getStorageValues(...Object.values(EStorageField)),
+      ]);
+
+      store = createReduxStore({storage});
     } catch (e) {
+      // В случае ошибки, мы её отловим и покажем экран с ошибкой.
       const err = e as Error;
       error = err.message;
     }
@@ -49,59 +79,84 @@ class Root extends PureComponent<{}, IState> {
   }
 
   /**
-   * Checks if event is VKWebAppUpdateConfig or VKWebAppUpdateInsets to
-   * know what app config and insets are.
-   * @param event
+   * Проверяет, является событие VKWebAppUpdateConfig или VKWebAppUpdateInsets
+   * чтобы узнать каков конфиг приложения в данный момент, а также - какие
+   * внутренние рамки экрана существуют.
+   * @param {VKBridgeEvent<ReceiveMethodName>} event
    */
-  private handleVkConnectEvent: VKConnectSubscribeHandler = event => {
+  private handleVkConnectEvent: VKBridgeSubscribeHandler = event => {
     const {store} = this.state;
 
-    if (store && event.detail) {
+    if (event.detail) {
       if (isUpdateConfigEvent(event)) {
-        store.dispatch(appConfigActions.updateConfig(event.detail.data));
+        if (store) {
+          store.dispatch(appConfigActions.updateConfig(event.detail.data));
+        } else {
+          this.initialAppConfig = event.detail.data;
+        }
       } else if (isUpdateInsetsEvent(event)) {
-        store.dispatch(
-          appConfigActions.updateInsets(event.detail.data.insets),
-        );
+        if (store) {
+          store.dispatch(
+            appConfigActions.updateInsets(event.detail.data.insets),
+          );
+        } else {
+          this.initialAppInsets = event.detail.data.insets;
+        }
       }
     }
   };
 
   public componentDidMount() {
-    // When component did mount, we are waiting for update insets and update
-    // config events to know what config is.
-    vkConnect.subscribe(this.handleVkConnectEvent);
+    // Когда компонент загрузился, мы ожидаем обновления внутренних рамок
+    // и конфига приложения.
+    vkBridge.subscribe(this.handleVkConnectEvent);
 
-    // Notify native application, initialization is completed. It will make
-    // native application loader disappear and show our application.
-    // The reason we initialize here is native application automatically
-    // sends VKWebAppUpdateConfig and VKWebAppUpdateInsets events when
-    // initialization is complete and we dont want to skip them.
-    vkConnect.send('VKWebAppInit');
+    // Уведомляем нативное приложение о том, что инициализация окончена.
+    // Это заставит нативное приложение спрятать лоадер и показать наше
+    // приложение.
+    // Причина по которой мы проводим инициализацию здесь - нативное приложение
+    // автоматически отправлять информацию о конфиге и внутренних рамках,
+    // которая нам нужна.
+    vkBridge.send('VKWebAppInit');
 
-    // Init application.
+    // Инициализируем приложение.
     this.init();
   }
 
+  public componentDidUpdate(prevProps: {}, prevState: Readonly<IState>) {
+    const {store} = this.state;
+
+    // Как только хранилище появилось, проверяем, были ли получены до этого
+    // информация о конфиге и инсетах. Если да, то записываем в хранилище.
+    if (prevState.store === null && store !== null) {
+      if (this.initialAppConfig) {
+        store.dispatch(appConfigActions.updateConfig(this.initialAppConfig));
+      }
+      if (this.initialAppInsets) {
+        store.dispatch(appConfigActions.updateInsets(this.initialAppInsets));
+      }
+    }
+  }
+
   public componentDidCatch(error: Error) {
-    // Catch error and show error screen if something went wrong.
+    // Отлавливаем ошибку, если выше этого не произошло.
     this.setState({error: error.message});
   }
 
   public componentWillUnmount() {
-    // Dont forget to cleanup.
-    vkConnect.unsubscribe(this.handleVkConnectEvent);
+    // При разгрузке удаляем слушателя событий.
+    vkBridge.unsubscribe(this.handleVkConnectEvent);
   }
 
   public render() {
     const {loading, error, store} = this.state;
 
-    // Show loader if application is still loading.
+    // Отображаем лоадер если приложение еще загружается.
     if (loading || !store) {
       return <AppLoadingView/>;
     }
 
-    // Show error view if error occurred.
+    // Отображаем ошибку если она была.
     if (error) {
       return (
         <ThemeProvider>
@@ -110,7 +165,7 @@ class Root extends PureComponent<{}, IState> {
       );
     }
 
-    // Show application when we got everything we need.
+    // Отображаем приложение если у нас есть всё, что необходимо.
     return (
       <StoreProvider store={store}>
         <ThemeProvider>
