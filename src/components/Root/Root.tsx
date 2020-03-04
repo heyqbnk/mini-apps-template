@@ -12,22 +12,22 @@ import vkBridge, {
   UpdateConfigData,
   VKBridgeSubscribeHandler,
 } from '@vkontakte/vk-bridge';
-import {appConfigActions} from '../../redux/reducers/app-config';
+import {configActions} from '../../redux/reducers/config';
 import {isUpdateConfigEvent, isUpdateInsetsEvent} from './utils';
+import {getStorageValues} from '../../utils/bridge';
 
 import {Store} from 'redux';
-import {IReduxState} from '../../redux/types';
-import {getStorageValues} from '../../utils/bridge';
-import {EStorageField} from '../../types/bridge';
+import {ReduxState} from '../../redux/types';
+import {StorageField} from '../../types/bridge';
 
 interface IState {
   loading: boolean;
   error: string | null;
-  store: Store<IReduxState> | null;
+  store: Store<ReduxState> | null;
 }
 
 /**
- * Является "мозгом" нашего приложение. Если быть более конкретным - его
+ * Является "мозгом" приложение. Если быть более конкретным - его
  * корнем. Здесь подгружаются все необходимые для работы приложения данные,
  * а также создаются основные контексты.
  */
@@ -59,13 +59,13 @@ class Root extends PureComponent<{}, IState> {
     this.setState({loading: true, error: null});
 
     let error: string | null = null;
-    let store: Store<IReduxState> | null = null;
+    let store: Store<ReduxState> | null = null;
 
     try {
       // Здесь необходимо выполнить все асинхронные операции и получить
       // данные для запуска приложения, после чего создать хранилище Redux.
       const [storage] = await Promise.all([
-        getStorageValues(...Object.values(EStorageField)),
+        getStorageValues(...Object.values(StorageField)),
       ]);
 
       store = createReduxStore({storage});
@@ -84,20 +84,20 @@ class Root extends PureComponent<{}, IState> {
    * внутренние рамки экрана существуют.
    * @param {VKBridgeEvent<ReceiveMethodName>} event
    */
-  private handleVkConnectEvent: VKBridgeSubscribeHandler = event => {
+  private onVKBridgeEvent: VKBridgeSubscribeHandler = event => {
     const {store} = this.state;
 
     if (event.detail) {
       if (isUpdateConfigEvent(event)) {
         if (store) {
-          store.dispatch(appConfigActions.updateConfig(event.detail.data));
+          store.dispatch(configActions.updateConfig(event.detail.data));
         } else {
           this.initialAppConfig = event.detail.data;
         }
       } else if (isUpdateInsetsEvent(event)) {
         if (store) {
           store.dispatch(
-            appConfigActions.updateInsets(event.detail.data.insets),
+            configActions.updateInsets(event.detail.data.insets),
           );
         } else {
           this.initialAppInsets = event.detail.data.insets;
@@ -109,7 +109,7 @@ class Root extends PureComponent<{}, IState> {
   public componentDidMount() {
     // Когда компонент загрузился, мы ожидаем обновления внутренних рамок
     // и конфига приложения.
-    vkBridge.subscribe(this.handleVkConnectEvent);
+    vkBridge.subscribe(this.onVKBridgeEvent);
 
     // Уведомляем нативное приложение о том, что инициализация окончена.
     // Это заставит нативное приложение спрятать лоадер и показать наше
@@ -128,12 +128,13 @@ class Root extends PureComponent<{}, IState> {
 
     // Как только хранилище появилось, проверяем, были ли получены до этого
     // информация о конфиге и инсетах. Если да, то записываем в хранилище.
+    // TODO: Перенести диспатчи в место где создается хранилище.
     if (prevState.store === null && store !== null) {
       if (this.initialAppConfig) {
-        store.dispatch(appConfigActions.updateConfig(this.initialAppConfig));
+        store.dispatch(configActions.updateConfig(this.initialAppConfig));
       }
       if (this.initialAppInsets) {
-        store.dispatch(appConfigActions.updateInsets(this.initialAppInsets));
+        store.dispatch(configActions.updateInsets(this.initialAppInsets));
       }
     }
   }
@@ -145,7 +146,7 @@ class Root extends PureComponent<{}, IState> {
 
   public componentWillUnmount() {
     // При разгрузке удаляем слушателя событий.
-    vkBridge.unsubscribe(this.handleVkConnectEvent);
+    vkBridge.unsubscribe(this.onVKBridgeEvent);
   }
 
   public render() {

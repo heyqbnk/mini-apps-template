@@ -4,7 +4,6 @@ import {
   VKBridgeSuccessEvent,
 } from '@vkontakte/vk-bridge';
 
-// FIXME: https://github.com/VKCOM/vk-bridge/issues/55
 /**
  * Утверждает что событие является VKWebAppUpdateConfig.
  * @param event
@@ -12,10 +11,11 @@ import {
 export function isUpdateConfigEvent(
   event: VKBridgeEvent<ReceiveMethodName>,
 ): event is VKBridgeSuccessEvent<'VKWebAppUpdateConfig'> {
+  // FIXME: https://github.com/VKCOM/vk-bridge/issues/60
+  // @ts-ignore
   return event.detail && event.detail.type === 'VKWebAppUpdateConfig';
 }
 
-// FIXME: https://github.com/VKCOM/vk-bridge/issues/55
 /**
  * Утверждает что событие является VKWebAppUpdateInsets.
  * @param event
@@ -23,5 +23,7 @@ export function isUpdateConfigEvent(
 export function isUpdateInsetsEvent(
   event: VKBridgeEvent<ReceiveMethodName>,
 ): event is VKBridgeSuccessEvent<'VKWebAppUpdateInsets'>  {
+  // FIXME: https://github.com/VKCOM/vk-bridge/issues/60
+  // @ts-ignore
   return event.detail && event.detail.type === 'VKWebAppUpdateInsets';
 }

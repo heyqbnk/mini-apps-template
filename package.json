@@ -13,7 +13,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.7",
     "@vkontakte/icons": "^1.16.3",
-    "@vkontakte/vk-bridge": "^2.0.3",
+    "@vkontakte/vk-bridge": "^2.0.8",
     "@vkontakte/vkui": "^3.4.1",
     "classnames": "^2.2.6",
     "react": "^16.12.0",
@@ -26,9 +26,9 @@
     "unionize": "^3.0.2"
   },
   "scripts": {
-    "start:http": "cross-env PORT=10888 react-scripts start",
+    "start:http": "cross-env PORT=10889 react-scripts start",
     "start:https": "cross-env HTTPS=true PORT=10888 react-scripts start",
-    "tunnel": "ngrok http --region eu 10888",
+    "tunnel": "ngrok http --region eu 10889",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

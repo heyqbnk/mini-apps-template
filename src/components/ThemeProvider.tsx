@@ -20,7 +20,7 @@ interface IProps {
 const ThemeProvider = memo((props: IProps) => {
   const {children} = props;
   // TODO: Переключаться между темами в зависимости от того, какая тема
-  //  записана в appConfig.
+  //  записана в config.
   const theme = useMemo(() => defaultTheme, []);
 
   return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;

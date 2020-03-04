@@ -2,13 +2,13 @@ import {useMemo} from 'react'
 import {bindActionCreators, ActionCreator, ActionCreatorsMapObject} from 'redux'
 import {useDispatch} from 'react-redux'
 
-type TActions = ActionCreatorsMapObject<any> | ActionCreator<any>;
+type Actions = ActionCreatorsMapObject<any> | ActionCreator<any>;
 
 /**
  * Привязывает переданные экшены к Redux-dispatch.
  * @param actions
  */
-function useActions<C extends TActions>(
+function useActions<C extends Actions>(
   actions: C,
 ): C {
   const dispatch = useDispatch();

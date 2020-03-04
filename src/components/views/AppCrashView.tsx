@@ -1,7 +1,7 @@
 import React, {memo, useCallback, useMemo, useState} from 'react';
 
 import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
-import {ITheme} from '../../theme/types';
+import {Theme} from '../../theme/types';
 
 import {toSrcSet} from '../../utils/dom';
 import {copyToClipboard} from '../../utils/copying';
@@ -29,7 +29,7 @@ interface IProps {
   error: string;
 }
 
-const useStyles = makeStyles((theme: ITheme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     position: 'fixed',
     top: 0,

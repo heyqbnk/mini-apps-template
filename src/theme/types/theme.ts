@@ -1,16 +1,10 @@
-import {IPalette} from './palette';
-import {ITypography} from './typography';
+import {Palette} from './palette';
+import {Typography} from './typography';
 
 /**
- * Common theme description.
+ * Описание темы
  */
-export interface ITheme {
-  palette: IPalette;
-  typography: ITypography;
-}
-
-/**
- * Every theme core.
- */
-export interface IThemeCore extends Omit<ITheme, 'palette'>{
+export interface Theme {
+  palette: Palette;
+  typography: Typography;
 }

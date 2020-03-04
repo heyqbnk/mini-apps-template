@@ -1,7 +1,9 @@
-import {IAppConfigReducerState} from './reducers/app-config';
-import {TStorageReducerState} from './reducers/bridge-storage';
+import {ConfigReducerState} from './reducers/config';
+import {StorageReducerState} from './reducers/storage';
+import {LayoutReducerState} from './reducers/layout';
 
-export interface IReduxState {
-  appConfig: IAppConfigReducerState;
-  storage: TStorageReducerState;
+export interface ReduxState {
+  config: ConfigReducerState;
+  storage: StorageReducerState;
+  layout: LayoutReducerState;
 }

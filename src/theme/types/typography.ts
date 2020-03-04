@@ -1,7 +1,7 @@
 /**
  * Describes all things connected with typography.
  */
-export interface ITypography {
+export interface Typography {
   fontFamily?: string;
   fontFamilyTT?: string;
   fontSize?: number | string;

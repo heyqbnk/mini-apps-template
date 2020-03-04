@@ -1,4 +1,4 @@
 /**
  * Describers palette colors.
  */
-export interface IPalette {}
+export interface Palette {}

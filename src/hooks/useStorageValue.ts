@@ -1,31 +1,31 @@
-import {EStorageField, TStorageValueType} from '../types/bridge';
+import {StorageField, StorageValueType} from '../types/bridge';
 import {useCallback} from 'react';
 import useActions from './useActions';
 import {
   storageActions,
-  TStorageReducerState,
-} from '../redux/reducers/bridge-storage';
+  StorageReducerState,
+} from '../redux/reducers/storage';
 import {setStorageValue, dropStorageValues} from '../utils/bridge';
 import useSelector from './useSelector';
 
-type TModifyStorage<F extends EStorageField> =
-  (value: TStorageValueType<F> | null) => void;
+type ModifyStorage<F extends StorageField> =
+  (value: StorageValueType<F> | null) => void;
 
-const useReduxValue = <F extends EStorageField>(
+const useReduxValue = <F extends StorageField>(
   field: F,
 ) => useSelector(state => state.storage[field]);
 
 /**
  * Позволяет работать с мемоизированным значение bridge storage.
- * @returns {[TStorageReducerState[F], TModifyStorage<F>]}
+ * @returns {[StorageReducerState[F], ModifyStorage<F>]}
  * @param field
  */
-function useStorageValue<F extends EStorageField>(
+function useStorageValue<F extends StorageField>(
   field: F,
-): [TStorageReducerState[F], TModifyStorage<F>] {
+): [StorageReducerState[F], ModifyStorage<F>] {
   const memoize = useActions(storageActions.memoize);
   const value = useReduxValue(field);
-  const modify = useCallback<TModifyStorage<F>>(value => {
+  const modify = useCallback<ModifyStorage<F>>(value => {
     memoize({[field]: value});
 
     // Если задали null, это означает что свойство хотят дропнуть.
