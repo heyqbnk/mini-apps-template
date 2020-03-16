@@ -1,7 +1,7 @@
 import vkBridge from '@vkontakte/vk-bridge';
 
 /**
- * Legacy way of copying.
+ * Устаревший способ копирования в буфер обмена
  * @param text
  */
 async function fallbackCopyToClipboard(text: string) {
@@ -32,7 +32,7 @@ async function fallbackCopyToClipboard(text: string) {
 }
 
 /**
- * Copies text to clipboard.
+ * Копирует текст в буфер обмена
  * @param text
  */
 export async function copyToClipboard(text: string) {

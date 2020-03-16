@@ -8,6 +8,7 @@ export type StorageReducerState = {
 
 export const storageActions = unionize({
   memoize: ofType<{ [F in StorageField]?: StorageValuesMap[F] }>(),
+  dropAllValues: {},
 }, unionizeConfig);
 
 type StorageAction = UnionOf<typeof storageActions>;
@@ -20,6 +21,7 @@ function storageReducer(
 ) {
   return storageActions.match(action, {
     memoize: memo => ({...state, ...memo}),
+    dropAllValues: () => ({}),
     default: () => state,
   });
 }

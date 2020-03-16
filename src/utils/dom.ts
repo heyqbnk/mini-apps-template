@@ -1,7 +1,7 @@
 import emojiSadUrl from '../assets/emoji/sad/1x.png';
 
 /**
- * Loads images into cache.
+ * Подгружает изображения и помещает в кеш
  * @param urls
  */
 export function loadImages(...urls: string[]) {
@@ -9,15 +9,15 @@ export function loadImages(...urls: string[]) {
 }
 
 /**
- * Preloads all required assets.
+ * Предзагружает все необходимые ассеты
  */
 export function preloadAssets() {
   loadImages(emojiSadUrl);
 }
 
 /**
- * Converts an array of urls to src set.
- * @param images - Array of Tuples [url, size]
+ * Конвертирует массив ссылок в src-set
+ * @param images - Массив кортежей [url, size]
  */
 export function toSrcSet(images: [string, string][]): string {
   return images.map(([url, size]) => `${url} ${size}`).join(', ');

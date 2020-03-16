@@ -6,6 +6,7 @@ import {
   UpdateConfigData,
   MVKUpdateConfigData,
 } from '@vkontakte/vk-bridge';
+import {Config} from '../../config';
 
 type ConfigData =
   Omit<DefaultUpdateConfigData, 'app_id' | 'start_time'>
@@ -13,6 +14,7 @@ type ConfigData =
 
 export interface ConfigReducerState extends ConfigData {
   appId: string;
+  appConfig: Config;
   startTime: number;
   viewportWidth: number;
   viewportHeight: number;
@@ -27,6 +29,7 @@ type ConfigAction = UnionOf<typeof configActions>;
 
 const initialState: ConfigReducerState = {
   app: 'vkclient',
+  appConfig: {},
   appId: '',
   appearance: 'light',
   scheme: 'client_light',

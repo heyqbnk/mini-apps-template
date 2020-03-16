@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Root from './components/Root/Root';
+import Root from './components/Root';
 
 import {preloadAssets} from './utils/dom';
 

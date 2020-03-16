@@ -77,3 +77,11 @@ export async function dropStorageValues(
     })),
   );
 }
+
+/**
+ * Полностью удаляет все значения из хранилища
+ * @returns {Promise<void>}
+ */
+export function dropStorage() {
+  return dropStorageValues(...Object.values(StorageField));
+}

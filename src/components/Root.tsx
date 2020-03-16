@@ -1,24 +1,26 @@
 import React, {PureComponent} from 'react';
 
-import AppLoadingView from '../views/AppLoadingView';
-import App from '../App';
+import AppLoadingView from './views/AppLoadingView';
+import App from './App';
 import {Provider as StoreProvider} from 'react-redux';
-import ThemeProvider from '../ThemeProvider';
-import AppCrashView from '../views/AppCrashView';
+import ThemeProvider from './ThemeProvider';
+import AppCrashView from './views/AppCrashView';
+import RootContextProvider, {RootContext} from './RootContextProvider';
+import ServicePanel from './ServicePanel';
 
-import createReduxStore from '../../redux';
+import createReduxStore from '../redux';
 import vkBridge, {
   Insets,
   UpdateConfigData,
   VKBridgeSubscribeHandler,
 } from '@vkontakte/vk-bridge';
-import {configActions} from '../../redux/reducers/config';
-import {isUpdateConfigEvent, isUpdateInsetsEvent} from './utils';
-import {getStorageValues} from '../../utils/bridge';
+import {configActions, ConfigReducerState} from '../redux/reducers/config';
+import {getStorageValues} from '../utils/storage';
+import config from '../config';
 
 import {Store} from 'redux';
-import {ReduxState} from '../../redux/types';
-import {StorageField} from '../../types/bridge';
+import {ReduxState} from '../redux/types';
+import {StorageField} from '../types/bridge';
 
 interface IState {
   loading: boolean;
@@ -53,6 +55,12 @@ class Root extends PureComponent<{}, IState> {
   private initialAppInsets: Insets | null = null;
 
   /**
+   * Значение для контекста рута
+   * @type {{init: () => Promise<void>}}
+   */
+  private rootContextValue: RootContext = {init: this.init.bind(this)};
+
+  /**
    * Иницилизирует приложение.
    */
   private async init() {
@@ -67,8 +75,31 @@ class Root extends PureComponent<{}, IState> {
       const [storage] = await Promise.all([
         getStorageValues(...Object.values(StorageField)),
       ]);
+      let appConfig: ConfigReducerState = {
+        app: 'vkclient',
+        appConfig: config,
+        appId: '',
+        appearance: 'light',
+        scheme: 'client_light',
+        insets: {
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        },
+        startTime: 0,
+        viewportHeight: 0,
+        viewportWidth: 0,
+      };
 
-      store = createReduxStore({storage});
+      if (this.initialAppConfig) {
+        appConfig = {...appConfig, ...this.initialAppConfig};
+      }
+      if (this.initialAppInsets) {
+        appConfig = {...appConfig, insets: this.initialAppInsets};
+      }
+
+      store = createReduxStore({storage, config: appConfig});
     } catch (e) {
       // В случае ошибки, мы её отловим и покажем экран с ошибкой.
       const err = e as Error;
@@ -88,13 +119,13 @@ class Root extends PureComponent<{}, IState> {
     const {store} = this.state;
 
     if (event.detail) {
-      if (isUpdateConfigEvent(event)) {
+      if (event.detail.type === 'VKWebAppUpdateConfig') {
         if (store) {
           store.dispatch(configActions.updateConfig(event.detail.data));
         } else {
           this.initialAppConfig = event.detail.data;
         }
-      } else if (isUpdateInsetsEvent(event)) {
+      } else if (event.detail.type === 'VKWebAppUpdateInsets') {
         if (store) {
           store.dispatch(
             configActions.updateInsets(event.detail.data.insets),
@@ -123,22 +154,6 @@ class Root extends PureComponent<{}, IState> {
     this.init();
   }
 
-  public componentDidUpdate(prevProps: {}, prevState: Readonly<IState>) {
-    const {store} = this.state;
-
-    // Как только хранилище появилось, проверяем, были ли получены до этого
-    // информация о конфиге и инсетах. Если да, то записываем в хранилище.
-    // TODO: Перенести диспатчи в место где создается хранилище.
-    if (prevState.store === null && store !== null) {
-      if (this.initialAppConfig) {
-        store.dispatch(configActions.updateConfig(this.initialAppConfig));
-      }
-      if (this.initialAppInsets) {
-        store.dispatch(configActions.updateInsets(this.initialAppInsets));
-      }
-    }
-  }
-
   public componentDidCatch(error: Error) {
     // Отлавливаем ошибку, если выше этого не произошло.
     this.setState({error: error.message});
@@ -153,7 +168,7 @@ class Root extends PureComponent<{}, IState> {
     const {loading, error, store} = this.state;
 
     // Отображаем лоадер если приложение еще загружается.
-    if (loading || !store) {
+    if (loading) {
       return <AppLoadingView/>;
     }
 
@@ -161,17 +176,25 @@ class Root extends PureComponent<{}, IState> {
     if (error) {
       return (
         <ThemeProvider>
-          <AppCrashView onRestartClick={this.init} error={error}/>
+          <AppCrashView onRestartClick={this.init.bind(this)} error={error}/>
         </ThemeProvider>
       );
+    }
+
+    // Исключительные случай, который невозможен
+    if (!store) {
+      return null;
     }
 
     // Отображаем приложение если у нас есть всё, что необходимо.
     return (
       <StoreProvider store={store}>
-        <ThemeProvider>
-          <App/>
-        </ThemeProvider>
+        <RootContextProvider value={this.rootContextValue}>
+          <ThemeProvider>
+            <ServicePanel/>
+            <App/>
+          </ThemeProvider>
+        </RootContextProvider>
       </StoreProvider>
     );
   }
