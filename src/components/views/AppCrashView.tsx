@@ -1,9 +1,8 @@
-import React, {memo, useCallback, useMemo, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 
 import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
 import {Theme} from '../../theme/types';
 
-import {toSrcSet} from '../../utils/dom';
 import {copyToClipboard} from '../../utils/copying';
 
 import FixedLayout
@@ -20,9 +19,7 @@ import CopyIcon from '@vkontakte/icons/dist/24/copy';
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
 import DismissIcon from '@vkontakte/icons/dist/24/dismiss';
 
-import x1Url from '../../assets/emoji/sad/1x.png';
-import x2Url from '../../assets/emoji/sad/2x.png';
-import x4Url from '../../assets/emoji/sad/4x.png';
+import emojiSadUrl from '../../assets/emoji-sad.base64.png';
 
 interface IProps {
   onRestartClick(): void;
@@ -80,9 +77,6 @@ const AppCrashedView = memo((props: IProps) => {
   const mc = useStyles(props);
   const [showError, setShowError] = useState(false);
   const [copying, setCopying] = useState(false);
-  const srcSet = useMemo(() => toSrcSet([
-    [x1Url, '1x'], [x2Url, '2x'], [x4Url, '4x'],
-  ]), []);
 
   const onCopyClick = useCallback(async () => {
     setCopying(true);
@@ -96,7 +90,7 @@ const AppCrashedView = memo((props: IProps) => {
   return (
     <>
       <div className={mc.root}>
-        <img className={mc.emoji} src={x1Url} srcSet={srcSet} alt={''}/>
+        <img className={mc.emoji} src={emojiSadUrl} alt={''}/>
         <p className={mc.title}>Упс, что-то сломалось</p>
         <FixedLayout vertical={'bottom'}>
           <Div>

@@ -15,12 +15,12 @@ import vkBridge, {
   VKBridgeSubscribeHandler,
 } from '@vkontakte/vk-bridge';
 import {configActions, ConfigReducerState} from '../redux/reducers/config';
-import {getStorageValues} from '../utils/storage';
+import {getStorage} from '../utils/storage';
 import config from '../config';
 
 import {Store} from 'redux';
 import {ReduxState} from '../redux/types';
-import {StorageField} from '../types/bridge';
+import {getLaunchParams} from '../utils/launch-params';
 
 interface IState {
   loading: boolean;
@@ -29,9 +29,8 @@ interface IState {
 }
 
 /**
- * Является "мозгом" приложение. Если быть более конкретным - его
- * корнем. Здесь подгружаются все необходимые для работы приложения данные,
- * а также создаются основные контексты.
+ * Является корневым компонентом приложения. Здесь подгружаются все необходимые
+ * для работы приложения данные, а также создаются основные контексты.
  */
 class Root extends PureComponent<{}, IState> {
   public state: Readonly<IState> = {
@@ -72,9 +71,7 @@ class Root extends PureComponent<{}, IState> {
     try {
       // Здесь необходимо выполнить все асинхронные операции и получить
       // данные для запуска приложения, после чего создать хранилище Redux.
-      const [storage] = await Promise.all([
-        getStorageValues(...Object.values(StorageField)),
-      ]);
+      const [storage] = await Promise.all([getStorage()]);
       let appConfig: ConfigReducerState = {
         app: 'vkclient',
         appConfig: config,
@@ -90,6 +87,7 @@ class Root extends PureComponent<{}, IState> {
         startTime: 0,
         viewportHeight: 0,
         viewportWidth: 0,
+        launchParams: getLaunchParams(),
       };
 
       if (this.initialAppConfig) {

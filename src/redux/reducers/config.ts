@@ -7,6 +7,7 @@ import {
   MVKUpdateConfigData,
 } from '@vkontakte/vk-bridge';
 import {Config} from '../../config';
+import {LaunchParams} from '../../types/launch-params';
 
 type ConfigData =
   Omit<DefaultUpdateConfigData, 'app_id' | 'start_time'>
@@ -18,6 +19,7 @@ export interface ConfigReducerState extends ConfigData {
   startTime: number;
   viewportWidth: number;
   viewportHeight: number;
+  launchParams: LaunchParams;
 }
 
 export const configActions = unionize({
@@ -42,6 +44,20 @@ const initialState: ConfigReducerState = {
   startTime: 0,
   viewportHeight: 0,
   viewportWidth: 0,
+  launchParams: {
+    accessTokenSettings: [],
+    appId: 0,
+    areNotificationsEnabled: false,
+    isAppUser: false,
+    isFavorite: false,
+    language: 'ru',
+    platform: 'desktop_web',
+    ref: 'other',
+    userId: 0,
+    groupId: null,
+    viewerGroupRole: null,
+    sign: '',
+  },
 };
 
 /**

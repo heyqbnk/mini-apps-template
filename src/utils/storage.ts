@@ -85,3 +85,11 @@ export async function dropStorageValues(
 export function dropStorage() {
   return dropStorageValues(...Object.values(StorageField));
 }
+
+/**
+ * Возвращает хранилище
+ * @returns {Promise<{[Key in any]?: StorageValueType<Key>}>}
+ */
+export function getStorage() {
+  return getStorageValues(...Object.values(StorageField));
+}
