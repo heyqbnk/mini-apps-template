@@ -1,9 +1,14 @@
 export interface Config {
+  gqlHttpUrl: string;
+  gqlWsUrl: string;
 }
 
-// Здесь происходит загрузка конфига на основе переменных внешней среды. Стоит
-// не забывать что только переменные, начинающиеся с REACT_APP будут загружены
-// react-scripts
-const config: Config = {};
+// We don't check if variables are passed, due to this logic is placed in
+// prebuild.js file
+const gqlHttpUrl = process.env.REACT_APP_GQL_HTTP_URL || '';
+const gqlWsUrl = process.env.REACT_APP_GQL_WS_URL || '';
+
+// Application build config
+const config: Config = {gqlHttpUrl, gqlWsUrl};
 
 export default config;

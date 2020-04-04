@@ -31,7 +31,10 @@ type ConfigAction = UnionOf<typeof configActions>;
 
 const initialState: ConfigReducerState = {
   app: 'vkclient',
-  appConfig: {},
+  appConfig: {
+    gqlHttpUrl: '',
+    gqlWsUrl: '',
+  },
   appId: '',
   appearance: 'light',
   scheme: 'client_light',

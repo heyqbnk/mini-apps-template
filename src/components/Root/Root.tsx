@@ -1,28 +1,30 @@
 import React, {PureComponent} from 'react';
 
-import AppLoadingView from './views/AppLoadingView';
-import App from './App';
+import AppLoadingView from '../views/AppLoadingView';
+import App from '../App';
 import {Provider as StoreProvider} from 'react-redux';
-import ThemeProvider from './ThemeProvider';
-import AppCrashView from './views/AppCrashView';
-import RootContextProvider, {RootContext} from './RootContextProvider';
-import ServicePanel from './ServicePanel';
+import ThemeProvider from '../ThemeProvider';
+import AppCrashView from '../views/AppCrashView';
+import RootContextProvider, {RootContext} from '../RootContextProvider';
+import ServicePanel from '../ServicePanel';
+import {ApolloProvider} from '@apollo/react-hooks';
 
-import createReduxStore from '../redux';
+import createReduxStore from '../../redux';
 import vkBridge, {
   Insets,
   UpdateConfigData,
   VKBridgeSubscribeHandler,
 } from '@vkontakte/vk-bridge';
-import {configActions, ConfigReducerState} from '../redux/reducers/config';
-import {getStorage} from '../utils/storage';
-import config from '../config';
+import {configActions, ConfigReducerState} from '../../redux/reducers/config';
+import {getStorage} from '../../utils/storage';
+import config from '../../config';
 
 import {Store} from 'redux';
-import {ReduxState} from '../redux/types';
-import {getLaunchParams} from '../utils/launch-params';
+import {ReduxState} from '../../redux/types';
+import {getLaunchParams} from '../../utils/launch-params';
+import {createApolloClient} from './utils';
 
-interface IState {
+interface State {
   loading: boolean;
   error: string | null;
   store: Store<ReduxState> | null;
@@ -32,8 +34,8 @@ interface IState {
  * Является корневым компонентом приложения. Здесь подгружаются все необходимые
  * для работы приложения данные, а также создаются основные контексты.
  */
-class Root extends PureComponent<{}, IState> {
-  public state: Readonly<IState> = {
+class Root extends PureComponent<{}, State> {
+  public state: Readonly<State> = {
     loading: true,
     error: null,
     store: null,
@@ -58,6 +60,16 @@ class Root extends PureComponent<{}, IState> {
    * @type {{init: () => Promise<void>}}
    */
   private rootContextValue: RootContext = {init: this.init.bind(this)};
+
+  /**
+   * ApolloClient used to send requests and create WebSocket connections
+   * @type {ApolloClient<any>}
+   */
+  private apolloClient = createApolloClient({
+    httpURI: config.gqlHttpUrl,
+    wsURI: config.gqlWsUrl,
+    launchParams: window.location.search.slice(1),
+  });
 
   /**
    * Иницилизирует приложение.
@@ -186,14 +198,16 @@ class Root extends PureComponent<{}, IState> {
 
     // Отображаем приложение если у нас есть всё, что необходимо.
     return (
-      <StoreProvider store={store}>
-        <RootContextProvider value={this.rootContextValue}>
-          <ThemeProvider>
-            <ServicePanel/>
-            <App/>
-          </ThemeProvider>
-        </RootContextProvider>
-      </StoreProvider>
+      <ApolloProvider client={this.apolloClient}>
+        <StoreProvider store={store}>
+          <RootContextProvider value={this.rootContextValue}>
+            <ThemeProvider>
+              <ServicePanel/>
+              <App/>
+            </ThemeProvider>
+          </RootContextProvider>
+        </StoreProvider>
+      </ApolloProvider>
     );
   }
 }
