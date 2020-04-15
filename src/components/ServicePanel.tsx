@@ -1,6 +1,6 @@
 import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 
-import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
+import {makeStyles} from '@material-ui/styles';
 
 import ActionSheetItem
   from '@vkontakte/vkui/dist/components/ActionSheetItem/ActionSheetItem';

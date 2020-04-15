@@ -8,5 +8,6 @@ export interface Typography {
   fontWeightLight?: number;
   fontWeightRegular?: number;
   fontWeightMedium?: number;
+  fontWeightSemiBold?: number;
   fontWeightBold?: number;
 }

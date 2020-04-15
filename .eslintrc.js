@@ -7,6 +7,7 @@ module.exports = {
       ignorePattern: '^import|^export'
     }],
     'react/display-name': 0,
+    'react/prop-types': 0,
     '@typescript-eslint/camelcase': 0,
     '@typescript-eslint/no-empty-interface': 0,
     '@typescript-eslint/interface-name-prefix': 0,

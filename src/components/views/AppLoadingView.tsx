@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 
-import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
+import {makeStyles} from '@material-ui/styles';
 
 import Spinner from '@vkontakte/vkui/dist/components/Spinner/Spinner';
 

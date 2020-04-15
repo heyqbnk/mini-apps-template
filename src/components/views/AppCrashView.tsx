@@ -1,6 +1,6 @@
 import React, {memo, useCallback, useState} from 'react';
 
-import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
+import {makeStyles} from '@material-ui/styles';
 import {Theme} from '../../theme/types';
 
 import {copyToClipboard} from '../../utils/copying';

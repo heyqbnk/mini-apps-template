@@ -6,6 +6,7 @@ const defaultTheme: Theme = {
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
+    fontWeightSemiBold: 600,
     fontWeightBold: 700,
     fontFamily: '-apple-system, Roboto, Helvetica Neue, Arial',
     fontFamilyTT: '"TT Commons", -apple-system, Roboto, Helvetica Neue, Arial',

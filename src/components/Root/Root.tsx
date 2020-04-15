@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, ReactNode} from 'react';
 
 import AppLoadingView from '../views/AppLoadingView';
 import App from '../App';
@@ -7,6 +7,7 @@ import ThemeProvider from '../ThemeProvider';
 import AppCrashView from '../views/AppCrashView';
 import RootContextProvider, {RootContext} from '../RootContextProvider';
 import ServicePanel from '../ServicePanel';
+import ModalRoot from '../ModalRoot';
 import {ApolloProvider} from '@apollo/react-hooks';
 
 import createReduxStore from '../../redux';
@@ -17,28 +18,28 @@ import vkBridge, {
 } from '@vkontakte/vk-bridge';
 import {configActions, ConfigReducerState} from '../../redux/reducers/config';
 import {getStorage} from '../../utils/storage';
+import {getLaunchParams} from '../../utils/launch-params';
+import {createApolloClient} from './utils';
 import config from '../../config';
 
 import {Store} from 'redux';
 import {ReduxState} from '../../redux/types';
-import {getLaunchParams} from '../../utils/launch-params';
-import {createApolloClient} from './utils';
 
 interface State {
   loading: boolean;
   error: string | null;
-  store: Store<ReduxState> | null;
+  store: Store<ReduxState>;
 }
 
 /**
  * Является корневым компонентом приложения. Здесь подгружаются все необходимые
  * для работы приложения данные, а также создаются основные контексты.
  */
-class Root extends PureComponent<{}, State> {
+export class Root extends PureComponent<{}, State> {
   public state: Readonly<State> = {
     loading: true,
     error: null,
-    store: null,
+    store: createReduxStore(),
   };
 
   /**
@@ -59,7 +60,9 @@ class Root extends PureComponent<{}, State> {
    * Значение для контекста рута
    * @type {{init: () => Promise<void>}}
    */
-  private rootContextValue: RootContext = {init: this.init.bind(this)};
+  private rootContextValue: RootContext = {
+    init: this.init.bind(this),
+  };
 
   /**
    * ApolloClient used to send requests and create WebSocket connections
@@ -72,13 +75,10 @@ class Root extends PureComponent<{}, State> {
   });
 
   /**
-   * Иницилизирует приложение.
+   * Initializes application
    */
   private async init() {
     this.setState({loading: true, error: null});
-
-    let error: string | null = null;
-    let store: Store<ReduxState> | null = null;
 
     try {
       // Здесь необходимо выполнить все асинхронные операции и получить
@@ -108,15 +108,15 @@ class Root extends PureComponent<{}, State> {
       if (this.initialAppInsets) {
         appConfig = {...appConfig, insets: this.initialAppInsets};
       }
-
-      store = createReduxStore({storage, config: appConfig});
-    } catch (e) {
-      // В случае ошибки, мы её отловим и покажем экран с ошибкой.
-      const err = e as Error;
-      error = err.message;
+      this.setState({
+        store: createReduxStore({storage, config: appConfig}),
+        loading: false,
+      });
     }
-
-    this.setState({store, error, loading: false});
+      // In case error appears, catch it and display
+    catch (e) {
+      this.setState({error: e.message, loading: false});
+    }
   }
 
   /**
@@ -176,40 +176,41 @@ class Root extends PureComponent<{}, State> {
 
   public render() {
     const {loading, error, store} = this.state;
+    let content: ReactNode = null;
 
-    // Отображаем лоадер если приложение еще загружается.
+    // Display loader
     if (loading) {
-      return <AppLoadingView/>;
+      content = <AppLoadingView/>;
     }
-
-    // Отображаем ошибку если она была.
-    if (error) {
-      return (
-        <ThemeProvider>
-          <AppCrashView onRestartClick={this.init.bind(this)} error={error}/>
-        </ThemeProvider>
+    // Display error
+    else if (error) {
+      content = (
+        <AppCrashView
+          onRestartClick={this.init.bind(this)}
+          error={error}
+        />
+      );
+    }
+    // Display application
+    else {
+      content = (
+        <ApolloProvider client={this.apolloClient}>
+          <ServicePanel/>
+          <App/>
+        </ApolloProvider>
       );
     }
 
-    // Исключительные случай, который невозможен
-    if (!store) {
-      return null;
-    }
-
-    // Отображаем приложение если у нас есть всё, что необходимо.
     return (
-      <ApolloProvider client={this.apolloClient}>
-        <StoreProvider store={store}>
-          <RootContextProvider value={this.rootContextValue}>
-            <ThemeProvider>
-              <ServicePanel/>
-              <App/>
-            </ThemeProvider>
-          </RootContextProvider>
-        </StoreProvider>
-      </ApolloProvider>
+      <StoreProvider store={store}>
+        <RootContextProvider value={this.rootContextValue}>
+          <ThemeProvider>
+            <ModalRoot>
+              {content}
+            </ModalRoot>
+          </ThemeProvider>
+        </RootContextProvider>
+      </StoreProvider>
     );
   }
 }
-
-export default Root;

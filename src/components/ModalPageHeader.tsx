@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import c from 'classnames';
 
-import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
+import {makeStyles} from '@material-ui/styles';
 import {Theme} from '../theme/types';
 
 import VKModalPageHeader, {ModalPageHeaderProps}
