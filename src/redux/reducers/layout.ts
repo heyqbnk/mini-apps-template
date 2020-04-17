@@ -1,38 +1,31 @@
-import {ofType, unionize, UnionOf} from 'unionize';
+import {unionize} from 'unionize';
 import {unionizeConfig} from '../utils';
 
 export interface LayoutReducerState {
-  /**
-   * Текущая активная модалка.
-   */
-  activeModal: string | null;
 }
 
 export const layoutActions = unionize({
-  // Задает активную модалку.
-  setActiveModal: ofType<string>(),
 }, unionizeConfig);
 
-type LayoutAction = UnionOf<typeof layoutActions>;
+// type LayoutAction = UnionOf<typeof layoutActions>;
 
 const initialState: LayoutReducerState = {
   activeModal: null,
 };
 
 /**
- * Редьюсер который отвечает за визуальную сосотовляющую приложения.
+ * Responsible for things connected with visual state
  * @param {StorageReducerState} state
- * @param {StorageAction} action
  * @returns {string[]}
  */
 function layoutReducer(
   state: LayoutReducerState = initialState,
-  action: LayoutAction,
+  // action: LayoutAction,
 ) {
-  return layoutActions.match(action, {
-    setActiveModal: modalId => ({...state, activeModal: modalId}),
-    default: () => state,
-  });
+  return state;
+  // return layoutActions.match(action, {
+  //   default: () => state,
+  // });
 }
 
 export default layoutReducer;
