@@ -1,16 +1,14 @@
 import {Theme} from './types';
+import {buttonDefaultTheme} from './components/Button';
 
-const defaultTheme: Theme = {
+export const defaultTheme: Theme = {
+  components: {
+    Button: buttonDefaultTheme,
+  },
   palette: {},
   typography: {
-    fontWeightLight: 300,
-    fontWeightRegular: 400,
-    fontWeightMedium: 500,
-    fontWeightSemiBold: 600,
-    fontWeightBold: 700,
     fontFamily: '-apple-system, Roboto, Helvetica Neue, Arial',
     fontFamilyTT: '"TT Commons", -apple-system, Roboto, Helvetica Neue, Arial',
+    fontSize: 16,
   },
 };
-
-export default defaultTheme;

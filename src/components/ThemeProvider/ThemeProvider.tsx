@@ -7,7 +7,7 @@ import React, {
 
 import MuiThemeProvider from '@material-ui/styles/ThemeProvider';
 
-import defaultTheme from '../../theme/defaultTheme';
+import {defaultTheme} from '../../theme';
 
 interface IProps {
   children?: ReactNode | ReactNodeArray;

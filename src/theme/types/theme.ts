@@ -1,5 +1,6 @@
 import {Palette} from './palette';
 import {Typography} from './typography';
+import {Components} from './components';
 
 /**
  * Описание темы
@@ -7,4 +8,5 @@ import {Typography} from './typography';
 export interface Theme {
   palette: Palette;
   typography: Typography;
+  components: Components;
 }
