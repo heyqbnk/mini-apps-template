@@ -1,4 +1,10 @@
+interface PaletteColor {
+  primary: string;
+}
+
 /**
- * Describers palette colors.
+ * Palette colors
  */
-export interface Palette {}
+export interface Palette {
+  text: PaletteColor;
+}

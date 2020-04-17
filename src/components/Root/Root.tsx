@@ -3,12 +3,13 @@ import React, {PureComponent, ReactNode} from 'react';
 import {AppLoadingView} from '../views/AppLoadingView';
 import {AppCrashView} from '../views/AppCrashView';
 import {App} from '../App';
+import {ApolloProvider} from '@apollo/react-hooks';
+import {GlobalStyleSheet} from '../GlobalStyleSheet';
+import {ModalRoot} from '../ModalRoot';
 import {Provider as StoreProvider} from 'react-redux';
-import {ThemeProvider} from '../ThemeProvider';
 import {RootContextProvider, RootContext} from '../RootContextProvider';
 import {ServicePanel} from '../ServicePanel';
-import {ModalRoot} from '../ModalRoot';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ThemeProvider} from '../ThemeProvider';
 
 import createReduxStore from '../../redux';
 import vkBridge, {
@@ -118,6 +119,7 @@ export class Root extends PureComponent<{}, State> {
       <StoreProvider store={store}>
         <RootContextProvider value={this.rootContextValue}>
           <ThemeProvider>
+            <GlobalStyleSheet/>
             <ModalRoot>
               {content}
             </ModalRoot>

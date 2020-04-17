@@ -5,7 +5,11 @@ export const defaultTheme: Theme = {
   components: {
     Button: buttonDefaultTheme,
   },
-  palette: {},
+  palette: {
+    text: {
+      primary: 'black',
+    },
+  },
   typography: {
     fontFamily: '-apple-system, Roboto, Helvetica Neue, Arial',
     fontFamilyTT: '"TT Commons", -apple-system, Roboto, Helvetica Neue, Arial',
