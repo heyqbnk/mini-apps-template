@@ -1,7 +1,6 @@
 import {ofType, unionize, UnionOf} from 'unionize';
 import {unionizeConfig} from '../utils';
 import {
-  Insets,
   DefaultUpdateConfigData,
   UpdateConfigData,
   MVKUpdateConfigData,
