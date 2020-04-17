@@ -13,7 +13,10 @@ const {parsed} = config({path: configFile});
 
 if (!parsed) {
   console.log(
-    red('Environment variables validation failed. Unable to find env file')
+    red(
+      'Environment variables validation failed. Unable to find env file: '
+      + configFile
+    )
   );
   return process.exit(1);
 }
