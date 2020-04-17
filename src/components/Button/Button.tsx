@@ -1,32 +1,38 @@
 import React, {ButtonHTMLAttributes, memo, ReactNode} from 'react';
 import c from 'classnames';
 
-import {makeStyles} from '@material-ui/styles';
-import {Theme} from '../../theme/types';
+import {makeStyles, useTheme} from '@material-ui/styles';
+import {ButtonColor, ButtonColorType, Theme} from '../../theme';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   before?: ReactNode;
   after?: ReactNode;
-  variant?: 'filled' | 'outline' | 'text';
+  color?: ButtonColorType;
   href?: string;
   fullWidth?: boolean;
 }
 
-const useStyles = makeStyles<Theme, ButtonProps>(theme => ({
+interface UseStylesProps extends ButtonProps {
+  settingsColor: ButtonColor;
+}
+
+const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     borderRadius: 10,
     padding: '11px 15px',
     letterSpacing: -0.408,
     fontSize: 17,
     lineHeight: '22px',
-    fontWeight: theme.typography.fontWeightMedium,
+    fontWeight: 500,
     background: 'none',
     border: 'none',
     textDecoration: 'none',
     boxSizing: 'border-box',
+    color: ({settingsColor}) => settingsColor.foregroundColor,
+    backgroundColor: ({settingsColor}) => settingsColor.backgroundColor,
 
     '&:focus, &:active': {
       outline: 'none',
@@ -35,25 +41,13 @@ const useStyles = makeStyles<Theme, ButtonProps>(theme => ({
   fullWidth: {
     width: '100%',
   },
-  filled: {
-    color: 'black',
-    background: `linear-gradient(180deg, ${theme.palette.primary.main} 0%, `
-      + `${theme.palette.primary.dark} 100%)`,
-  },
-  outline: {
-    color: theme.palette.primary.dark,
-    border: `1.4px solid ${theme.palette.primary.dark}`,
-  },
-  text: {
-    color: theme.palette.primary.dark,
-  },
   disabled: {
     background: 'linear-gradient(180deg, #DFDCDC 0%, #CFCCCC 100%)',
     color: 'white',
   },
   before: {},
   after: {},
-  content: {},
+  content: {padding: '0 5px'},
 }));
 
 /**
@@ -62,18 +56,18 @@ const useStyles = makeStyles<Theme, ButtonProps>(theme => ({
  */
 export const Button = memo((props: ButtonProps) => {
   const {
-    before, after, children, className, variant = 'filled', fullWidth, disabled,
+    before, after, children, className, color = 'primary', fullWidth, disabled,
     href, ...rest
   } = props;
-  const mc = useStyles(props);
+  const theme = useTheme<Theme>();
+  const mc = useStyles({
+    ...props,
+    settingsColor: theme.components.Button.colors[color],
+  });
   const computedClassName = c(
     className,
     mc.root,
-    mc[variant],
-    {
-      [mc.fullWidth]: fullWidth,
-      [mc.disabled]: disabled,
-    },
+    {[mc.fullWidth]: fullWidth, [mc.disabled]: disabled},
   );
 
   return React.createElement(
