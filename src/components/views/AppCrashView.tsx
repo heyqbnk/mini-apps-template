@@ -63,11 +63,11 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     textAlign: 'center',
     fontSize: 26,
     fontFamily: theme.typography.fontFamilyTT,
-    fontWeight: theme.typography.fontWeightBold,
+    fontWeight: 600,
     lineHeight: '30px',
     margin: 0,
   },
-  error: {whiteSpace: 'pre-wrap'},
+  error: {whiteSpace: 'pre-wrap', marginBottom: 15},
   header: {fontSize: 21, lineHeight: '26px'},
   dismissButton: {padding: 14},
   dismissIcon: {color: '#818c99'},
@@ -101,6 +101,7 @@ export const AppCrashView = memo((props: Props) => {
         <div className={mc.bottom}>
           <Button
             className={mc.button}
+            color={'primary'}
             fullWidth={true}
             onClick={onRestartClick}
           >
@@ -108,6 +109,7 @@ export const AppCrashView = memo((props: Props) => {
           </Button>
           <Button
             className={mc.button}
+            color={'secondary'}
             fullWidth={true}
             onClick={() => setShowError(true)}
           >
@@ -130,6 +132,7 @@ export const AppCrashView = memo((props: Props) => {
           <div className={mc.error}>{error}</div>
           <Button
             fullWidth={true}
+            color={'secondary'}
             before={<CopyIcon/>}
             onClick={onCopyClick}
             disabled={copying}
