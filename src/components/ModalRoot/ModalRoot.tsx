@@ -1,6 +1,6 @@
 import React, {memo, useCallback, useMemo, useState} from 'react';
 
-import modalRootContext from './context';
+import {modalRootContext} from './context';
 
 import {ModalRootContext, ModalRootProps} from './types';
 
@@ -10,7 +10,7 @@ const {Provider} = modalRootContext;
  * Controller of active modal in application
  * @type {React.NamedExoticComponent<ModalRootProps>}
  */
-const ModalRoot = memo((props: ModalRootProps) => {
+export const ModalRoot = memo((props: ModalRootProps) => {
   const {children} = props;
   const [activeModal, setActiveModal] = useState<symbol | null>(null);
 
@@ -29,5 +29,3 @@ const ModalRoot = memo((props: ModalRootProps) => {
 
   return <Provider value={context}>{children}</Provider>;
 });
-
-export default ModalRoot;

@@ -7,7 +7,7 @@ import React, {
 
 import MuiThemeProvider from '@material-ui/styles/ThemeProvider';
 
-import defaultTheme from '../theme/defaultTheme';
+import defaultTheme from '../../theme/defaultTheme';
 
 interface IProps {
   children?: ReactNode | ReactNodeArray;
@@ -17,7 +17,7 @@ interface IProps {
  * Провайдер темы для приложения.
  * @type {React.NamedExoticComponent<IProps>}
  */
-const ThemeProvider = memo((props: IProps) => {
+export const ThemeProvider = memo((props: IProps) => {
   const {children} = props;
   // TODO: Переключаться между темами в зависимости от того, какая тема
   //  записана в config.
@@ -25,5 +25,3 @@ const ThemeProvider = memo((props: IProps) => {
 
   return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
 });
-
-export default ThemeProvider;

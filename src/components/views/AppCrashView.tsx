@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) => ({
  * Вью которая отображается в случае, когда в приложении произошла ошибка.
  * @type {React.NamedExoticComponent<IProps>}
  */
-const AppCrashedView = memo((props: IProps) => {
+export const AppCrashView = memo((props: IProps) => {
   const {onRestartClick, error} = props;
   const mc = useStyles(props);
   const [showError, setShowError] = useState(false);
@@ -145,5 +145,3 @@ const AppCrashedView = memo((props: IProps) => {
     </>
   );
 });
-
-export default AppCrashedView;

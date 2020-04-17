@@ -1,12 +1,16 @@
-import {createContext} from 'react';
+import {createContext, useContext} from 'react';
 
 export interface RootContext {
   init(): void;
 }
 
-const context = createContext<RootContext>({
+export const rootContext = createContext<RootContext>({
   init: () => {
   },
 });
 
-export default context;
+/**
+ * Позволяет использовать контекст, предоставляемый корнем приложения
+ * @returns {RootContext}
+ */
+export const useRootContext = () => useContext(rootContext);

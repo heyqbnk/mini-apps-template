@@ -22,7 +22,7 @@ const useStyles = makeStyles({
  * Вью которая отображается в случае, когда приложение загружается.
  * @type {React.NamedExoticComponent<object>}
  */
-const AppLoadingView = memo(() => {
+export const AppLoadingView = memo(() => {
   const mc = useStyles();
 
   return (
@@ -31,5 +31,3 @@ const AppLoadingView = memo(() => {
     </div>
   );
 });
-
-export default AppLoadingView;

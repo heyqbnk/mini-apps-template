@@ -1,18 +1,17 @@
 import React, {PureComponent, ReactNode} from 'react';
 
-import AppLoadingView from '../views/AppLoadingView';
-import App from '../App';
+import {AppLoadingView} from '../views/AppLoadingView';
+import {AppCrashView} from '../views/AppCrashView';
+import {App} from '../App';
 import {Provider as StoreProvider} from 'react-redux';
-import ThemeProvider from '../ThemeProvider';
-import AppCrashView from '../views/AppCrashView';
-import RootContextProvider, {RootContext} from '../RootContextProvider';
-import ServicePanel from '../ServicePanel';
-import ModalRoot from '../ModalRoot';
+import {ThemeProvider} from '../ThemeProvider';
+import {RootContextProvider, RootContext} from '../RootContextProvider';
+import {ServicePanel} from '../ServicePanel';
+import {ModalRoot} from '../ModalRoot';
 import {ApolloProvider} from '@apollo/react-hooks';
 
 import createReduxStore from '../../redux';
 import vkBridge, {
-  Insets,
   UpdateConfigData,
   VKBridgeSubscribeHandler,
 } from '@vkontakte/vk-bridge';

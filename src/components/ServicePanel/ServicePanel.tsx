@@ -7,9 +7,9 @@ import ActionSheetItem
 import ActionSheet
   from '@vkontakte/vkui/dist/components/ActionSheet/ActionSheet';
 
-import useStorage from '../hooks/useStorage';
-import {useRootContext} from './RootContextProvider';
-import {tapticNotification} from '../utils/taptic';
+import useStorage from '../../hooks/useStorage';
+import {useRootContext} from '../RootContextProvider';
+import {tapticNotification} from '../../utils/taptic';
 
 const useStyles = makeStyles({
   root: {
@@ -31,7 +31,7 @@ const TOUCHES_COUNT_TO_SHOW = 3;
  * клиентской стороне
  * @type {React.NamedExoticComponent<object>}
  */
-const ServicePanel = memo(() => {
+export const ServicePanel = memo(() => {
   const mc = useStyles();
   const {init} = useRootContext();
   const [, dropStorage] = useStorage();
@@ -89,5 +89,3 @@ const ServicePanel = memo(() => {
   }
   return null;
 });
-
-export default ServicePanel;

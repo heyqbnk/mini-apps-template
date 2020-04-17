@@ -1,10 +1,10 @@
 import React, {memo, ReactNode, ReactNodeArray, useEffect, useRef} from 'react';
 
 import {makeStyles} from '@material-ui/styles';
-import {Theme} from '../theme/types';
+import {Theme} from '../../theme/types';
 
-import useSelector from '../hooks/useSelector';
-import {useModalContext} from './Modal';
+import useSelector from '../../hooks/useSelector';
+import {useModalContext} from '../Modal';
 
 interface Props {
   children: ReactNode | ReactNodeArray;
@@ -32,7 +32,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>({
  * Modal body
  * @type {React.NamedExoticComponent<Props>}
  */
-const ModalBody = memo((props: Props) => {
+export const ModalBody = memo((props: Props) => {
   const {children} = props;
   const bottomInset = useSelector(state => state.config.insets.bottom);
   const mc = useStyles({...props, bottomInset});
@@ -54,5 +54,3 @@ const ModalBody = memo((props: Props) => {
     </div>
   );
 });
-
-export default ModalBody;

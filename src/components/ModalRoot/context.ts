@@ -4,7 +4,7 @@ import {ModalRootContext} from './types';
 function noop() {
 }
 
-const modalRootContext = createContext<ModalRootContext>({
+export const modalRootContext = createContext<ModalRootContext>({
   activeModal: null,
   mountModal: noop,
   unmountModal: noop,
@@ -12,5 +12,3 @@ const modalRootContext = createContext<ModalRootContext>({
 });
 
 export const useModalRootContext = () => useContext(modalRootContext);
-
-export default modalRootContext;

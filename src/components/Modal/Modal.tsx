@@ -94,7 +94,7 @@ const useStyles = makeStyles({
  * Modal
  * @type {React.NamedExoticComponent<Props>}
  */
-const Modal = memo((props: ModalProps) => {
+export const Modal = memo((props: ModalProps) => {
   const {show, onClose, onClosed, keepMounted, children} = props;
 
   const {
@@ -123,16 +123,7 @@ const Modal = memo((props: ModalProps) => {
 
     if (body && body.firstElementChild) {
       // Adding default body bottom padding
-      bodyHeight += 14;
-      const innerChildren = body.firstElementChild.children;
-
-      for (let i = 0; i < innerChildren.length; i++) {
-        const item = innerChildren.item(i) as HTMLElement;
-
-        if (item) {
-          bodyHeight += item.offsetHeight;
-        }
-      }
+      bodyHeight = 14 + body.firstElementChild.scrollHeight;
     }
 
     const nomineeHeight = headerHeight + bodyHeight;
@@ -217,5 +208,3 @@ const Modal = memo((props: ModalProps) => {
     rootNode,
   );
 });
-
-export default Modal;

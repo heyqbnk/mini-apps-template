@@ -1,9 +1,9 @@
 import React, {memo, ReactNode, ReactNodeArray, useEffect, useRef} from 'react';
 
 import {makeStyles} from '@material-ui/styles';
-import {Theme} from '../theme/types';
+import {Theme} from '../../theme/types';
 
-import {useModalContext} from './Modal';
+import {useModalContext} from '../Modal';
 
 interface Props {
   before?: ReactNode | ReactNodeArray;
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
  * Modal header
  * @type {React.NamedExoticComponent<Props>}
  */
-const ModalHeader = memo((props: Props) => {
+export const ModalHeader = memo((props: Props) => {
   const {before, after, children} = props;
   const mc = useStyles(props);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -67,5 +67,3 @@ const ModalHeader = memo((props: Props) => {
     </div>
   );
 });
-
-export default ModalHeader;

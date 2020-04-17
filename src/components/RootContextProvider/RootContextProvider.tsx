@@ -1,5 +1,5 @@
-import context from './context';
+import {rootContext} from './context';
 
-const RootContextProvider = context.Provider;
+export const RootContextProvider = rootContext.Provider;
 
 export default RootContextProvider;
