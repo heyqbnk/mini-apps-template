@@ -24,6 +24,7 @@ import config from '../../config';
 
 import {Store} from 'redux';
 import {ReduxState} from '../../redux/types';
+import {getInsets} from '../../utils/dom';
 
 interface State {
   loading: boolean;
@@ -32,8 +33,8 @@ interface State {
 }
 
 /**
- * Является корневым компонентом приложения. Здесь подгружаются все необходимые
- * для работы приложения данные, а также создаются основные контексты.
+ * Root application component. Everything application requires for showing
+ * first screen is being loaded here.
  */
 export class Root extends PureComponent<{}, State> {
   public state: Readonly<State> = {
@@ -43,21 +44,14 @@ export class Root extends PureComponent<{}, State> {
   };
 
   /**
-   * Переменная которая отвечает за то, что было ли отправлено событие
-   * обновления конфига приложения. Необходимо в случае, когда это событие
-   * успели отловить но в тот момент Redux-хранилища еще не существовало.
+   * Contains application config sent by bridge while redux store was not
+   * created yet
    * @type {null}
    */
   private initialAppConfig: UpdateConfigData | null = null;
 
   /**
-   * Аналогично initialAppConfigSent.
-   * @type {null}
-   */
-  private initialAppInsets: Insets | null = null;
-
-  /**
-   * Значение для контекста рута
+   * Value for RootContext
    * @type {{init: () => Promise<void>}}
    */
   private rootContextValue: RootContext = {
@@ -74,103 +68,26 @@ export class Root extends PureComponent<{}, State> {
     launchParams: window.location.search.slice(1),
   });
 
-  /**
-   * Initializes application
-   */
-  private async init() {
-    this.setState({loading: true, error: null});
-
-    try {
-      // Здесь необходимо выполнить все асинхронные операции и получить
-      // данные для запуска приложения, после чего создать хранилище Redux.
-      const [storage] = await Promise.all([getStorage()]);
-      let appConfig: ConfigReducerState = {
-        app: 'vkclient',
-        appConfig: config,
-        appId: '',
-        appearance: 'light',
-        scheme: 'client_light',
-        insets: {
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        },
-        startTime: 0,
-        viewportHeight: 0,
-        viewportWidth: 0,
-        launchParams: getLaunchParams(),
-      };
-
-      if (this.initialAppConfig) {
-        appConfig = {...appConfig, ...this.initialAppConfig};
-      }
-      if (this.initialAppInsets) {
-        appConfig = {...appConfig, insets: this.initialAppInsets};
-      }
-      this.setState({
-        store: createReduxStore({storage, config: appConfig}),
-        loading: false,
-      });
-    }
-      // In case error appears, catch it and display
-    catch (e) {
-      this.setState({error: e.message, loading: false});
-    }
-  }
-
-  /**
-   * Проверяет, является событие VKWebAppUpdateConfig или VKWebAppUpdateInsets
-   * чтобы узнать каков конфиг приложения в данный момент, а также - какие
-   * внутренние рамки экрана существуют.
-   * @param {VKBridgeEvent<ReceiveMethodName>} event
-   */
-  private onVKBridgeEvent: VKBridgeSubscribeHandler = event => {
-    const {store} = this.state;
-
-    if (event.detail) {
-      if (event.detail.type === 'VKWebAppUpdateConfig') {
-        if (store) {
-          store.dispatch(configActions.updateConfig(event.detail.data));
-        } else {
-          this.initialAppConfig = event.detail.data;
-        }
-      } else if (event.detail.type === 'VKWebAppUpdateInsets') {
-        if (store) {
-          store.dispatch(
-            configActions.updateInsets(event.detail.data.insets),
-          );
-        } else {
-          this.initialAppInsets = event.detail.data.insets;
-        }
-      }
-    }
-  };
-
   public componentDidMount() {
-    // Когда компонент загрузился, мы ожидаем обновления внутренних рамок
-    // и конфига приложения.
+    // When component did mount, we are waiting for application config from
+    // bridge and add event listener
     vkBridge.subscribe(this.onVKBridgeEvent);
 
-    // Уведомляем нативное приложение о том, что инициализация окончена.
-    // Это заставит нативное приложение спрятать лоадер и показать наше
-    // приложение.
-    // Причина по которой мы проводим инициализацию здесь - нативное приложение
-    // автоматически отправлять информацию о конфиге и внутренних рамках,
-    // которая нам нужна.
+    // Notify native application, initiazliation done. It will make native
+    // application hide loader and display this application.
     vkBridge.send('VKWebAppInit');
 
-    // Инициализируем приложение.
+    // Init application
     this.init();
   }
 
   public componentDidCatch(error: Error) {
-    // Отлавливаем ошибку, если выше этого не произошло.
+    // Catch error if it did not happen before
     this.setState({error: error.message});
   }
 
   public componentWillUnmount() {
-    // При разгрузке удаляем слушателя событий.
+    // When component unloads, remove all event listeners
     vkBridge.unsubscribe(this.onVKBridgeEvent);
   }
 
@@ -185,10 +102,7 @@ export class Root extends PureComponent<{}, State> {
     // Display error
     else if (error) {
       content = (
-        <AppCrashView
-          onRestartClick={this.init.bind(this)}
-          error={error}
-        />
+        <AppCrashView onRestartClick={this.init.bind(this)} error={error}/>
       );
     }
     // Display application
@@ -212,5 +126,62 @@ export class Root extends PureComponent<{}, State> {
         </RootContextProvider>
       </StoreProvider>
     );
+  }
+
+  /**
+   * Checks if event is VKWebAppUpdateConfig to know application config
+   * sent from bridge
+   * @param {VKBridgeEvent<ReceiveMethodName>} event
+   */
+  private onVKBridgeEvent: VKBridgeSubscribeHandler = event => {
+    const {store} = this.state;
+
+    if (event.detail && event.detail.type === 'VKWebAppUpdateConfig') {
+      if (store) {
+        store.dispatch(configActions.updateConfig(event.detail.data));
+      } else {
+        this.initialAppConfig = event.detail.data;
+      }
+    }
+  };
+
+  /**
+   * Initializes application
+   */
+  private async init() {
+    this.setState({loading: true, error: null});
+
+    try {
+      // Performing all async operations and getting data to launch application
+      const [storage] = await Promise.all([getStorage()]);
+
+      let appConfig: ConfigReducerState = {
+        app: 'vkclient',
+        appConfig: config,
+        appId: '',
+        appearance: 'light',
+        scheme: 'client_light',
+        insets: {top: 0, left: 0, right: 0, bottom: 0},
+        startTime: 0,
+        viewportHeight: 0,
+        viewportWidth: 0,
+        launchParams: getLaunchParams(),
+      };
+
+      if (this.initialAppConfig) {
+        appConfig = {...appConfig, ...this.initialAppConfig};
+      }
+      // Due to insets are not being sent in VKWebAppUpdateConfig (they are
+      // all 0 there), we get real insets from CSS-environment
+      appConfig.insets = getInsets();
+
+      this.setState({
+        store: createReduxStore({storage, config: appConfig}),
+        loading: false,
+      });
+    } catch (e) {
+      // In case error appears, catch it and display
+      this.setState({error: e.message, loading: false});
+    }
   }
 }

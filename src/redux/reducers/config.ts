@@ -8,6 +8,7 @@ import {
 } from '@vkontakte/vk-bridge';
 import {Config} from '../../config';
 import {LaunchParams} from '../../types/launch-params';
+import {getInsets} from '../../utils/dom';
 
 type ConfigData =
   Omit<DefaultUpdateConfigData, 'app_id' | 'start_time'>
@@ -24,26 +25,17 @@ export interface ConfigReducerState extends ConfigData {
 
 export const configActions = unionize({
   updateConfig: ofType<UpdateConfigData>(),
-  updateInsets: ofType<Insets>(),
 }, unionizeConfig);
 
 type ConfigAction = UnionOf<typeof configActions>;
 
 const initialState: ConfigReducerState = {
   app: 'vkclient',
-  appConfig: {
-    gqlHttpUrl: '',
-    gqlWsUrl: '',
-  },
+  appConfig: {gqlHttpUrl: '', gqlWsUrl: ''},
   appId: '',
   appearance: 'light',
   scheme: 'client_light',
-  insets: {
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
+  insets: getInsets(),
   startTime: 0,
   viewportHeight: 0,
   viewportWidth: 0,
@@ -91,7 +83,6 @@ function configReducer(
         viewportWidth: viewport_width,
       }
     },
-    updateInsets: insets => ({...state, insets}),
     default: () => state,
   });
 }
