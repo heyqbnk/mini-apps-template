@@ -1,32 +1,35 @@
 import React, {memo, useCallback, useState} from 'react';
 
-import {makeStyles} from '@material-ui/styles';
+import {makeStyles, withStyles} from '@material-ui/styles';
 import {Theme} from '../../theme/types';
 
 import {copyToClipboard} from '../../utils/copying';
 
-import FixedLayout
-  from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
-import Button from '@vkontakte/vkui/dist/components/Button/Button';
-import Div from '@vkontakte/vkui/dist/components/Div/Div';
-import ModalPage from '@vkontakte/vkui/dist/components/ModalPage/ModalPage';
-import ModalRoot from '@vkontakte/vkui/dist/components/ModalRoot/ModalRoot';
-import ModalPageHeader from '../ModalPageHeader';
-import PanelHeaderButton
-  from '@vkontakte/vkui/dist/components/PanelHeaderButton/PanelHeaderButton';
-// @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
-import CopyIcon from '@vkontakte/icons/dist/24/copy';
+import {Button} from '../Button';
+import {Modal} from '../Modal';
+import {ModalHeader} from '../ModalHeader';
+import {ModalBody} from '../ModalBody';
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
 import DismissIcon from '@vkontakte/icons/dist/24/dismiss';
+// @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
+import CopyIcon from '@vkontakte/icons/dist/24/copy';
 
-import emojiSadUrl from '../../assets/emoji-sad.base64.png';
+import useSelector from '../../hooks/useSelector';
 
-interface IProps {
+import emojiSadImage from '../../assets/emoji-sad.png';
+
+interface Props {
   onRestartClick(): void;
   error: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+interface UseStylesProps extends Props {
+  bottomInset: number;
+}
+
+const StyledModalHeader = withStyles({after: {padding: 0}})(ModalHeader);
+
+const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   root: {
     position: 'fixed',
     top: 0,
@@ -43,6 +46,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 80,
     margin: '0 auto 16px',
   },
+  bottom: {
+    flex: '0 0 auto',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: props => `0 16px ${props.bottomInset + 15}px`,
+  },
   button: {
     '& + &': {
       marginTop: 10,
@@ -56,25 +67,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '30px',
     margin: 0,
   },
-  error: {
-    whiteSpace: 'pre-wrap',
-  },
-  header: {
-    fontSize: 21,
-    lineHeight: '26px',
-  },
-  dismissIcon: {
-    color: '#818c99',
-  },
+  error: {whiteSpace: 'pre-wrap'},
+  header: {fontSize: 21, lineHeight: '26px'},
+  dismissButton: {padding: 14},
+  dismissIcon: {color: '#818c99'},
 }));
 
 /**
- * Вью которая отображается в случае, когда в приложении произошла ошибка.
+ * View which appears when not catched exception raised in application
  * @type {React.NamedExoticComponent<IProps>}
  */
-export const AppCrashView = memo((props: IProps) => {
+export const AppCrashView = memo((props: Props) => {
   const {onRestartClick, error} = props;
-  const mc = useStyles(props);
+  const bottomInset = useSelector(state => state.config.insets.bottom);
+  const mc = useStyles({...props, bottomInset});
   const [showError, setShowError] = useState(false);
   const [copying, setCopying] = useState(false);
 
@@ -90,58 +96,48 @@ export const AppCrashView = memo((props: IProps) => {
   return (
     <>
       <div className={mc.root}>
-        <img className={mc.emoji} src={emojiSadUrl} alt={''}/>
+        <img className={mc.emoji} src={emojiSadImage} alt={''}/>
         <p className={mc.title}>Упс, что-то сломалось</p>
-        <FixedLayout vertical={'bottom'}>
-          <Div>
-            <Button
-              size={'xl'}
-              mode={'primary'}
-              onClick={onRestartClick}
-              className={mc.button}
-            >
-              Перезапустить приложение
-            </Button>
-            <Button
-              size={'xl'}
-              mode={'secondary'}
-              onClick={() => setShowError(true)}
-              className={mc.button}
-            >
-              Подробнее об ошибке
-            </Button>
-          </Div>
-        </FixedLayout>
+        <div className={mc.bottom}>
+          <Button
+            className={mc.button}
+            fullWidth={true}
+            onClick={onRestartClick}
+          >
+            Перезапустить приложение
+          </Button>
+          <Button
+            className={mc.button}
+            fullWidth={true}
+            onClick={() => setShowError(true)}
+          >
+            Подробнее об ошибке
+          </Button>
+        </div>
       </div>
-      {/*// TODO ModalRoot global context */}
-      <ModalRoot activeModal={showError ? '1' : null}>
-        <ModalPage
-          id={'1'}
-          header={
-            <ModalPageHeader right={
-              <PanelHeaderButton onClick={() => setShowError(false)}>
-                <DismissIcon className={mc.dismissIcon}/>
-              </PanelHeaderButton>
-            }>
-              Ошибка
-            </ModalPageHeader>
-          }
-          onClose={() => setShowError(false)}
-        >
-          <Div className={mc.error}>{error}</Div>
-          <Div>
-            <Button
-              size={'xl'}
-              mode={'secondary'}
-              before={<CopyIcon/>}
-              onClick={onCopyClick}
-              disabled={copying}
-            >
-              Скопировать
-            </Button>
-          </Div>
-        </ModalPage>
-      </ModalRoot>
+      <Modal show={showError} onClose={() => setShowError(false)}>
+        <StyledModalHeader after={
+          <div
+            className={mc.dismissButton}
+            onClick={() => setShowError(false)}
+          >
+            <DismissIcon className={mc.dismissIcon}/>
+          </div>
+        }>
+          Ошибка
+        </StyledModalHeader>
+        <ModalBody>
+          <div className={mc.error}>{error}</div>
+          <Button
+            fullWidth={true}
+            before={<CopyIcon/>}
+            onClick={onCopyClick}
+            disabled={copying}
+          >
+            Скопировать
+          </Button>
+        </ModalBody>
+      </Modal>
     </>
   );
 });
