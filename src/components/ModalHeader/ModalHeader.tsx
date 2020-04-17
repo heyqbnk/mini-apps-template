@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '14px 14px 0 0',
     flex: '0 0 auto',
     fontFamily: theme.typography.fontFamilyTT,
-    fontWeight: theme.typography.fontWeightSemiBold,
+    fontWeight: 600,
     fontSize: 24,
     lineHeight: '20px',
     textAlign: 'center',
