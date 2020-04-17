@@ -5,10 +5,10 @@ import {Theme} from '../../theme/types';
 
 import {useModalContext} from '../Modal';
 
-interface Props {
+export interface ModalHeaderProps {
   before?: ReactNode | ReactNodeArray;
   after?: ReactNode | ReactNodeArray;
-  children: ReactNode | ReactNodeArray;
+  children?: ReactNode | ReactNodeArray;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -19,6 +19,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: 'white',
     borderRadius: '14px 14px 0 0',
     flex: '0 0 auto',
+    fontFamily: theme.typography.fontFamilyTT,
+    fontWeight: theme.typography.fontWeightSemiBold,
+    fontSize: 32,
+    lineHeight: '24px',
+    textAlign: 'center',
   },
   before: {
     padding: 14,
@@ -27,11 +32,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 14,
   },
   content: {
-    fontFamily: theme.typography.fontFamilyTT,
-    fontWeight: theme.typography.fontWeightSemiBold,
-    fontSize: 21,
-    lineHeight: '26px',
-    textAlign: 'center',
     padding: 14,
   },
 }));
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
  * Modal header
  * @type {React.NamedExoticComponent<Props>}
  */
-export const ModalHeader = memo((props: Props) => {
+export const ModalHeader = memo((props: ModalHeaderProps) => {
   const {before, after, children} = props;
   const mc = useStyles(props);
   const rootRef = useRef<HTMLDivElement>(null);
