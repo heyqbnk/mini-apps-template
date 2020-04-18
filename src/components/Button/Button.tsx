@@ -78,14 +78,8 @@ export const Button = memo((props: ButtonProps) => {
       disabled,
       href,
     },
-    <div className={mc.before}>
-      {before}
-    </div>,
-    <div className={mc.content}>
-      {children}
-    </div>,
-    <div className={mc.after}>
-      {after}
-    </div>,
+    <div className={mc.before}>{before}</div>,
+    <div className={mc.content}>{children}</div>,
+    <div className={mc.after}>{after}</div>,
   );
 });

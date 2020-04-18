@@ -5,17 +5,20 @@ import {useDispatch} from 'react-redux'
 type Actions = ActionCreatorsMapObject<any> | ActionCreator<any>;
 
 /**
- * Привязывает переданные экшены к Redux-dispatch.
+ * Binds dispatch to functions
  * @param actions
  */
 function useActions<C extends Actions>(
   actions: C,
 ): C {
   const dispatch = useDispatch();
+  const actionsDeps = typeof actions === 'object'
+    ? Object.values(actions)
+    : [actions];
 
   return useMemo(
     () => bindActionCreators(actions as any, dispatch),
-    [actions, dispatch],
+    [...actionsDeps, dispatch],
   );
 }
 
