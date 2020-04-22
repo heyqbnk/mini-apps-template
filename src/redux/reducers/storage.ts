@@ -1,6 +1,6 @@
 import {ofType, unionize, UnionOf} from 'unionize';
 import {unionizeConfig} from '../utils';
-import {StorageField, StorageValuesMap} from '../../types/bridge';
+import {StorageField, StorageValuesMap} from '../../types';
 
 export type StorageReducerState = {
   [F in StorageField]?: StorageValuesMap[F]
@@ -15,6 +15,12 @@ type StorageAction = UnionOf<typeof storageActions>;
 
 const initialState: StorageReducerState = {};
 
+/**
+ * Responsible for memoizing values from VKontakte storage
+ * @param {StorageReducerState} state
+ * @param {StorageAction} action
+ * @returns {unknown}
+ */
 function storageReducer(
   state: StorageReducerState = initialState,
   action: StorageAction,
