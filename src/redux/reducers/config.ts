@@ -6,8 +6,7 @@ import {
   MVKUpdateConfigData,
 } from '@vkontakte/vk-bridge';
 import {Config} from '../../config';
-import {LaunchParams} from '../../types/launch-params';
-import {getInsets} from '../../utils/dom';
+import {LaunchParams} from '../../types';
 
 type ConfigData =
   Omit<DefaultUpdateConfigData, 'app_id' | 'start_time'>
@@ -19,6 +18,9 @@ export interface ConfigReducerState extends ConfigData {
   startTime: number;
   viewportWidth: number;
   viewportHeight: number;
+  /**
+   * Application launch parameters sent from VKontakte
+   */
   launchParams: LaunchParams;
 }
 
@@ -34,7 +36,7 @@ const initialState: ConfigReducerState = {
   appId: '',
   appearance: 'light',
   scheme: 'client_light',
-  insets: getInsets(),
+  insets: {top: 0, bottom: 0, right: 0, left: 0},
   startTime: 0,
   viewportHeight: 0,
   viewportWidth: 0,
@@ -55,7 +57,7 @@ const initialState: ConfigReducerState = {
 };
 
 /**
- * Редьюсер ответственный за конфиг приложения который приходит от ВКонтакте.
+ * Responsible for config sent from VKontakte
  */
 function configReducer(
   state: ConfigReducerState = initialState,
@@ -71,7 +73,7 @@ function configReducer(
           ...restConfig,
           appId: app_id,
           startTime: start_time,
-        }
+        };
       }
       const {viewport_height, viewport_width, ...restConfig} = config;
 
@@ -80,7 +82,7 @@ function configReducer(
         ...restConfig,
         viewportHeight: viewport_height,
         viewportWidth: viewport_width,
-      }
+      };
     },
     default: () => state,
   });

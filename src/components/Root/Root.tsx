@@ -25,6 +25,7 @@ import config from '../../config';
 import {Store} from 'redux';
 import {ReduxState} from '../../redux/types';
 import {getInsets} from '../../utils/dom';
+import {layoutActions} from '../../redux/reducers/layout';
 
 interface State {
   loading: boolean;
@@ -139,7 +140,12 @@ export class Root extends PureComponent<{}, State> {
 
     if (event.detail && event.detail.type === 'VKWebAppUpdateConfig') {
       if (store) {
+        const config = event.detail.data;
         store.dispatch(configActions.updateConfig(event.detail.data));
+
+        if ('insets' in config) {
+          store.dispatch(layoutActions.setCurrentInsets(config.insets));
+        }
       } else {
         this.initialAppConfig = event.detail.data;
       }
@@ -177,7 +183,14 @@ export class Root extends PureComponent<{}, State> {
       appConfig.insets = getInsets();
 
       this.setState({
-        store: createReduxStore({storage, config: appConfig}),
+        store: createReduxStore({
+          storage,
+          config: appConfig,
+          layout: {
+            insets: appConfig.insets,
+            currentInsets: appConfig.insets,
+          },
+        }),
         loading: false,
       });
     } catch (e) {
