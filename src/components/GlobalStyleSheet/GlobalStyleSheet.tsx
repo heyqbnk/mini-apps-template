@@ -34,6 +34,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     // Set body and #root defaults
     body: {
       overflowX: 'hidden',
+      backgroundColor: theme.palette.bodyBackground,
+      color: theme.palette.bodyText,
+      fontFamily: theme.typography.fontFamily,
+      fontSize: theme.typography.fontSize,
+      userSelect: 'none',
+      '-webkit-font-smoothing': 'antialiased',
+      '-webkit-tap-highlight-color': 'transparent',
+      '-webkit-text-size-adjust': '100%',
     },
     '#root': {
       height: '100%',
@@ -41,13 +49,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     'body, #root': {
       margin: 0,
       padding: 0,
-      fontFamily: theme.typography.fontFamily,
-      fontSize: theme.typography.fontSize,
-      color: theme.palette.text.primary,
-      userSelect: 'none',
-      '-webkit-font-smoothing': 'antialiased',
-      '-webkit-tap-highlight-color': 'transparent',
-      '-webkit-text-size-adjust': '100%',
+    },
+    // TODO: Remove this style when VKUI is removed from template
+    'div#root': {
+      color: theme.palette.bodyText,
     },
   },
 }));
