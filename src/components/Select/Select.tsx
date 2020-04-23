@@ -37,7 +37,6 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     fontSize: 16,
     fontFamily: theme.typography.fontFamily,
     height: 44,
-    lineHeight: '19px',
     padding: '0 40px 0 12px',
     position: 'relative',
   },
@@ -50,8 +49,8 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     left: 0,
     opacity: 0,
     top: 0,
-    zIndex: 1,
     width: '100%',
+    zIndex: 1,
   },
   placeholder: {
     color: ({theme}) => theme.colors.placeholder,
