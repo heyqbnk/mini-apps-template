@@ -1,27 +1,35 @@
-import React, {
-  memo,
-  useMemo,
-  ReactNode,
-  ReactNodeArray,
-} from 'react';
+import React, {memo, useMemo} from 'react';
 
 import MuiThemeProvider from '@material-ui/styles/ThemeProvider';
 
-import {defaultTheme} from '../../theme';
+import {brightLightTheme, spaceGrayTheme, Theme} from '../../theme';
+import useSelector from '../../hooks/useSelector';
 
-interface IProps {
-  children?: ReactNode | ReactNodeArray;
-}
+import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
+import {extendThemeWithOS} from './utils';
 
 /**
- * Провайдер темы для приложения.
- * @type {React.NamedExoticComponent<IProps>}
+ * Theme provider for application
+ * @type {React.NamedExoticComponent<Props>}
  */
-export const ThemeProvider = memo((props: IProps) => {
-  const {children} = props;
-  // TODO: Переключаться между темами в зависимости от того, какая тема
-  //  записана в config.
-  const theme = useMemo(() => defaultTheme, []);
+export const ThemeProvider = memo(props => {
+  const {scheme, os} = useSelector(state => ({
+    scheme: state.config.scheme,
+    os: state.config.os,
+  }));
+  const brightWithOS = useMemo(
+    () => extendThemeWithOS(brightLightTheme, os), [os]
+  );
+  const spaceWithOS = useMemo(
+    () => extendThemeWithOS(spaceGrayTheme, os), [os]
+  );
+  const themesMap: Record<AppearanceSchemeType, Theme> = useMemo(() => ({
+    client_light: brightWithOS,
+    bright_light: brightWithOS,
+    client_dark: spaceWithOS,
+    space_gray: spaceWithOS,
+  }), [brightWithOS, spaceWithOS]);
+  const theme = useMemo(() => themesMap[scheme], [themesMap, scheme]);
 
-  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
+  return <MuiThemeProvider theme={theme}>{props.children}</MuiThemeProvider>;
 });

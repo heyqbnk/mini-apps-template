@@ -6,6 +6,7 @@ export interface ButtonColor {
 export interface ButtonColors {
   primary: ButtonColor;
   secondary: ButtonColor;
+  tertiary: ButtonColor;
 }
 
 export type ButtonColorType = keyof ButtonColors;

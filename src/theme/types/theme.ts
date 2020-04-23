@@ -10,3 +10,9 @@ export interface Theme {
   typography: Typography;
   components: Components;
 }
+
+/**
+ * Shared themes options
+ */
+export interface ThemeDefaults extends Pick<Theme, 'typography'> {
+}

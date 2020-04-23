@@ -7,3 +7,11 @@ export interface Insets {
   left: number;
   right: number;
 }
+
+/**
+ * Available operating systems
+ */
+export enum OS {
+  IOS,
+  Android
+}

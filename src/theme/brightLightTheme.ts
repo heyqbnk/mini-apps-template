@@ -1,18 +1,18 @@
 import {Theme} from './types';
-import {buttonDefaultTheme} from './components/Button';
+import {buttonBrightLightTheme} from './components/Button';
+import {themeDefaults} from './themeDefaults';
 
-export const defaultTheme: Theme = {
+export const brightLightTheme: Theme = {
+  ...themeDefaults,
   components: {
-    Button: buttonDefaultTheme,
+    Button: buttonBrightLightTheme,
   },
   palette: {
+    bodyBackground: 'white',
+    bodyText: 'black',
     text: {
       primary: 'black',
+      secondary: '#818c99',
     },
-  },
-  typography: {
-    fontFamily: '-apple-system, Roboto, Helvetica Neue, Arial',
-    fontFamilyTT: '"TT Commons", -apple-system, Roboto, Helvetica Neue, Arial',
-    fontSize: 16,
   },
 };

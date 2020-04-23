@@ -1,2 +1,2 @@
-export * from './defaultTheme';
+export * from './themes';
 export * from './types';

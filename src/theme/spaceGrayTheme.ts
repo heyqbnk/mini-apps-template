@@ -1,18 +1,18 @@
 import {Theme} from './types';
-import {buttonBrightLightTheme} from './components/Button';
+import {buttonSpaceGrayTheme} from './components/Button';
+import {themeDefaults} from './themeDefaults';
 
-export const brightLightTheme: Theme = {
+export const spaceGrayTheme: Theme = {
+  ...themeDefaults,
   components: {
-    Button: buttonBrightLightTheme,
+    Button: buttonSpaceGrayTheme,
   },
   palette: {
+    bodyBackground: '#19191a',
+    bodyText: '#e1e3e6',
     text: {
-      primary: 'black',
+      primary: '#e1e3e6',
+      secondary: '#76787a',
     },
-  },
-  typography: {
-    fontFamily: '-apple-system, Roboto, Helvetica Neue, Arial',
-    fontFamilyTT: '"TT Commons", -apple-system, Roboto, Helvetica Neue, Arial',
-    fontSize: 16,
   },
 };

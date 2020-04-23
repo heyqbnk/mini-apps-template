@@ -1,3 +1,4 @@
 export * from './components';
-export * from './defaultTheme';
+export * from './brightLightTheme';
+export * from './spaceGrayTheme';
 export * from './types';
