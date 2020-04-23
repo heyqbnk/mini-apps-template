@@ -13,6 +13,7 @@ import {ThemeProvider} from '../ThemeProvider';
 
 import createReduxStore from '../../redux';
 import vkBridge, {
+  AppearanceType,
   UpdateConfigData,
   VKBridgeSubscribeHandler,
 } from '@vkontakte/vk-bridge';
@@ -126,6 +127,15 @@ export class Root extends PureComponent<Props, State> {
     // Notify native application, initialization done. It will make native
     // application hide loader and display this application.
     vkBridge.send('VKWebAppInit');
+
+    // Update device interface colors if required
+    if (vkBridge.supports('VKWebAppSetViewSettings')) {
+      vkBridge.send('VKWebAppSetViewSettings', {
+        status_bar_style: 'light',
+        action_bar_color: 'black',
+        navigation_bar_color: 'white',
+      });
+    }
 
     // Init application
     this.init();

@@ -29,7 +29,9 @@ export function createApolloClient(
   });
 
   // In WebSocket connection we are using connectionParams instead of headers,
-  // because there is no another way we can authenticate user
+  // because there is no another way we can authenticate user.
+  // You are free to remove this variable if there are no subscriptions in
+  // your project and use "httpLink" instead of "link"
   const wsLink = new WebSocketLink({
     uri: wsURI,
     options: {
