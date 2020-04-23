@@ -1,11 +1,12 @@
 import {Theme} from './types';
-import {buttonSpaceGrayTheme} from './components/Button';
 import {themeDefaults} from './themeDefaults';
+import {buttonSpaceGrayTheme, selectSpaceGrayTheme} from './components';
 
 export const spaceGrayTheme: Theme = {
   ...themeDefaults,
   components: {
     Button: buttonSpaceGrayTheme,
+    Select: selectSpaceGrayTheme,
   },
   palette: {
     bodyBackground: '#19191a',

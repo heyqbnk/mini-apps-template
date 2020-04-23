@@ -19,16 +19,17 @@ interface UseStylesProps extends ButtonProps {
 
 const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   root: {
-    display: 'inline-flex',
+    appearance: 'none',
     alignItems: 'center',
-    justifyContent: 'center',
     borderRadius: 10,
-    background: 'none',
-    border: '1px solid transparent',
-    textDecoration: 'none',
-    padding: '0 16px',
-    color: ({themeColor}) => themeColor.foregroundColor,
+    border: ({themeColor}) => `1px solid ${themeColor.borderColor}`,
     backgroundColor: ({themeColor}) => themeColor.backgroundColor,
+    color: ({themeColor}) => themeColor.foregroundColor,
+    display: 'inline-flex',
+    justifyContent: 'center',
+    padding: '0 16px',
+    textDecoration: 'none',
+    '-webkit-appearance': 'none',
 
     '&:focus, &:active': {
       outline: 'none',
@@ -54,10 +55,8 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     marginLeft: 0,
   },
   content: {
-    letterSpacing: -0.408,
     fontFamily: theme.typography.fontFamily,
     fontWeight: 500,
-    lineHeight: 1,
   },
   contentM: {
     fontSize: 14,

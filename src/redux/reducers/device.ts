@@ -20,6 +20,7 @@ export interface DeviceReducerState {
 
 export const deviceActions = unionize({
   setCurrentInsets: ofType<Insets>(),
+  setOS: ofType<OS>(),
 }, unionizeConfig);
 
 type DeviceAction = UnionOf<typeof deviceActions>;
@@ -42,6 +43,7 @@ export function deviceReducer(
 ) {
   return deviceActions.match(action, {
     setCurrentInsets: currentInsets => ({...state, currentInsets}),
+    setOS: os => ({...state, os}),
     default: () => state,
   });
 }

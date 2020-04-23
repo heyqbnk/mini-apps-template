@@ -1,11 +1,12 @@
 import {Theme} from './types';
-import {buttonBrightLightTheme} from './components/Button';
 import {themeDefaults} from './themeDefaults';
+import {buttonBrightLightTheme, selectBrightLightTheme} from './components';
 
 export const brightLightTheme: Theme = {
   ...themeDefaults,
   components: {
     Button: buttonBrightLightTheme,
+    Select: selectBrightLightTheme,
   },
   palette: {
     bodyBackground: 'white',

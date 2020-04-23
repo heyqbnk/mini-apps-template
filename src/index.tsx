@@ -19,7 +19,8 @@ window.onload = () => {
   // Getting launch parameters
   const launchParams = getLaunchParams(window.location.search.slice(1));
 
-  // Getting insets from CSS-variables
+  // According to that we know, there are CSS-variables defined in index.html
+  // we are getting insets from them
   const insets = getInsets();
 
   // Display application
