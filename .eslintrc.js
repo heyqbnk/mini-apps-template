@@ -3,7 +3,7 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   extends: ['plugin:@typescript-eslint/recommended', 'plugin:react/recommended'],
   rules: {
-    "max-len": ['error', 80, {
+    'max-len': ['error', 80, {
       ignorePattern: '^import|^export'
     }],
     'react/display-name': 0,
