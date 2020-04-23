@@ -1,12 +1,14 @@
 import {ofType, unionize, UnionOf} from 'unionize';
 import {unionizeConfig} from '../utils';
 import {
+  AppearanceSchemeType,
   DefaultUpdateConfigData,
-  UpdateConfigData,
   MVKUpdateConfigData,
+  UpdateConfigData,
 } from '@vkontakte/vk-bridge';
 import {Config} from '../../config';
-import {LaunchParams} from '../../types';
+import {LaunchParams, OS} from '../../types';
+import {getInsets} from '../../utils/dom';
 
 type ConfigData =
   Omit<DefaultUpdateConfigData, 'app_id' | 'start_time'>
@@ -22,10 +24,15 @@ export interface ConfigReducerState extends ConfigData {
    * Application launch parameters sent from VKontakte
    */
   launchParams: LaunchParams;
+  /**
+   * Current operating system
+   */
+  os: OS;
 }
 
 export const configActions = unionize({
   updateConfig: ofType<UpdateConfigData>(),
+  updateTheme: ofType<AppearanceSchemeType>(),
 }, unionizeConfig);
 
 type ConfigAction = UnionOf<typeof configActions>;
@@ -36,7 +43,7 @@ const initialState: ConfigReducerState = {
   appId: '',
   appearance: 'light',
   scheme: 'client_light',
-  insets: {top: 0, bottom: 0, right: 0, left: 0},
+  insets: getInsets(),
   startTime: 0,
   viewportHeight: 0,
   viewportWidth: 0,
@@ -54,6 +61,7 @@ const initialState: ConfigReducerState = {
     viewerGroupRole: null,
     sign: '',
   },
+  os: OS.IOS,
 };
 
 /**
@@ -84,6 +92,7 @@ function configReducer(
         viewportWidth: viewport_width,
       };
     },
+    updateTheme: scheme => ({...state, scheme}),
     default: () => state,
   });
 }

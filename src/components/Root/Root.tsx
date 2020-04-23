@@ -26,6 +26,7 @@ import {Store} from 'redux';
 import {ReduxState} from '../../redux/types';
 import {getInsets} from '../../utils/dom';
 import {layoutActions} from '../../redux/reducers/layout';
+import {getOS} from '../../utils/device';
 
 interface State {
   loading: boolean;
@@ -173,6 +174,7 @@ export class Root extends PureComponent<{}, State> {
         viewportHeight: 0,
         viewportWidth: 0,
         launchParams: getLaunchParams(),
+        os: getOS(navigator.userAgent),
       };
 
       if (this.initialAppConfig) {
