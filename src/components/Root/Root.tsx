@@ -38,7 +38,7 @@ interface State {
 
 interface Props {
   /**
-   * Envrironments-based config
+   * Environments-based config
    */
   config: Config;
   /**
