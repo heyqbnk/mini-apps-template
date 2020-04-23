@@ -10,29 +10,25 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: ButtonColorType;
   href?: string;
   fullWidth?: boolean;
+  size?: 'm' | 'l' | 'xl';
 }
 
 interface UseStylesProps extends ButtonProps {
-  settingsColor: ButtonColor;
+  themeColor: ButtonColor;
 }
 
 const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   root: {
-    display: 'flex',
+    display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    padding: '11px 15px',
-    letterSpacing: -0.408,
-    fontSize: 17,
-    lineHeight: '22px',
-    fontWeight: 500,
     background: 'none',
-    border: 'none',
+    border: '1px solid transparent',
     textDecoration: 'none',
-    boxSizing: 'border-box',
-    color: ({settingsColor}) => settingsColor.foregroundColor,
-    backgroundColor: ({settingsColor}) => settingsColor.backgroundColor,
+    padding: '0 16px',
+    color: ({themeColor}) => themeColor.foregroundColor,
+    backgroundColor: ({themeColor}) => themeColor.backgroundColor,
 
     '&:focus, &:active': {
       outline: 'none',
@@ -45,9 +41,37 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     background: 'linear-gradient(180deg, #DFDCDC 0%, #CFCCCC 100%)',
     color: 'white',
   },
-  before: {},
-  after: {},
-  content: {padding: '0 5px'},
+  before: {
+    marginRight: 7,
+  },
+  beforeEmpty: {
+    marginRight: 0,
+  },
+  after: {
+    marginLeft: 7,
+  },
+  afterEmpty: {
+    marginLeft: 0,
+  },
+  content: {
+    letterSpacing: -0.408,
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 500,
+    lineHeight: 1,
+  },
+  contentM: {
+    fontSize: 14,
+    padding: '7px 0',
+    lineHeight: '14px',
+  },
+  contentL: {
+    fontSize: 15,
+    padding: '8px 0',
+  },
+  contentXL: {
+    fontSize: 17,
+    padding: '11px 0',
+  },
 }));
 
 /**
@@ -57,18 +81,25 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
 export const Button = memo((props: ButtonProps) => {
   const {
     before, after, children, className, color = 'primary', fullWidth, disabled,
-    href, ...rest
+    href, size = 'm', ...rest
   } = props;
   const theme = useTheme<Theme>();
   const mc = useStyles({
     ...props,
-    settingsColor: theme.components.Button.colors[color],
+    themeColor: theme.components.Button.colors[color],
   });
   const computedClassName = c(
     className,
     mc.root,
     {[mc.fullWidth]: fullWidth, [mc.disabled]: disabled},
   );
+  const contentClassName = c(
+    mc.content,
+    mc[`content${size.toUpperCase()}`],
+  );
+
+  // TODO: Waves in Android version on secondary design
+  // TODO: Opacity .5 for 1 second after click
 
   return React.createElement(
     href ? 'a' : 'button',
@@ -77,9 +108,14 @@ export const Button = memo((props: ButtonProps) => {
       className: computedClassName,
       disabled,
       href,
+      // We add _blank because Android does not correctly opens links which dont
+      // have this attribute
+      target: href ? '_blank' : undefined,
+      // Add rel due to security reasons
+      rel: href ? 'noopener nofollow noreferrer' : undefined,
     },
-    <div className={mc.before}>{before}</div>,
-    <div className={mc.content}>{children}</div>,
-    <div className={mc.after}>{after}</div>,
+    <div className={c(mc.before, {[mc.beforeEmpty]: !before})}>{before}</div>,
+    <div className={contentClassName}>{children}</div>,
+    <div className={c(mc.after, {[mc.afterEmpty]: !after})}>{after}</div>,
   );
 });
