@@ -10,5 +10,9 @@ export const buttonDefaultTheme: ButtonTheme = {
       backgroundColor: '#001d3d0d',
       foregroundColor: '#3f8ae0',
     },
+    tertiary: {
+      backgroundColor: 'transparent',
+      foregroundColor: '#4986cc',
+    }
   },
 };
