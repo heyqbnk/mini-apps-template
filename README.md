@@ -9,6 +9,7 @@ Stack:
 - VK UI (will be removed in near future)
 - VK Icons
 - React Redux (with devtools extension and `unionize`)
+- Apollo Client (queries, mutations, subscriptions)
 - Typescript
 - JSS
 - Customize CRA + React App Rewired
