@@ -7,13 +7,6 @@ import {ttCommonsDemiBold, ttCommonsMedium, ttCommonsRegular} from './fonts';
 
 const useStyles = makeStyles((theme: Theme) => ({
   '@global': {
-    // Create CSS variables to ease getting device safe areas
-    ':root': {
-      '--safe-area-inset-top': 'env(safe-area-inset-top, 0px)',
-      '--safe-area-inset-right': 'env(safe-area-inset-right, 0px)',
-      '--safe-area-inset-bottom': 'env(safe-area-inset-bottom, 0px)',
-      '--safe-area-inset-left': 'env(safe-area-inset-left, 0px)',
-    },
     // Add TT Commons font family
     '@font-face': [{
       fontFamily: 'TT Commons',

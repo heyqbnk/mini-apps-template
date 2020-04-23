@@ -18,6 +18,7 @@ function useActions<C extends Actions>(
 
   return useMemo(
     () => bindActionCreators(actions as any, dispatch),
+    // eslint-disable-next-line
     [...actionsDeps, dispatch],
   );
 }

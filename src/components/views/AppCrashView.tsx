@@ -79,7 +79,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
  */
 export const AppCrashView = memo((props: Props) => {
   const {onRestartClick, error} = props;
-  const bottomInset = useSelector(state => state.config.insets.bottom);
+  const bottomInset = useSelector(state => state.device.insets.bottom);
   const mc = useStyles({...props, bottomInset});
   const [showError, setShowError] = useState(false);
   const [copying, setCopying] = useState(false);

@@ -16,35 +16,50 @@ import vkBridge, {
   UpdateConfigData,
   VKBridgeSubscribeHandler,
 } from '@vkontakte/vk-bridge';
-import {configActions, ConfigReducerState} from '../../redux/reducers/config';
 import {getStorage} from '../../utils/storage';
-import {getLaunchParams} from '../../utils/launch-params';
 import {createApolloClient} from './utils';
-import config from '../../config';
+import {getInsets} from '../../utils/dom';
+import {deviceActions} from '../../redux/reducers/device';
+import {
+  appConfigActions,
+  AppConfigReducerState,
+} from '../../redux/reducers/app-config';
 
 import {Store} from 'redux';
+import {Config} from '../../config';
 import {ReduxState} from '../../redux/types';
-import {getInsets} from '../../utils/dom';
-import {layoutActions} from '../../redux/reducers/layout';
-import {getOS} from '../../utils/device';
+import {Insets, LaunchParams, OS} from '../../types';
+import {ApolloClient} from 'apollo-client';
 
 interface State {
   loading: boolean;
   error: string | null;
-  store: Store<ReduxState>;
+}
+
+interface Props {
+  /**
+   * Envrironments-based config
+   */
+  config: Config;
+  /**
+   * Device operating system
+   */
+  os: OS;
+  /**
+   * Application launch parameters
+   */
+  launchParams: LaunchParams;
+  /**
+   * Device insets
+   */
+  insets: Insets;
 }
 
 /**
  * Root application component. Everything application requires for showing
  * first screen is being loaded here.
  */
-export class Root extends PureComponent<{}, State> {
-  public state: Readonly<State> = {
-    loading: true,
-    error: null,
-    store: createReduxStore(),
-  };
-
+export class Root extends PureComponent<Props, State> {
   /**
    * Contains application config sent by bridge while redux store was not
    * created yet
@@ -64,18 +79,51 @@ export class Root extends PureComponent<{}, State> {
    * ApolloClient used to send requests and create WebSocket connections
    * @type {ApolloClient<any>}
    */
-  private apolloClient = createApolloClient({
-    httpURI: config.gqlHttpUrl,
-    wsURI: config.gqlWsUrl,
-    launchParams: window.location.search.slice(1),
-  });
+  private readonly apolloClient: ApolloClient<any>;
+
+  /**
+   * Redux store
+   */
+  private store: Store<ReduxState>;
+
+  public state: Readonly<State> = {
+    loading: true,
+    error: null,
+  };
+
+  public constructor(props: Readonly<Props>) {
+    super(props);
+    const {os, launchParams, insets, config} = props;
+
+    // Create initial redux store
+    this.store = createReduxStore({
+      config,
+      device: {insets, currentInsets: insets, os},
+      launchParams,
+    });
+
+    // Convert params object to string
+    const launchParamsAsString = Object.keys(launchParams)
+      .reduce<string>((acc, key, idx) => {
+        return acc
+          + (idx === 0 ? '' : '&')
+          + `${key}=${(launchParams as any)[key]}`;
+      }, '');
+
+    // Create Apollo client
+    this.apolloClient = createApolloClient({
+      httpURI: config.gqlHttpUrl,
+      wsURI: config.gqlWsUrl,
+      launchParams: launchParamsAsString,
+    });
+  }
 
   public componentDidMount() {
     // When component did mount, we are waiting for application config from
     // bridge and add event listener
     vkBridge.subscribe(this.onVKBridgeEvent);
 
-    // Notify native application, initiazliation done. It will make native
+    // Notify native application, initialization done. It will make native
     // application hide loader and display this application.
     vkBridge.send('VKWebAppInit');
 
@@ -94,7 +142,7 @@ export class Root extends PureComponent<{}, State> {
   }
 
   public render() {
-    const {loading, error, store} = this.state;
+    const {loading, error} = this.state;
     let content: ReactNode = null;
 
     // Display loader
@@ -118,7 +166,7 @@ export class Root extends PureComponent<{}, State> {
     }
 
     return (
-      <StoreProvider store={store}>
+      <StoreProvider store={this.store}>
         <RootContextProvider value={this.rootContextValue}>
           <ThemeProvider>
             <GlobalStyleSheet/>
@@ -137,15 +185,13 @@ export class Root extends PureComponent<{}, State> {
    * @param {VKBridgeEvent<ReceiveMethodName>} event
    */
   private onVKBridgeEvent: VKBridgeSubscribeHandler = event => {
-    const {store} = this.state;
-
     if (event.detail && event.detail.type === 'VKWebAppUpdateConfig') {
-      if (store) {
+      if (this.store) {
         const config = event.detail.data;
-        store.dispatch(configActions.updateConfig(event.detail.data));
+        this.store.dispatch(appConfigActions.updateConfig(event.detail.data));
 
         if ('insets' in config) {
-          store.dispatch(layoutActions.setCurrentInsets(config.insets));
+          this.store.dispatch(deviceActions.setCurrentInsets(config.insets));
         }
       } else {
         this.initialAppConfig = event.detail.data;
@@ -163,9 +209,8 @@ export class Root extends PureComponent<{}, State> {
       // Performing all async operations and getting data to launch application
       const [storage] = await Promise.all([getStorage()]);
 
-      let appConfig: ConfigReducerState = {
+      let appConfig: AppConfigReducerState = {
         app: 'vkclient',
-        appConfig: config,
         appId: '',
         appearance: 'light',
         scheme: 'client_light',
@@ -173,8 +218,6 @@ export class Root extends PureComponent<{}, State> {
         startTime: 0,
         viewportHeight: 0,
         viewportWidth: 0,
-        launchParams: getLaunchParams(),
-        os: getOS(navigator.userAgent),
       };
 
       if (this.initialAppConfig) {
@@ -184,17 +227,13 @@ export class Root extends PureComponent<{}, State> {
       // all 0 there), we get real insets from CSS-environment
       appConfig.insets = getInsets();
 
-      this.setState({
-        store: createReduxStore({
-          storage,
-          config: appConfig,
-          layout: {
-            insets: appConfig.insets,
-            currentInsets: appConfig.insets,
-          },
-        }),
-        loading: false,
+      // Recreate redux store with received data
+      this.store = createReduxStore({
+        ...this.store.getState(),
+        storage,
+        appConfig,
       });
+      this.setState({loading: false});
     } catch (e) {
       // In case error appears, catch it and display
       this.setState({error: e.message, loading: false});

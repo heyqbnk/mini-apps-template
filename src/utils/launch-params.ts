@@ -1,4 +1,4 @@
-import {LaunchParams} from '../types/launch-params';
+import {LaunchParams} from '../types';
 
 type Parser<K extends keyof LaunchParams> = [
   K,
@@ -6,7 +6,7 @@ type Parser<K extends keyof LaunchParams> = [
 ];
 
 /**
- * Возвращает значение таким, какое оно есть
+ * Returns value as it is
  * @param value
  * @returns {any}
  */
@@ -15,7 +15,7 @@ function asIs(value: any) {
 }
 
 /**
- * Парсит строковое представление boolean
+ * Parses string representation of boolean
  * @param {string} value
  * @returns {boolean}
  */
@@ -23,7 +23,6 @@ function parseBoolean(value: string): boolean {
   return value === '1';
 }
 
-// Мап парсеров каждого поля
 const paramParsers: Record<string, Parser<keyof LaunchParams>> = {
   vk_user_id: ['userId', parseInt],
   vk_app_id: ['appId', parseInt],
@@ -42,11 +41,10 @@ const paramParsers: Record<string, Parser<keyof LaunchParams>> = {
 };
 
 /**
- * Возвращает параметры запуска переданные в приложение
+ * Returns application launch parameters
  * @returns {LaunchParams}
  */
-export function getLaunchParams(): LaunchParams {
-  const query = window.location.search.slice(1);
+export function getLaunchParams(query: string): LaunchParams {
   return query.split('&').reduce<any>((acc, pair) => {
     const [key, value] = pair.split('=');
 

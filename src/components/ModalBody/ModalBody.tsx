@@ -34,7 +34,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>({
  */
 export const ModalBody = memo((props: Props) => {
   const {children} = props;
-  const bottomInset = useSelector(state => state.config.insets.bottom);
+  const bottomInset = useSelector(state => state.device.insets.bottom);
   const mc = useStyles({...props, bottomInset});
   const rootRef = useRef<HTMLDivElement>(null);
   const {registerBody} = useModalContext();

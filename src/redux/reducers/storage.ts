@@ -21,7 +21,7 @@ const initialState: StorageReducerState = {};
  * @param {StorageAction} action
  * @returns {unknown}
  */
-function storageReducer(
+export function storageReducer(
   state: StorageReducerState = initialState,
   action: StorageAction,
 ) {
@@ -31,5 +31,3 @@ function storageReducer(
     default: () => state,
   });
 }
-
-export default storageReducer;

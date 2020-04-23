@@ -14,8 +14,8 @@ import {extendThemeWithOS} from './utils';
  */
 export const ThemeProvider = memo(props => {
   const {scheme, os} = useSelector(state => ({
-    scheme: state.config.scheme,
-    os: state.config.os,
+    scheme: state.appConfig.scheme,
+    os: state.device.os,
   }));
   const brightWithOS = useMemo(
     () => extendThemeWithOS(brightLightTheme, os), [os]
