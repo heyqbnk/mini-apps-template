@@ -75,7 +75,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
 
 /**
  * View which appears when not catched exception raised in application
- * @type {React.NamedExoticComponent<IProps>}
+ * @type {React.NamedExoticComponent<Props>}
  */
 export const AppCrashView = memo((props: Props) => {
   const {onRestartClick, error} = props;
