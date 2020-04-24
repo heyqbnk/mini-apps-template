@@ -1,4 +1,11 @@
-import React, {ButtonHTMLAttributes, memo, ReactNode} from 'react';
+import React, {
+  ButtonHTMLAttributes,
+  memo,
+  ReactNode,
+  useCallback,
+  useState,
+  MouseEvent, useEffect, useRef,
+} from 'react';
 import c from 'classnames';
 
 import {makeStyles, useTheme} from '@material-ui/styles';
@@ -34,6 +41,12 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     '&:focus, &:active': {
       outline: 'none',
     },
+    '&:active': {
+      opacity: .5,
+    }
+  },
+  active: {
+    opacity: .5,
   },
   fullWidth: {
     width: '100%',
@@ -80,32 +93,71 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
 export const Button = memo((props: ButtonProps) => {
   const {
     before, after, children, className, color = 'primary', fullWidth, disabled,
-    href, size = 'm', ...rest
+    href, size = 'm', onClick, ...rest
   } = props;
   const theme = useTheme<Theme>();
   const mc = useStyles({
     ...props,
     themeColor: theme.components.Button.colors[color],
   });
-  const computedClassName = c(
+  const [isActive, setIsActive] = useState(false);
+  const transparentTimeoutRef = useRef<number | null>(null);
+
+  const rootClassName = c(
     className,
     mc.root,
-    {[mc.fullWidth]: fullWidth, [mc.disabled]: disabled},
+    {
+      [mc.fullWidth]: fullWidth,
+      [mc.disabled]: disabled,
+      [mc.active]: isActive,
+    },
   );
   const contentClassName = c(
     mc.content,
     mc[`content${size.toUpperCase()}`],
   );
 
+  // Rewire onClick
+  const _onClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+    setIsActive(true);
+
+    if (onClick) {
+      onClick(e);
+    }
+  }, [onClick]);
+
+  // When component became transparent, it is required to make opaque it again
+  // after some timeout
+  useEffect(() => {
+    if (isActive) {
+      // Remove previous timeout
+      if (transparentTimeoutRef.current) {
+        clearTimeout(transparentTimeoutRef.current);
+      }
+
+      // Create new timeout
+      transparentTimeoutRef.current = window.setTimeout(() => {
+        setIsActive(false);
+      }, 600);
+
+      // Cleanup on timeout
+      return () => {
+        if (transparentTimeoutRef.current) {
+          clearTimeout(transparentTimeoutRef.current);
+        }
+      };
+    }
+  }, [isActive]);
+
   // TODO: Waves in Android version on secondary design
-  // TODO: Opacity .5 for 1 second after click
 
   return React.createElement(
     href ? 'a' : 'button',
     {
       ...rest,
-      className: computedClassName,
+      className: rootClassName,
       disabled,
+      onClick: _onClick,
       href,
       // We add _blank because Android does not correctly opens links which dont
       // have this attribute
