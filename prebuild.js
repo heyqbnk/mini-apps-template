@@ -1,6 +1,6 @@
 /* eslint-disable */
 const {config} = require('dotenv');
-const {red} = require('chalk');
+const {red, green} = require('chalk');
 
 // Calculate env file name
 const deployEnv = process.env.DEPLOY_ENV;
@@ -33,3 +33,6 @@ if (missing.length > 0) {
   );
   return process.exit(1);
 }
+
+console.log(green('Envrionment variables are fine! Variables: '), parsed);
+process.exit(0);

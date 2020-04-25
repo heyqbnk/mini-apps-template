@@ -2,7 +2,7 @@ import {useCallback} from 'react';
 import useActions from './useActions';
 import {storageActions, StorageReducerState} from '../redux/reducers/storage';
 import {dropStorage} from '../utils/storage';
-import useSelector from './useSelector';
+import {useSelector} from './useSelector';
 
 type DropStorage = () => Promise<void>;
 

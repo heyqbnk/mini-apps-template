@@ -3,7 +3,7 @@ import {useCallback} from 'react';
 import useActions from './useActions';
 import {storageActions, StorageReducerState} from '../redux/reducers/storage';
 import {setStorageValue, dropStorageValues} from '../utils/storage';
-import useSelector from './useSelector';
+import {useSelector} from './useSelector';
 
 type ModifyStorage<F extends StorageField> =
   (value: StorageValueType<F> | null) => Promise<void>;

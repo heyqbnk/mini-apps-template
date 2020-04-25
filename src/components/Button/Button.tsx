@@ -1,25 +1,19 @@
-import React, {
-  memo,
-  MouseEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 import c from 'classnames';
 
 import {makeStyles, useTheme} from '@material-ui/styles';
 
-import useSelector from '../../hooks/useSelector';
+import {useSelector} from '../../hooks/useSelector';
 
 import {OS} from '../../types';
 import {ButtonColor, Theme} from '../../theme';
-import {ButtonProps, Ripple} from './types';
+import {ButtonProps, Point, Ripple} from './types';
 
 interface UseStylesProps extends ButtonProps {
   themeColor: ButtonColor;
 }
 
+const TRANSPARENT_DURATION = 600;
 const RIPPLE_DURATION = 600;
 
 const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
@@ -39,11 +33,6 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
 
     '&:focus, &:active': {
       outline: 'none',
-    },
-  },
-  rootIOS: {
-    '&:active': {
-      opacity: .5,
     },
   },
   active: {
@@ -111,9 +100,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     from: {transform: 'scale(0)', opacity: 1},
     to: {transform: 'scale(1)', opacity: 0},
   },
-}), {
-  name: 'Button',
-});
+}), {name: 'Button'});
 
 /**
  * Button element
@@ -122,7 +109,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
 export const Button = memo((props: ButtonProps) => {
   const {
     before, after, children, className, color = 'primary', fullWidth, disabled,
-    href, size = 'm', onClick, ...rest
+    href, size = 'm', onTouchStart, onTouchMove, onClick, ...rest
   } = props;
   const theme = useTheme<Theme>();
   const os = useSelector(state => state.device.os);
@@ -135,13 +122,13 @@ export const Button = memo((props: ButtonProps) => {
 
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const ripplesRef = useRef(ripples);
-  const rootRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
 
+  const touchStartRef = useRef<Point | null>(null);
+  const rootRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
   const rootClassName = c(
     className,
     mc.root,
     {
-      [mc.rootIOS]: os === OS.IOS,
       [mc.fullWidth]: fullWidth,
       [mc.disabled]: disabled,
       [mc.active]: isActive,
@@ -152,67 +139,100 @@ export const Button = memo((props: ButtonProps) => {
     mc[`content${size.toUpperCase()}`],
   );
 
-  // Rewire onClick
-  const _onClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
-    if (os === OS.IOS) {
-      setIsActive(true);
+  // Enhance onTouchStart event
+  const _onTouchStart = useCallback(
+    (e: React.TouchEvent<HTMLButtonElement>) => {
+      if (rootRef.current) {
+        const touch = e.touches[0];
+        const button = rootRef.current;
+        const x = touch.pageX - button.offsetLeft - button.clientWidth / 2;
+        const y = touch.pageY - button.offsetTop - button.clientWidth / 2;
+
+        // In IOS make button transparent
+        if (os === OS.IOS) {
+          setIsActive(true);
+
+          // Assign touchStartRef to know where this touch began. Required
+          // to detect when transparent effect cancel required
+          touchStartRef.current = {x, y};
+        }
+
+        // In Android launch a wave
+        if (os === OS.Android && rootRef.current) {
+          setRipples(ripples => {
+            const ripple = {
+              id: Math.random().toString(16).slice(-8),
+              coords: {x, y},
+              removeTimeoutId: window.setTimeout(() => {
+                // Remove this ripple from mounted ripples array
+                setRipples(ripples => ripples.filter(r => r !== ripple));
+              }, RIPPLE_DURATION),
+            };
+
+            return [...ripples, ripple];
+          });
+        }
+      }
+
+      // Call parent callback if defined
+      if (onTouchStart) {
+        onTouchStart(e);
+      }
+    },
+    [onTouchStart, os],
+  );
+
+  // Enhance onTouchMove event
+  const _onTouchMove = useCallback(
+    (e: React.TouchEvent<HTMLButtonElement>) => {
+      if (
+        os === OS.IOS
+        && rootRef.current
+        && touchStartRef.current
+        && isActive
+      ) {
+        // If touch was moved for more than 5 pixels, instantly cancel
+        // transparent effect
+        const touch = e.touches[0];
+        const button = rootRef.current;
+        const touchStart = touchStartRef.current;
+        const x = touch.pageX - button.offsetLeft - button.clientWidth / 2;
+        const y = touch.pageY - button.offsetTop - button.clientWidth / 2;
+
+        if (Math.abs(touchStart.x - x) + Math.abs(touchStart.y - y) > 5) {
+          setIsActive(false);
+        }
+      }
+
+      // Call parent callback if defined
+      if (onTouchMove) {
+        onTouchMove(e);
+      }
+    },
+    [onTouchMove, os, isActive],
+  );
+
+  // Enhance onClick event
+  const _onClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('CLICK', isActive);
+    if (os === OS.IOS && isActive) {
+      transparentTimeoutRef.current = window.setTimeout(() => {
+        setIsActive(false);
+      }, TRANSPARENT_DURATION);
     }
 
-    if (os === OS.Android && rootRef.current) {
-      const button = rootRef.current;
-      e.persist();
-      setRipples(ripples => [...ripples, {
-        id: Math.random().toString(16).slice(-8),
-        coords: {
-          x: e.pageX - button.offsetLeft - button.clientWidth / 2,
-          y: e.pageY - button.offsetTop - button.clientWidth / 2,
-        },
-        removeTimeoutId: null,
-      }]);
-    }
-
+    // Call parent callback if defined
     if (onClick) {
       onClick(e);
     }
-  }, [onClick, os]);
+  }, [onClick, os, isActive]);
 
-  // When component became transparent, it is required to make opaque it again
-  // after some timeout
+  // Reassign ripples ref every time they change
   useEffect(() => {
-    if (isActive) {
-      // Remove previous timeout
-      if (transparentTimeoutRef.current) {
-        clearTimeout(transparentTimeoutRef.current);
-      }
-
-      // Create new timeout
-      transparentTimeoutRef.current = window.setTimeout(() => {
-        setIsActive(false);
-      }, 600);
-
-      // Cleanup on unmount
-      return () => {
-        if (transparentTimeoutRef.current) {
-          clearTimeout(transparentTimeoutRef.current);
-        }
-      };
-    }
-  }, [isActive]);
-
-  // When ripple was added we have to assign removeTimeoutId for it to remove
-  // ripple after transition ended
-  useEffect(() => {
-    ripples.forEach(r => {
-      if (r.removeTimeoutId === null) {
-        r.removeTimeoutId = window.setTimeout(() => {
-          // Remove this ripple from mounted ripples array
-          setRipples(ripples => ripples.filter(ripple => ripple !== r));
-        }, RIPPLE_DURATION)
-      }
-    });
+    ripplesRef.current = ripples;
   }, [ripples]);
 
-  // Cleanup all ripples on unmount
+  // Cleanup all ripples and transparent effect on unmount
   useEffect(() => {
     // We use ref trick because there is no pure componentWillUnmount
     // effect. It allows us not to pass ripples as a dependency. We are
@@ -222,6 +242,10 @@ export const Button = memo((props: ButtonProps) => {
         clearTimeout(r.removeTimeoutId);
       }
     });
+
+    if (transparentTimeoutRef.current) {
+      clearTimeout(transparentTimeoutRef.current);
+    }
   }, []);
 
   return React.createElement(
@@ -231,6 +255,8 @@ export const Button = memo((props: ButtonProps) => {
       className: rootClassName,
       disabled,
       ref: rootRef,
+      onTouchStart: _onTouchStart,
+      onTouchMove: _onTouchMove,
       onClick: _onClick,
       href,
       // We add _blank because Android does not correctly opens links which dont

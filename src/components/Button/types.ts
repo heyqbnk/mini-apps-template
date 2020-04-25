@@ -10,11 +10,13 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'm' | 'l' | 'xl';
 }
 
+export interface Point {
+  x: number;
+  y: number;
+}
+
 export interface Ripple {
   id: string;
-  coords: {
-    x: number;
-    y: number;
-  };
+  coords: Point;
   removeTimeoutId: number | null;
 }

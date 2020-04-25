@@ -14,7 +14,7 @@ import DismissIcon from '@vkontakte/icons/dist/24/dismiss';
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
 import CopyIcon from '@vkontakte/icons/dist/24/copy';
 
-import useSelector from '../../hooks/useSelector';
+import {useSelector} from '../../hooks/useSelector';
 
 import emojiSadImage from '../../assets/emoji-sad.png';
 

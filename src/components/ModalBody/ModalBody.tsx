@@ -3,7 +3,7 @@ import React, {memo, ReactNode, ReactNodeArray, useEffect, useRef} from 'react';
 import {makeStyles} from '@material-ui/styles';
 import {Theme} from '../../theme/types';
 
-import useSelector from '../../hooks/useSelector';
+import {useSelector} from '../../hooks/useSelector';
 import {useModalContext} from '../Modal';
 
 interface Props {

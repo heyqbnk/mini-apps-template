@@ -12,18 +12,11 @@ import {ServicePanel} from '../ServicePanel';
 import {ThemeProvider} from '../ThemeProvider';
 
 import createReduxStore from '../../redux';
-import vkBridge, {
-  UpdateConfigData,
-  VKBridgeSubscribeHandler,
-} from '@vkontakte/vk-bridge';
+import vkBridge, {VKBridgeSubscribeHandler} from '@vkontakte/vk-bridge';
 import {getStorage} from '../../utils/storage';
 import {createApolloClient} from './utils';
-import {getInsets} from '../../utils/dom';
 import {deviceActions} from '../../redux/reducers/device';
-import {
-  appConfigActions,
-  AppConfigReducerState,
-} from '../../redux/reducers/app-config';
+import {appConfigActions} from '../../redux/reducers/app-config';
 
 import {Store} from 'redux';
 import {Config} from '../../config';
@@ -60,13 +53,6 @@ interface Props {
  * first screen is being loaded here.
  */
 export class Root extends PureComponent<Props, State> {
-  /**
-   * Contains application config sent by bridge while redux store was not
-   * created yet
-   * @type {null}
-   */
-  private initialAppConfig: UpdateConfigData | null = null;
-
   /**
    * Value for RootContext
    * @type {{init: () => Promise<void>}}
@@ -195,15 +181,12 @@ export class Root extends PureComponent<Props, State> {
    */
   private onVKBridgeEvent: VKBridgeSubscribeHandler = event => {
     if (event.detail && event.detail.type === 'VKWebAppUpdateConfig') {
-      if (this.store) {
-        const config = event.detail.data;
-        this.store.dispatch(appConfigActions.updateConfig(event.detail.data));
+      const config = event.detail.data;
+      config.scheme = 'bright_light';
+      this.store.dispatch(appConfigActions.updateConfig(config));
 
-        if ('insets' in config) {
-          this.store.dispatch(deviceActions.setCurrentInsets(config.insets));
-        }
-      } else {
-        this.initialAppConfig = event.detail.data;
+      if ('insets' in config) {
+        this.store.dispatch(deviceActions.setCurrentInsets(config.insets));
       }
     }
   };
@@ -218,29 +201,10 @@ export class Root extends PureComponent<Props, State> {
       // Performing all async operations and getting data to launch application
       const [storage] = await Promise.all([getStorage()]);
 
-      let appConfig: AppConfigReducerState = {
-        app: 'vkclient',
-        appId: '',
-        appearance: 'light',
-        scheme: 'client_light',
-        insets: {top: 0, left: 0, right: 0, bottom: 0},
-        startTime: 0,
-        viewportHeight: 0,
-        viewportWidth: 0,
-      };
-
-      if (this.initialAppConfig) {
-        appConfig = {...appConfig, ...this.initialAppConfig};
-      }
-      // Due to insets are not being sent in VKWebAppUpdateConfig (they are
-      // all 0 there), we get real insets from CSS-environment
-      appConfig.insets = getInsets();
-
       // Recreate redux store with received data
       this.store = createReduxStore({
         ...this.store.getState(),
         storage,
-        appConfig,
       });
       this.setState({loading: false});
     } catch (e) {

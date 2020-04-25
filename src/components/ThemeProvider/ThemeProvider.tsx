@@ -3,7 +3,7 @@ import React, {memo, useMemo} from 'react';
 import MuiThemeProvider from '@material-ui/styles/ThemeProvider';
 
 import {brightLightTheme, spaceGrayTheme, Theme} from '../../theme';
-import useSelector from '../../hooks/useSelector';
+import {useSelector} from '../../hooks/useSelector';
 import {extendThemeWithOS} from './utils';
 
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
