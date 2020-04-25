@@ -12,10 +12,7 @@ import {ServicePanel} from '../ServicePanel';
 import {ThemeProvider} from '../ThemeProvider';
 
 import createReduxStore from '../../redux';
-import vkBridge, {
-  UpdateConfigData,
-  VKBridgeSubscribeHandler,
-} from '@vkontakte/vk-bridge';
+import vkBridge, {VKBridgeSubscribeHandler} from '@vkontakte/vk-bridge';
 import {getStorage} from '../../utils/storage';
 import {createApolloClient} from './utils';
 import {deviceActions} from '../../redux/reducers/device';

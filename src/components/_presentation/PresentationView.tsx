@@ -5,7 +5,7 @@ import {makeStyles} from '@material-ui/styles';
 import {ButtonSection} from './ButtonSection';
 import {SelectSection} from './SelectSection';
 
-import useActions from '../../hooks/useActions';
+import {useActions} from '../../hooks/useActions';
 import {useSelector} from '../../hooks/useSelector';
 import {deviceActions} from '../../redux/reducers/device';
 import {appConfigActions} from '../../redux/reducers/app-config';

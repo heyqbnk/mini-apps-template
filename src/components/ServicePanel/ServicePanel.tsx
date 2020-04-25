@@ -7,7 +7,7 @@ import ActionSheetItem
 import ActionSheet
   from '@vkontakte/vkui/dist/components/ActionSheet/ActionSheet';
 
-import useStorage from '../../hooks/useStorage';
+import {useStorage} from '../../hooks/useStorage';
 import {useRootContext} from '../RootContextProvider';
 import {tapticNotification} from '../../utils/taptic';
 

@@ -1,6 +1,6 @@
 import {StorageField, StorageValueType} from '../types/bridge';
 import {useCallback} from 'react';
-import useActions from './useActions';
+import {useActions} from './useActions';
 import {storageActions, StorageReducerState} from '../redux/reducers/storage';
 import {setStorageValue, dropStorageValues} from '../utils/storage';
 import {useSelector} from './useSelector';
@@ -13,7 +13,7 @@ type ModifyStorage<F extends StorageField> =
  * @returns {[StorageReducerState[F], ModifyStorage<F>]}
  * @param field
  */
-function useStorageValue<F extends StorageField>(
+export function useStorageValue<F extends StorageField>(
   field: F,
 ): [StorageReducerState[F], ModifyStorage<F>] {
   const memoize = useActions(storageActions.memoize);
@@ -30,5 +30,3 @@ function useStorageValue<F extends StorageField>(
 
   return [value, modify];
 }
-
-export default useStorageValue;
