@@ -13,7 +13,6 @@ import {ThemeProvider} from '../ThemeProvider';
 
 import createReduxStore from '../../redux';
 import vkBridge, {
-  AppearanceType,
   UpdateConfigData,
   VKBridgeSubscribeHandler,
 } from '@vkontakte/vk-bridge';
