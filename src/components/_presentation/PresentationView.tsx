@@ -4,6 +4,7 @@ import {makeStyles} from '@material-ui/styles';
 
 import {ButtonSection} from './ButtonSection';
 import {SelectSection} from './SelectSection';
+import {InputSection} from './InputSection';
 
 import {useActions} from '../../hooks/useActions';
 import {useSelector} from '../../hooks/useSelector';
@@ -59,6 +60,7 @@ export const PresentationView = memo(() => {
       </select>
       <ButtonSection/>
       <SelectSection/>
+      <InputSection/>
     </div>
   );
 });

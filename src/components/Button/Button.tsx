@@ -214,7 +214,6 @@ export const Button = memo((props: ButtonProps) => {
 
   // Enhance onClick event
   const _onClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('CLICK', isActive);
     if (os === OS.IOS && isActive) {
       transparentTimeoutRef.current = window.setTimeout(() => {
         setIsActive(false);

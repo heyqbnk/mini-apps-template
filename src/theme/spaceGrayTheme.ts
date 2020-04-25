@@ -1,11 +1,18 @@
 import {Theme} from './types';
 import {themeDefaults} from './themeDefaults';
-import {buttonSpaceGrayTheme, selectSpaceGrayTheme} from './components';
+import {
+  buttonSpaceGrayTheme,
+  formControlSpaceGrayTheme,
+  inputSpaceGrayTheme,
+  selectSpaceGrayTheme,
+} from './components';
 
 export const spaceGrayTheme: Theme = {
   ...themeDefaults,
   components: {
     Button: buttonSpaceGrayTheme,
+    FormControl: formControlSpaceGrayTheme,
+    Input: inputSpaceGrayTheme,
     Select: selectSpaceGrayTheme,
   },
   palette: {
