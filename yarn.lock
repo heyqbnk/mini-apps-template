@@ -4082,6 +4082,11 @@ error-ex@^1.2.0, error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
+eruda@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/eruda/-/eruda-2.2.2.tgz#cbf12212d5ac132cee0b9a54ced5c7e15cc127a9"
+  integrity sha512-4BYsgLEldrcfmz6m+0ZT7ueVCVWYLq+bA6a6tBfU5sSQ9Qd4hagWTt70RaX1m755CPRJoKUkaUsJbi7B8AweWA==
+
 es-abstract@^1.17.0, es-abstract@^1.17.0-next.1, es-abstract@^1.17.2:
   version "1.17.4"
   resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.17.4.tgz#e3aedf19706b20e7c2594c35fc0d57605a79e184"

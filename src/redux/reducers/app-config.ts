@@ -24,7 +24,7 @@ export interface AppConfigReducerState
 }
 
 export const appConfigActions = unionize({
-  updateConfig: ofType<UpdateConfigData>(),
+  updateConfig: ofType<Partial<UpdateConfigData>>(),
   updateAppearanceScheme: ofType<AppearanceSchemeType>(),
 }, unionizeConfig);
 
@@ -47,8 +47,8 @@ const initialState: AppConfigReducerState = {
  * @returns {PreparedMVKAppConfig | PreparedDefaultAppConfig}
  */
 export function prepareAppConfig(
-  config: UpdateConfigData,
-): PreparedMVKAppConfig | PreparedDefaultAppConfig {
+  config: Partial<UpdateConfigData>,
+): Partial<PreparedMVKAppConfig> | Partial<PreparedDefaultAppConfig> {
   if ('insets' in config) {
     const {app_id, start_time, ...restConfig} = config;
 
@@ -58,13 +58,16 @@ export function prepareAppConfig(
       startTime: start_time,
     };
   }
-  const {viewport_height, viewport_width, ...restConfig} = config;
+  if ('viewport_height' in config && 'viewport_width' in config) {
+    const {viewport_height, viewport_width, ...restConfig} = config;
 
-  return {
-    ...restConfig,
-    viewportHeight: viewport_height,
-    viewportWidth: viewport_width,
-  };
+    return {
+      ...restConfig,
+      viewportHeight: viewport_height,
+      viewportWidth: viewport_width,
+    };
+  }
+  return config;
 }
 
 /**

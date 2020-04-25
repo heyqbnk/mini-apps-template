@@ -12,7 +12,10 @@ import {ServicePanel} from '../ServicePanel';
 import {ThemeProvider} from '../ThemeProvider';
 
 import createReduxStore from '../../redux';
-import vkBridge, {VKBridgeSubscribeHandler} from '@vkontakte/vk-bridge';
+import vkBridge, {
+  UpdateConfigData,
+  VKBridgeSubscribeHandler,
+} from '@vkontakte/vk-bridge';
 import {getStorage} from '../../utils/storage';
 import {createApolloClient} from './utils';
 import {deviceActions} from '../../redux/reducers/device';
@@ -53,6 +56,12 @@ interface Props {
  * first screen is being loaded here.
  */
 export class Root extends PureComponent<Props, State> {
+  /**
+   * True if first app config was received
+   * @type {boolean}
+   */
+  private isFirstConfigReceived = false;
+
   /**
    * Value for RootContext
    * @type {{init: () => Promise<void>}}
@@ -182,9 +191,22 @@ export class Root extends PureComponent<Props, State> {
   private onVKBridgeEvent: VKBridgeSubscribeHandler = event => {
     if (event.detail && event.detail.type === 'VKWebAppUpdateConfig') {
       const config = event.detail.data;
-      config.scheme = 'bright_light';
-      this.store.dispatch(appConfigActions.updateConfig(config));
 
+      // If first config was already received, ignore new schema coming from
+      // application
+      if (this.isFirstConfigReceived) {
+        if ('scheme' in config) {
+          const {scheme, ...rest} = config;
+          this.store.dispatch(appConfigActions.updateConfig(rest));
+        } else {
+          this.store.dispatch(appConfigActions.updateConfig(config));
+        }
+      } else {
+        this.store.dispatch(appConfigActions.updateConfig(config));
+        this.isFirstConfigReceived = true;
+      }
+
+      // Update current insets
       if ('insets' in config) {
         this.store.dispatch(deviceActions.setCurrentInsets(config.insets));
       }

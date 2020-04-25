@@ -10,6 +10,17 @@ import {getLaunchParams} from './utils/launch-params';
 import {getInsets} from './utils/dom';
 import config from './config';
 
+// @ts-ignore
+// import * as eruda from 'eruda';
+//
+// const el = document.createElement('div');
+// document.body.appendChild(el);
+//
+// eruda.init({
+//   container: el,
+//   tool: ['console', 'elements']
+// });
+
 // Waiting for assets to be loaded to make sure, all css and js files are
 // loaded
 window.onload = () => {

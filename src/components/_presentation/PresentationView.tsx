@@ -6,12 +6,12 @@ import {ButtonSection} from './ButtonSection';
 import {SelectSection} from './SelectSection';
 
 import useActions from '../../hooks/useActions';
-import {appConfigActions} from '../../redux/reducers/app-config';
 import {useSelector} from '../../hooks/useSelector';
+import {deviceActions} from '../../redux/reducers/device';
+import {appConfigActions} from '../../redux/reducers/app-config';
 
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
 import {OS} from '../../types';
-import {deviceActions} from '../../redux/reducers/device';
 
 const useStyles = makeStyles({
   root: {
@@ -54,10 +54,9 @@ export const PresentationView = memo(() => {
         <option value={'space_gray'}>space_gray</option>
       </select>
       <select className={mc.select} value={os} onChange={onOSChange}>
-        <option value={OS.IOS.toString()}>IOS</option>
-        <option value={OS.Android.toString()}>Android</option>
+        <option value={OS.IOS}>IOS</option>
+        <option value={OS.Android}>Android</option>
       </select>
-      {scheme}
       <ButtonSection/>
       <SelectSection/>
     </div>
