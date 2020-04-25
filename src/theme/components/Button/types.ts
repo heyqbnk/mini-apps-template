@@ -2,6 +2,7 @@ export interface ButtonColor {
   backgroundColor: string;
   foregroundColor: string;
   borderColor: string;
+  rippleColor: string;
 }
 
 export interface ButtonColors {
