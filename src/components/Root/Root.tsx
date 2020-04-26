@@ -124,7 +124,6 @@ export class Root extends PureComponent<Props, State> {
       vkBridge.send('VKWebAppSetViewSettings', {
         status_bar_style: 'light',
         action_bar_color: 'black',
-        navigation_bar_color: 'white',
       });
     }
 
