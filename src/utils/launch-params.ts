@@ -10,7 +10,7 @@ type Parser<K extends keyof LaunchParams> = [
  * @param value
  * @returns {any}
  */
-function asIs(value: any) {
+function asIs<T>(value: T): T {
   return value;
 }
 
@@ -48,7 +48,7 @@ export function getLaunchParams(query: string): LaunchParams {
   return query.split('&').reduce<any>((acc, pair) => {
     const [key, value] = pair.split('=');
 
-    if (key in paramParsers !== undefined) {
+    if (key in paramParsers) {
       const [field, parse] = paramParsers[key];
       acc[field] = parse(value);
     }
