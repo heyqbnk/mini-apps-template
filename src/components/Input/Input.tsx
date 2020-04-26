@@ -34,9 +34,11 @@ const useStyles = makeStyles<Theme, UseStylesProps>(() => ({
     boxShadow: 'none',
     backgroundColor: 'transparent',
     border: 'none',
+    boxSizing: 'border-box',
     padding: '13px 12px',
     color: ({theme}) => theme.colors.foreground,
     '-webkit-appearance': 'none',
+    width: '100%',
 
     '&:focus, &:active': {
       outline: 'none',

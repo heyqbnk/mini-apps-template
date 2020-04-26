@@ -4,12 +4,17 @@ import c from 'classnames';
 import {makeStyles, useTheme} from '@material-ui/styles';
 import {Theme, FormControlTheme} from '../../theme';
 
+import {useOS} from '../../hooks/useOS';
+
+import {OS} from '../../types';
+
 interface Props extends HTMLAttributes<HTMLDivElement> {
   isFocused?: boolean;
 }
 
 interface UseStylesProps extends Props {
   theme: FormControlTheme;
+  os: OS;
 }
 
 // TODO: Differs a bit with Android version
@@ -17,7 +22,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   root: {
     backgroundColor: ({theme}) => theme.colors.background,
     border: ({theme}) => `1px solid ${theme.colors.border}`,
-    borderRadius: 10,
+    borderRadius: ({os}) => os === OS.Android ? 8 : 10,
     boxSizing: 'border-box',
     fontSize: 16,
     fontFamily: theme.typography.fontFamily,
@@ -31,7 +36,8 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
 export const FormControl = memo((props: Props) => {
   const {className, children, isFocused, ...rest} = props;
   const theme = useTheme<Theme>();
-  const mc = useStyles({...props, theme: theme.components.FormControl});
+  const os = useOS();
+  const mc = useStyles({...props, theme: theme.components.FormControl, os});
 
   const rootClassName = c(mc.root, className, {[mc.rootFocused]: isFocused});
 
