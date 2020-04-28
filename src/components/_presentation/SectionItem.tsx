@@ -1,7 +1,7 @@
 import {styled} from '@material-ui/styles';
 
-export const PresentationSection = styled('div')({
+export const SectionItem = styled('div')({
   '& + &': {
-    marginTop: 40,
+    marginTop: 20,
   },
 });

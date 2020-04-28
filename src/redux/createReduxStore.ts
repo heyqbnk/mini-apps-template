@@ -7,17 +7,17 @@ import {configReducer} from './reducers/config';
 import {deviceReducer} from './reducers/device';
 import {launchParamsReducer} from './reducers/launch-params';
 import {storageReducer} from './reducers/storage';
+import {routingReducer} from './reducers/routing';
 
 const reducers = combineReducers<ReduxState>({
   appConfig: appConfigReducer,
   config: configReducer,
   device: deviceReducer,
   launchParams: launchParamsReducer,
+  routing: routingReducer,
   storage: storageReducer,
 });
 
-function createReduxStore(state?: Partial<ReduxState>): Store<ReduxState> {
+export function createReduxStore(state?: Partial<ReduxState>): Store<ReduxState> {
   return createStore(reducers, state, devToolsEnhancer({}));
 }
-
-export default createReduxStore;

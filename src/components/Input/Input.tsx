@@ -50,7 +50,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>(() => ({
     top: 13,
     color: ({theme}) => theme.colors.placeholder,
   },
-}), {name: 'Select'});
+}), {name: 'Input'});
 
 export const Input = memo((props: Props) => {
   const {

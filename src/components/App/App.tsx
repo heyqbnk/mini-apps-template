@@ -1,7 +1,14 @@
 import React, {memo, useEffect} from 'react';
 
-import {PresentationView} from '../_presentation/PresentationView';
-import {useDoubleTapHandler} from '../../hooks/useDoubleTapHandler';
+import {Root} from '../Root';
+import {View} from '../View';
+import {Panel} from '../Panel';
+import {MainPanel} from '../_presentation/MainPanel';
+import {ButtonPanel} from '../_presentation/ButtonPanel';
+import {SelectPanel} from '../_presentation/SelectPanel';
+import {InputPanel} from '../_presentation/InputPanel';
+
+import {useDoubleTapHandler} from '../../hooks';
 
 /**
  * Visual entry of application
@@ -19,8 +26,13 @@ export const App = memo(() => {
   }, [onTouchStart]);
 
   return (
-    <div>
-      <PresentationView/>
-    </div>
+    <Root>
+      <View id={'presentation'}>
+        <Panel id={'main'} header={true} component={MainPanel}/>
+        <Panel id={'button'} header={true} component={ButtonPanel}/>
+        <Panel id={'select'} header={true} component={SelectPanel}/>
+        <Panel id={'input'} header={true} component={InputPanel}/>
+      </View>
+    </Root>
   );
 });

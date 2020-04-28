@@ -3,7 +3,7 @@ import {themeDefaults} from './themeDefaults';
 import {
   buttonBrightLightTheme,
   formControlBrightLightTheme,
-  inputBrightLightTheme,
+  inputBrightLightTheme, linkBrightLightTheme,
   selectBrightLightTheme,
 } from './components';
 
@@ -13,6 +13,7 @@ export const brightLightTheme: Theme = {
     Button: buttonBrightLightTheme,
     FormControl: formControlBrightLightTheme,
     Input: inputBrightLightTheme,
+    Link: linkBrightLightTheme,
     Select: selectBrightLightTheme,
   },
   palette: {

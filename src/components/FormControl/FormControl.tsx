@@ -17,7 +17,6 @@ interface UseStylesProps extends Props {
   os: OS;
 }
 
-// TODO: Differs a bit with Android version
 const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   root: {
     backgroundColor: ({theme}) => theme.colors.background,

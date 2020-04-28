@@ -2,22 +2,13 @@ import React, {ChangeEvent, memo, useCallback} from 'react';
 
 import {makeStyles} from '@material-ui/styles';
 
-import {ButtonSection} from './ButtonSection';
-import {SelectSection} from './SelectSection';
-import {InputSection} from './InputSection';
-
-import {useActions} from '../../hooks/useActions';
-import {useSelector} from '../../hooks/useSelector';
-import {deviceActions} from '../../redux/reducers/device';
-import {appConfigActions} from '../../redux/reducers/app-config';
+import {useActions, useSelector} from '../../hooks';
+import {deviceActions, appConfigActions} from '../../redux/reducers';
 
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
 import {OS} from '../../types';
 
 const useStyles = makeStyles({
-  root: {
-    padding: '60px 18px 18px',
-  },
   select: {
     marginBottom: 20,
 
@@ -27,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const PresentationView = memo(() => {
+export const Controls = memo(() => {
   const mc = useStyles();
   const {updateAppearanceScheme, setOS} = useActions({
     updateAppearanceScheme: appConfigActions.updateAppearanceScheme,
@@ -49,7 +40,7 @@ export const PresentationView = memo(() => {
   );
 
   return (
-    <div className={mc.root}>
+    <div>
       <select className={mc.select} value={scheme} onChange={onThemeChange}>
         <option value={'bright_light'}>bright_light</option>
         <option value={'space_gray'}>space_gray</option>
@@ -58,9 +49,6 @@ export const PresentationView = memo(() => {
         <option value={OS.IOS}>IOS</option>
         <option value={OS.Android}>Android</option>
       </select>
-      <ButtonSection/>
-      <SelectSection/>
-      <InputSection/>
     </div>
   );
 });

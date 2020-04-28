@@ -1,25 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {Root} from './components/Root';
+import {AppRoot} from './components/AppRoot';
 
 import '@vkontakte/vkui/dist/vkui.css';
 
-import {getOS} from './utils/device';
-import {getLaunchParams} from './utils/launch-params';
-import {getInsets} from './utils/dom';
+import {
+  getOS,
+  getLaunchParams,
+  getInsets,
+  prepareRoutingState,
+  prepareQuery,
+} from './utils';
 import config from './config';
-
-// @ts-ignore
-// import * as eruda from 'eruda';
-//
-// const el = document.createElement('div');
-// document.body.appendChild(el);
-//
-// eruda.init({
-//   container: el,
-//   tool: ['console', 'elements']
-// });
 
 // Waiting for assets to be loaded to make sure, all css and js files are
 // loaded
@@ -34,9 +27,26 @@ window.onload = () => {
   // we are getting insets from them
   const insets = getInsets();
 
+  // Prepare initial routing state. In case, when routing state cannot be
+  // prepared, return default state
+  const url = window.location.hash.slice(1);
+  const preparedRoutingState = prepareRoutingState(url);
+  const routingState = preparedRoutingState || {
+    history: [{view: 'presentation', panel: 'main', popup: null}],
+    query: url.includes('?')
+      ? prepareQuery(url.slice(url.indexOf('?') + 1))
+      : {},
+  };
+
   // Display application
   ReactDOM.render(
-    <Root os={os} launchParams={launchParams} insets={insets} config={config}/>,
+    <AppRoot
+      os={os}
+      launchParams={launchParams}
+      insets={insets}
+      config={config}
+      routingState={routingState}
+    />,
     document.getElementById('root'),
   );
 };

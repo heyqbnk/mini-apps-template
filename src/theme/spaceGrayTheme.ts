@@ -3,7 +3,7 @@ import {themeDefaults} from './themeDefaults';
 import {
   buttonSpaceGrayTheme,
   formControlSpaceGrayTheme,
-  inputSpaceGrayTheme,
+  inputSpaceGrayTheme, linkSpaceGrayTheme,
   selectSpaceGrayTheme,
 } from './components';
 
@@ -13,6 +13,7 @@ export const spaceGrayTheme: Theme = {
     Button: buttonSpaceGrayTheme,
     FormControl: formControlSpaceGrayTheme,
     Input: inputSpaceGrayTheme,
+    Link: linkSpaceGrayTheme,
     Select: selectSpaceGrayTheme,
   },
   palette: {

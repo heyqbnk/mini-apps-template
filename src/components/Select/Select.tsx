@@ -27,7 +27,6 @@ interface UseStylesProps extends Props {
   theme: SelectTheme;
 }
 
-// TODO: Differs a bit with Android version
 const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   root: {
     padding: '13px 40px 13px 12px',
