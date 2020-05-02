@@ -7,6 +7,7 @@ const noop = () => {
 
 export const routerContext = createContext<RouterContext>({
   history: createBrowserHistory(),
+  prevState: null,
   currentState: {view: '', panel: '', popup: null, query: {}},
   pushState: noop,
   createHref: () => '',

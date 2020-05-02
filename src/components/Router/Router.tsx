@@ -16,7 +16,7 @@ const {Provider} = routerContext;
 export const Router = memo((props: RouterProps) => {
   const {children, initialHistory} = props;
 
-  // Create history
+  const [historyStates, setHistoryStates] = useState(initialHistory || []);
   const history = useMemo<History<HistoryState>>(() => {
     const h = createBrowserHistory<HistoryState>();
 
@@ -38,11 +38,12 @@ export const Router = memo((props: RouterProps) => {
     return h;
     // eslint-disable-next-line
   }, []);
-
-  // Current routing state
-  const [currentState, setCurrentState] = useState<HistoryState>(
-    () => history.location.state,
-  );
+  const prevState = useMemo<HistoryState | null>(() => {
+    return historyStates[historyStates.length - 2] || null;
+  }, [historyStates]);
+  const currentState = useMemo<HistoryState>(() => {
+    return historyStates[historyStates.length - 1];
+  }, [historyStates]);
 
   // Pushes state to history
   const pushState = useCallback((historyState: HistoryStateType) => {
@@ -58,37 +59,55 @@ export const Router = memo((props: RouterProps) => {
     return history.createHref({hash: url, state});
   }, [history]);
 
+  // Create router context
   const context = useMemo<RouterContext>(() => ({
     history,
     currentState,
+    prevState,
     pushState,
     createHref,
-  }), [history, createHref, pushState, currentState]);
-
-  if (history.length === 0) {
-    throw new Error(
-      'Router history became empty for some reason. It is not allowed ' +
-      'because it becomes unknown to determine where currently application is',
-    );
-  }
+  }), [history, createHref, pushState, currentState, prevState]);
 
   // Listen for history changes to update currentState
   useEffect(() => {
-    return history.listen(location => {
+    return history.listen((location, action) => {
       const state = historyStateFromURL(location.hash);
 
       if (state) {
-        setCurrentState(
-          currentState => {
-            const {query: currentQuery, ...restCurrentState} = currentState;
-            const {query: stateQuery, ...restState} = state;
+        setHistoryStates(historyStates => {
+          if (action === 'REPLACE') {
+            return historyStates.map((historyState, idx, arr) => {
+              if (idx === arr.length - 1) {
+                return state;
+              }
+              return historyState;
+            });
+          }
+          if (action === 'PUSH') {
+            return [...historyStates, state];
+          }
+          const prevState = historyStates[historyStates.length - 2];
 
-            return shallowEqual(restCurrentState, restState)
-            && shallowEqual(currentQuery, stateQuery)
-              ? currentState
-              : state;
-          },
-        );
+          // If there was no previous state, it means, arrow "forward" was
+          // clicked
+          if (!prevState) {
+            return [...historyStates, state];
+          }
+          // Otherwise, check if current state is equal to previous one
+          const {query: prevQuery, ...restPrevState} = prevState;
+          const {query: stateQuery, ...restState} = state;
+
+          // If current state is equal to previous one, it is usual POP action
+          if (
+            shallowEqual(prevQuery, stateQuery)
+            && shallowEqual(restPrevState, restState)
+          ) {
+            return historyStates.slice(0, historyStates.length - 1);
+          }
+
+          // If it was "unusual" POP action, it means user clicked forward arrow
+          return [...historyStates, state];
+        });
       }
     });
   }, [history]);

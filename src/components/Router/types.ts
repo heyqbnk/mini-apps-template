@@ -48,6 +48,10 @@ export interface RouterContext {
    */
   currentState: HistoryState;
   /**
+   * Previous routing history state
+   */
+  prevState: HistoryState | null;
+  /**
    * Pushes new state to history
    */
   pushState(historyState: HistoryStateType): void;
