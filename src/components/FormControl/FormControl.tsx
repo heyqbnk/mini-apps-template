@@ -1,44 +1,45 @@
-import React, {memo, HTMLAttributes} from 'react';
+import React, {memo} from 'react';
 import c from 'classnames';
 
-import {makeStyles, useTheme} from '@material-ui/styles';
-import {Theme, FormControlTheme} from '../../theme';
+import {makeStyles} from '@material-ui/styles';
+import {Theme} from '../../theme';
 
-import {useOS} from '../../hooks/useOS';
+import {useOS} from '../../hooks';
 
+import {FormControlProps} from './types';
 import {OS} from '../../types';
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
-  isFocused?: boolean;
-}
+const useStyles = makeStyles<Theme, FormControlProps>(theme => {
+  const {colors} = theme.components.FormControl;
 
-interface UseStylesProps extends Props {
-  theme: FormControlTheme;
-  os: OS;
-}
+  return {
+    root: {
+      backgroundColor: colors.background,
+      border: `1px solid ${colors.border}`,
+      borderRadius: 10,
+      boxSizing: 'border-box',
+      fontSize: 16,
+      fontFamily: theme.typography.fontFamily,
+      position: 'relative',
+    },
+    rootAndroid: {
+      borderRadius: 8,
+    },
+    rootFocused: {
+      borderColor: colors.borderFocused,
+    },
+  };
+}, {name: 'FormControl'});
 
-const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
-  root: {
-    backgroundColor: ({theme}) => theme.colors.background,
-    border: ({theme}) => `1px solid ${theme.colors.border}`,
-    borderRadius: ({os}) => os === OS.Android ? 8 : 10,
-    boxSizing: 'border-box',
-    fontSize: 16,
-    fontFamily: theme.typography.fontFamily,
-    position: 'relative',
-  },
-  rootFocused: {
-    borderColor: ({theme}) => theme.colors.borderFocused,
-  },
-}), {name: 'FormControl'});
-
-export const FormControl = memo((props: Props) => {
+export const FormControl = memo((props: FormControlProps) => {
   const {className, children, isFocused, ...rest} = props;
-  const theme = useTheme<Theme>();
   const os = useOS();
-  const mc = useStyles({...props, theme: theme.components.FormControl, os});
+  const mc = useStyles(props);
 
-  const rootClassName = c(mc.root, className, {[mc.rootFocused]: isFocused});
+  const rootClassName = c(mc.root, className, {
+    [mc.rootFocused]: isFocused,
+    [mc.rootAndroid]: os === OS.Android,
+  });
 
   return <div className={rootClassName} {...rest}>{children}</div>;
 });

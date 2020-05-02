@@ -6,58 +6,54 @@ import React, {
   useEffect,
   FocusEvent,
   ChangeEvent,
-  InputHTMLAttributes,
 } from 'react';
 import c from 'classnames';
 
-import {makeStyles, useTheme} from '@material-ui/styles';
-import {Theme, InputTheme} from '../../theme';
+import {makeStyles} from '@material-ui/styles';
+import {Theme} from '../../theme';
 
 import {FormControl} from '../FormControl';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
-}
+import {InputProps} from './types';
 
-interface UseStylesProps extends Props {
-  theme: InputTheme;
-}
+const useStyles = makeStyles<Theme, InputProps>(theme => {
+  const {colors} = theme.components.Input;
 
-// TODO: Differs a bit with Android version
-const useStyles = makeStyles<Theme, UseStylesProps>(() => ({
-  root: {
-    position: 'relative',
-  },
-  input: {
-    fontSize: 'inherit',
-    fontFamily: 'inherit',
-    appearance: 'none',
-    boxShadow: 'none',
-    backgroundColor: 'transparent',
-    border: 'none',
-    boxSizing: 'border-box',
-    padding: '13px 12px',
-    color: ({theme}) => theme.colors.foreground,
-    '-webkit-appearance': 'none',
-    width: '100%',
+  return {
+    root: {
+      position: 'relative',
+    },
+    input: {
+      fontSize: 'inherit',
+      fontFamily: 'inherit',
+      appearance: 'none',
+      boxShadow: 'none',
+      backgroundColor: 'transparent',
+      border: 'none',
+      boxSizing: 'border-box',
+      padding: '13px 12px',
+      color: colors.foreground,
+      '-webkit-appearance': 'none',
+      width: '100%',
 
-    '&:focus, &:active': {
-      outline: 'none',
-    }
-  },
-  placeholder: {
-    position: 'absolute',
-    left: 12,
-    top: 13,
-    color: ({theme}) => theme.colors.placeholder,
-  },
-}), {name: 'Input'});
+      '&:focus, &:active': {
+        outline: 'none',
+      },
+    },
+    placeholder: {
+      position: 'absolute',
+      left: 12,
+      top: 13,
+      color: colors.placeholder,
+    },
+  };
+}, {name: 'Input'});
 
-export const Input = memo((props: Props) => {
+export const Input = memo((props: InputProps) => {
   const {
     className, placeholder, value, onFocus, onBlur, onChange, ...rest
   } = props;
-  const theme = useTheme<Theme>();
-  const mc = useStyles({...props, theme: theme.components.Select});
+  const mc = useStyles(props);
 
   const [isFocused, setIsFocused] = useState(false);
   const [currentValue, setCurrentValue] = useState(value || '');
@@ -95,7 +91,7 @@ export const Input = memo((props: Props) => {
 
   // When value was changed from outside, set internal value
   useEffect(() => {
-    setCurrentValue(value === undefined ? '' : value);
+    setCurrentValue(value || '');
   }, [value]);
 
   return (

@@ -7,14 +7,13 @@ import {ApolloProvider} from '@apollo/react-hooks';
 import {GlobalStyleSheet} from '../GlobalStyleSheet';
 import {ModalRoot} from '../ModalRoot';
 import {Provider as StoreProvider} from 'react-redux';
-import {Router} from '../Router';
+import {Router, HistoryType} from '../Router';
 import {RootContextProvider, RootContext} from '../RootContextProvider';
 import {ServicePanel} from '../ServicePanel';
 import {ThemeProvider} from '../ThemeProvider';
 
 import {
   createReduxStore,
-  RoutingReducerState,
   ReduxState,
   deviceActions,
   appConfigActions,
@@ -53,7 +52,7 @@ interface Props {
   /**
    * Initial routing state
    */
-  routingState: RoutingReducerState;
+  initialHistory?: HistoryType;
 }
 
 /**
@@ -93,14 +92,13 @@ export class AppRoot extends PureComponent<Props, State> {
 
   public constructor(props: Readonly<Props>) {
     super(props);
-    const {os, launchParams, insets, config, routingState} = props;
+    const {os, launchParams, insets, config} = props;
 
     // Create initial redux store
     this.store = createReduxStore({
       config,
       device: {insets, currentInsets: insets, os},
       launchParams,
-      routing: routingState,
     });
 
     // Convert params object to string
@@ -152,6 +150,7 @@ export class AppRoot extends PureComponent<Props, State> {
 
   public render() {
     const {loading, error} = this.state;
+    const {initialHistory} = this.props;
     let content: ReactNode = null;
 
     // Display loader
@@ -178,11 +177,12 @@ export class AppRoot extends PureComponent<Props, State> {
       <StoreProvider store={this.store}>
         <RootContextProvider value={this.rootContextValue}>
           <ThemeProvider>
-            <Router/>
-            <GlobalStyleSheet/>
-            <ModalRoot>
-              {content}
-            </ModalRoot>
+            <Router initialHistory={initialHistory}>
+              <GlobalStyleSheet/>
+              <ModalRoot>
+                {content}
+              </ModalRoot>
+            </Router>
           </ThemeProvider>
         </RootContextProvider>
       </StoreProvider>

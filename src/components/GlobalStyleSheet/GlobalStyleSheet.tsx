@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontFamily: 'TT Commons',
       fontStyle: 'normal',
       fontWeight: 600,
-      src: `url("${ttCommonsDemiBold}") format("woff")`,
+      src: `url("${ttCommonsDemiBold}") format("truetype")`,
     }],
     // Set body and #root defaults
     body: {

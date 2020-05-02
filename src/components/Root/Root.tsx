@@ -2,9 +2,9 @@ import React, {ClassicElement, memo} from 'react';
 
 import {Suspend} from '../Suspend';
 
-import {useHistoryState} from '../../hooks';
-
 import {ViewProps} from '../View';
+
+import {useRouter} from '../Router';
 
 export interface ViewControllerProps {
   /**
@@ -15,7 +15,7 @@ export interface ViewControllerProps {
 
 export const Root = memo((props: ViewControllerProps) => {
   const {children} = props;
-  const {view} = useHistoryState();
+  const {currentState} = useRouter();
 
-  return <Suspend activeElement={view}>{children}</Suspend>;
+  return <Suspend activeElement={currentState.view}>{children}</Suspend>;
 });

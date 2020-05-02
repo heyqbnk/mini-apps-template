@@ -9,7 +9,7 @@ import {Controls} from './Controls';
 
 const useStyles = makeStyles({
   root: {
-    padding: '0 18px',
+    padding: 18,
   },
   link: {
     display: 'block',
@@ -30,7 +30,7 @@ export const SelectPanel = memo(() => {
 
   return (
     <>
-      <PanelHeader>Select</PanelHeader>
+      <PanelHeader backButton={true}>Select</PanelHeader>
       <div className={mc.root}>
         <Controls/>
         <Subtitle>Example</Subtitle>

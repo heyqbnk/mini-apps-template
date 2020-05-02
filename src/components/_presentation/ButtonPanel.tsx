@@ -11,7 +11,7 @@ import {ReactComponent as StarSvg} from '../../assets/star.svg';
 
 const useStyles = makeStyles({
   root: {
-    padding: '0 18px',
+    padding: 18,
   },
   link: {
     display: 'block',
@@ -32,7 +32,7 @@ export const ButtonPanel = memo(() => {
 
   return (
     <>
-      <PanelHeader>Button</PanelHeader>
+      <PanelHeader backButton={true}>Button</PanelHeader>
       <div className={mc.root}>
         <Controls/>
         <SectionItem>
@@ -41,13 +41,13 @@ export const ButtonPanel = memo(() => {
             <Button>Primary</Button>
           </div>
           <div className={mc.item}>
-            <Button color={'secondary'}>Secondary</Button>
+            <Button variant={'secondary'}>Secondary</Button>
           </div>
           <div className={mc.item}>
-            <Button color={'tertiary'}>Tertiary</Button>
+            <Button variant={'tertiary'}>Tertiary</Button>
           </div>
           <div className={mc.item}>
-            <Button color={'outline'}>Outline</Button>
+            <Button variant={'outline'}>Outline</Button>
           </div>
         </SectionItem>
         <SectionItem>
@@ -59,7 +59,7 @@ export const ButtonPanel = memo(() => {
             <Button size={'l'}>Large</Button>
           </div>
           <div className={mc.item}>
-            <Button size={'xl'} color={'secondary'} fullWidth={true}>
+            <Button size={'xl'} variant={'secondary'} fullWidth={true}>
               Extra large
             </Button>
           </div>

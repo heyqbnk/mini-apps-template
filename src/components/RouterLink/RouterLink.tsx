@@ -1,31 +1,50 @@
 import {
-  ClassicElement,
   cloneElement,
   memo,
   useCallback,
   MouseEvent,
+  ReactElement,
 } from 'react';
 
-import {useActions} from '../../hooks';
-import {routingActions, RoutingHistoryStateType} from '../../redux/reducers';
+import {useRouter, HistoryStateType} from '../Router';
 
 export interface RouterLinkProps {
-  children: ClassicElement<{ onClick(e: MouseEvent<any>): void }>;
-  to: RoutingHistoryStateType;
+  children: ReactElement<{
+    onClick?(e: MouseEvent<any>): void;
+    href?: string;
+  }>;
+  /**
+   * Defines which history state should be pushed
+   */
+  to?: HistoryStateType;
+  /**
+   * Defines if history should be poped
+   */
+  pop?: boolean;
 }
 
 export const RouterLink = memo((props: RouterLinkProps) => {
-  const {children, to} = props;
+  const {children, to, pop} = props;
   const {onClick, ...rest} = children.props;
-  const pushRouterHistoryState =
-    useActions(routingActions.pushRouterHistoryState);
+  const {pushState, history} = useRouter();
   const _onClick = useCallback((e: MouseEvent<any>) => {
-    pushRouterHistoryState(to);
+    if (to) {
+      pushState(to);
+    } else if (pop) {
+      history.goBack();
+    }
 
     if (onClick) {
       onClick(e);
     }
-  }, [onClick, pushRouterHistoryState, to]);
+  }, [onClick, pushState, to, pop, history]);
 
-  return cloneElement(children, {...rest, onClick: _onClick});
+  return cloneElement(
+    children,
+    {
+      ...rest,
+      onClick: _onClick,
+      href: undefined,
+    },
+  );
 });

@@ -1,6 +1,5 @@
 import React, {
   memo,
-  SelectHTMLAttributes,
   useCallback,
   useState,
   useMemo,
@@ -11,8 +10,8 @@ import React, {
 } from 'react';
 import c from 'classnames';
 
-import {makeStyles, useTheme} from '@material-ui/styles';
-import {Theme, SelectTheme} from '../../theme';
+import {makeStyles} from '@material-ui/styles';
+import {Theme} from '../../theme';
 
 import {FormControl} from '../FormControl';
 
@@ -20,50 +19,48 @@ import {ReactComponent as ArrowDownSvg} from '../../assets/arrow-down.svg';
 
 import {isOptionWithValue} from './utils';
 
-interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
-}
+import {SelectProps} from './types';
 
-interface UseStylesProps extends Props {
-  theme: SelectTheme;
-}
+const useStyles = makeStyles<Theme, SelectProps>(theme => {
+  const {colors} = theme.components.Select;
 
-const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
-  root: {
-    padding: '13px 40px 13px 12px',
-    position: 'relative',
-  },
-  select: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    opacity: 0,
-    height: '100%',
-    width: '100%',
-    zIndex: 1,
-  },
-  title: {
-    color: ({theme}) => theme.colors.foreground,
-  },
-  arrow: {
-    color: ({theme}) => theme.colors.icon,
-    position: 'absolute',
-    right: 12,
-    top: '50%',
-    transform: 'translateY(-50%)',
-    width: 24,
-    zIndex: 0,
-  },
-  placeholder: {
-    color: ({theme}) => theme.colors.placeholder,
-  },
-}), {name: 'Select'});
+  return {
+    root: {
+      padding: '13px 40px 13px 12px',
+        position: 'relative',
+    },
+    select: {
+      position: 'absolute',
+        left: 0,
+        top: 0,
+        opacity: 0,
+        height: '100%',
+        width: '100%',
+        zIndex: 1,
+    },
+    title: {
+      color: colors.foreground,
+    },
+    arrow: {
+      color: colors.icon,
+        position: 'absolute',
+        right: 12,
+        top: '50%',
+        transform: 'translateY(-50%)',
+        width: 24,
+        zIndex: 0,
+    },
+    placeholder: {
+      color: colors.placeholder,
+    },
+  }
+}, {name: 'Select'});
 
-export const Select = memo((props: Props) => {
+export const Select = memo((props: SelectProps) => {
   const {
     className, children, placeholder, value, onFocus, onBlur, onChange, ...rest
   } = props;
-  const theme = useTheme<Theme>();
-  const mc = useStyles({...props, theme: theme.components.Select});
+  const mc = useStyles(props);
 
   const [isFocused, setIsFocused] = useState(false);
   const [currentValue, setCurrentValue] = useState(value || '');

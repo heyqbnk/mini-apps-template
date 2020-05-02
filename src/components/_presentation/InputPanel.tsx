@@ -9,7 +9,7 @@ import {Controls} from './Controls';
 
 const useStyles = makeStyles({
   root: {
-    padding: '0 18px',
+    padding: 18,
   },
 });
 
@@ -18,7 +18,7 @@ export const InputPanel = memo(() => {
 
   return (
     <>
-      <PanelHeader>Select</PanelHeader>
+      <PanelHeader backButton={true}>Select</PanelHeader>
       <div className={mc.root}>
         <Controls/>
         <Subtitle>Example</Subtitle>

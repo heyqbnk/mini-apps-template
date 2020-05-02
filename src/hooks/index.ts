@@ -1,6 +1,5 @@
 export * from './useActions';
 export * from './useDoubleTapHandler';
-export * from './useHistoryState';
 export * from './useInsets';
 export * from './useMounted';
 export * from './useOS';

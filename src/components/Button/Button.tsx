@@ -2,15 +2,15 @@ import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 import c from 'classnames';
 
 import {makeStyles, useTheme} from '@material-ui/styles';
+import {Theme} from '../../theme/types';
 
-import {useSelector} from '../../hooks/useSelector';
+import {useSelector} from '../../hooks';
 
 import {OS} from '../../types';
-import {ButtonColor, Theme} from '../../theme';
-import {ButtonProps, Point, Ripple} from './types';
+import {ButtonProps, ButtonVariant, Point, Ripple} from './types';
 
 interface UseStylesProps extends ButtonProps {
-  themeColor: ButtonColor;
+  componentTheme: ButtonVariant;
 }
 
 const TRANSPARENT_DURATION = 600;
@@ -21,13 +21,14 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     appearance: 'none',
     alignItems: 'center',
     borderRadius: 10,
-    border: ({themeColor}) => `1px solid ${themeColor.borderColor}`,
-    backgroundColor: ({themeColor}) => themeColor.backgroundColor,
-    color: ({themeColor}) => themeColor.foregroundColor,
+    border: ({componentTheme}) => `1px solid ${componentTheme.colors.border}`,
+    backgroundColor: ({componentTheme}) => componentTheme.colors.background,
+    color: ({componentTheme}) => componentTheme.colors.foreground,
     display: 'inline-flex',
     justifyContent: 'center',
     padding: '0 16px',
     position: 'relative',
+    overflow: 'hidden',
     textDecoration: 'none',
     '-webkit-appearance': 'none',
 
@@ -93,7 +94,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     paddingTop: '100%',
     animation: `$ripple-active ${RIPPLE_DURATION}ms`,
     borderRadius: '50%',
-    backgroundColor: ({themeColor}) => themeColor.rippleColor,
+    backgroundColor: ({componentTheme}) => componentTheme.colors.ripple,
     pointerEvents: 'none',
   },
   '@keyframes ripple-active': {
@@ -108,14 +109,15 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
  */
 export const Button = memo((props: ButtonProps) => {
   const {
-    before, after, children, className, color = 'primary', fullWidth, disabled,
-    href, size = 'm', onTouchStart, onTouchMove, onClick, ...rest
+    before, after, children, className, variant = 'primary', fullWidth,
+    disabled, href, size = 'm', onTouchStart, onTouchMove, onClick, classes,
+    ...rest
   } = props;
   const theme = useTheme<Theme>();
   const os = useSelector(state => state.device.os);
   const mc = useStyles({
     ...props,
-    themeColor: theme.components.Button.colors[color],
+    componentTheme: theme.components.Button[variant],
   });
   const [isActive, setIsActive] = useState(false);
   const transparentTimeoutRef = useRef<number | null>(null);
@@ -233,18 +235,20 @@ export const Button = memo((props: ButtonProps) => {
 
   // Cleanup all ripples and transparent effect on unmount
   useEffect(() => {
-    // We use ref trick because there is no pure componentWillUnmount
-    // effect. It allows us not to pass ripples as a dependency. We are
-    // doing it, because there is no other correct algorithm we could use
-    ripplesRef.current.forEach(r => {
-      if (r.removeTimeoutId) {
-        clearTimeout(r.removeTimeoutId);
-      }
-    });
+    return () => {
+      // We use ref trick because there is no pure componentWillUnmount
+      // effect. It allows us not to pass ripples as a dependency. We are
+      // doing it, because there is no other correct algorithm we could use
+      ripplesRef.current.forEach(r => {
+        if (r.removeTimeoutId) {
+          clearTimeout(r.removeTimeoutId);
+        }
+      });
 
-    if (transparentTimeoutRef.current) {
-      clearTimeout(transparentTimeoutRef.current);
-    }
+      if (transparentTimeoutRef.current) {
+        clearTimeout(transparentTimeoutRef.current);
+      }
+    };
   }, []);
 
   return React.createElement(
@@ -261,8 +265,6 @@ export const Button = memo((props: ButtonProps) => {
       // We add _blank because Android does not correctly opens links which dont
       // have this attribute
       target: href ? '_blank' : undefined,
-      // Add rel due to security reasons
-      rel: href ? 'noopener nofollow noreferrer' : undefined,
     },
     <div className={c(mc.before, {[mc.beforeEmpty]: !before})}>{before}</div>,
     <div className={contentClassName}>{children}</div>,

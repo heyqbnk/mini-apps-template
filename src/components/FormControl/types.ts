@@ -1,3 +1,9 @@
+import {HTMLAttributes} from 'react';
+
+export interface FormControlProps extends HTMLAttributes<HTMLDivElement> {
+  isFocused?: boolean;
+}
+
 export interface FormControlColors {
   background: string;
   border: string;

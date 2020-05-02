@@ -1,11 +1,10 @@
-import React, {AnchorHTMLAttributes, memo} from 'react';
+import React, {memo} from 'react';
 import c from 'classnames';
 
 import {makeStyles} from '@material-ui/styles';
 import {Theme} from '../../theme/types';
 
-export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
-}
+import {LinkProps} from './types';
 
 const useStyles = makeStyles<Theme, LinkProps>(theme => ({
   root: {

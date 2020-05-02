@@ -8,7 +8,7 @@ import {PanelHeader} from '../PanelHeader';
 
 const useStyles = makeStyles({
   root: {
-    padding: '0 18px',
+    padding: 18,
   },
   link: {
     display: 'block',

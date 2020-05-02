@@ -4,8 +4,9 @@ import c from 'classnames';
 import {makeStyles} from '@material-ui/styles';
 import {Theme} from '../../theme';
 
-import {useInsets} from '../../hooks/useInsets';
-import {useOS} from '../../hooks/useOS';
+import {Separator} from '../Separator';
+
+import {useInsets, useOS} from '../../hooks';
 
 import {OS} from '../../types';
 import {PanelProps} from './types';
@@ -13,23 +14,30 @@ import {PanelProps} from './types';
 interface UseStylesProps extends PanelProps {
   topInset: number;
   bottomInset: number;
-  os: OS;
 }
 
 const useStyles = makeStyles<Theme, UseStylesProps>(() => ({
   root: {
     height: '100%',
+    position: 'relative',
     boxSizing: 'border-box',
-    paddingTop: ({topInset, header, os}) => {
-      let padding = topInset;
-
-      if (header) {
-        padding += os === OS.IOS ? 52 : 56;
-      }
-
-      return padding;
+    padding: ({topInset, bottomInset, header}) => {
+      return `${topInset + (header ? 52 : 0)}px 0 ${bottomInset}px`;
     },
-    paddingBottom: ({bottomInset}) => bottomInset,
+  },
+  rootAndroid: {
+    padding: ({topInset, bottomInset, header}) => {
+      return `${topInset + (header ? 56 : 0)}px 0 ${bottomInset}px`;
+    },
+  },
+  separator: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: ({topInset, header}) => topInset + (header ? 52 : 0),
+  },
+  separatorAndroid: {
+    top: ({topInset, header}) => topInset + (header ? 56 : 0),
   },
 }), {name: 'Panel'});
 
@@ -44,7 +52,6 @@ export const Panel = memo((props: PanelProps) => {
     header,
     topInset: top,
     bottomInset: bottom,
-    os,
   });
   let content: ReactNode | ReactNodeArray = null;
 
@@ -70,5 +77,20 @@ export const Panel = memo((props: PanelProps) => {
     });
   }
 
-  return <div className={c(mc.root, className)} {...rest}>{content}</div>;
+  const isAndroid = os === OS.Android;
+  const rootClassName = c(
+    className,
+    mc.root,
+    {[mc.rootAndroid]: isAndroid},
+  );
+  const separatorClassName = c(mc.separator, {
+    [mc.separatorAndroid]: isAndroid,
+  });
+
+  return (
+    <div className={rootClassName} {...rest}>
+      <Separator className={separatorClassName}/>
+      {content}
+    </div>
+  );
 });
