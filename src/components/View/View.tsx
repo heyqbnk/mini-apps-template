@@ -7,7 +7,6 @@ import {Theme} from '../../theme';
 import {Suspend} from '../Suspend';
 
 import {useInsets} from '../../hooks';
-import {useRouter} from '../Router';
 
 import {ViewProps} from './types';
 
@@ -24,15 +23,14 @@ const useStyles = makeStyles<Theme, UseStylesProps>(() => ({
 }), {name: 'View'});
 
 export const View = memo((props: ViewProps) => {
-  const {children, className, isSuspended, ...rest} = props;
+  const {children, className, isSuspended, activePanel, ...rest} = props;
   const {top, bottom} = useInsets();
-  const {currentState} = useRouter();
   const mc = useStyles({...props, topInset: top, bottomInset: bottom});
   const _className = c(mc.root, className);
 
   return (
     <div className={_className} {...rest}>
-      <Suspend activeElement={currentState.panel}>{children}</Suspend>
+      <Suspend activeElement={activePanel}>{children}</Suspend>
     </div>
   );
 });

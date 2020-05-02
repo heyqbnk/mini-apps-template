@@ -8,4 +8,8 @@ export interface ViewProps
    * Panels array
    */
   children: ClassicElement<PanelProps> | ClassicElement<PanelProps>[];
+  /**
+   * Currently active panel
+   */
+  activePanel: string;
 }

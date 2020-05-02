@@ -8,13 +8,13 @@ export interface PanelProps
    */
   header?: boolean;
   /**
+   * Component which should be rendered
+   */
+  component?: ComponentType<Suspendable>;
+  /**
    * Components which can accept suspendable props
    */
   children?:
     | ClassicElement<Suspendable>
     | ClassicElement<Suspendable>[];
-  /**
-   * Component which should be rendered
-   */
-  component?: ComponentType<Suspendable>;
 }

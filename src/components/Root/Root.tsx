@@ -4,18 +4,18 @@ import {Suspend} from '../Suspend';
 
 import {ViewProps} from '../View';
 
-import {useRouter} from '../Router';
-
-export interface ViewControllerProps {
+export interface RootProps {
   /**
-   * Views array
+   * Views
    */
   children: ClassicElement<ViewProps> | ClassicElement<ViewProps>[];
+  /**
+   * Currently active view
+   */
+  activeView: string;
 }
 
-export const Root = memo((props: ViewControllerProps) => {
-  const {children} = props;
-  const {currentState} = useRouter();
-
-  return <Suspend activeElement={currentState.view}>{children}</Suspend>;
+export const Root = memo((props: RootProps) => {
+  const {children, activeView} = props;
+  return <Suspend activeElement={activeView}>{children}</Suspend>;
 });

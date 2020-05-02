@@ -1,20 +1,17 @@
 import React, {memo, useEffect} from 'react';
 
-import {Root} from '../Root';
-import {View} from '../View';
-import {Panel} from '../Panel';
-import {MainPanel} from '../_presentation/MainPanel';
-import {ButtonPanel} from '../_presentation/ButtonPanel';
-import {SelectPanel} from '../_presentation/SelectPanel';
-import {InputPanel} from '../_presentation/InputPanel';
+import {AppTree} from '../AppTree';
 
 import {useDoubleTapHandler} from '../../hooks';
+import {useRouter} from '../Router';
+import {appTree} from '../../appTree';
 
 /**
  * Visual entry of application
  * @type {React.NamedExoticComponent<object>}
  */
 export const App = memo(() => {
+  const {view, panel} = useRouter().currentState;
   const onTouchStart = useDoubleTapHandler();
 
   // Add handler which prevents scroll after double tapping the screen
@@ -25,14 +22,5 @@ export const App = memo(() => {
     return () => body.removeEventListener('touchstart', onTouchStart);
   }, [onTouchStart]);
 
-  return (
-    <Root>
-      <View id={'presentation'}>
-        <Panel id={'main'} header={true} component={MainPanel}/>
-        <Panel id={'button'} header={true} component={ButtonPanel}/>
-        <Panel id={'select'} header={true} component={SelectPanel}/>
-        <Panel id={'input'} header={true} component={InputPanel}/>
-      </View>
-    </Root>
-  );
+  return <AppTree tree={appTree} activeView={view} activePanel={panel}/>;
 });
