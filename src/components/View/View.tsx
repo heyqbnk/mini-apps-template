@@ -19,11 +19,15 @@ const useStyles = makeStyles<Theme, UseStylesProps>(() => ({
   root: {
     height: '100%',
     width: '100%',
+    position: 'relative',
   },
 }), {name: 'View'});
 
 export const View = memo((props: ViewProps) => {
-  const {children, className, isSuspended, activePanel, ...rest} = props;
+  const {
+    children, className, isSuspended, keepMounted, componentType,
+    wasMountedBefore, keepMountedAfterSuspend, activePanel, ...rest
+  } = props;
   const {top, bottom} = useInsets();
   const mc = useStyles({...props, topInset: top, bottomInset: bottom});
   const _className = c(mc.root, className);
