@@ -1,4 +1,4 @@
-import {ThemeDefaults} from './types';
+import {ThemeDefaults} from '../types';
 
 export const themeDefaults: ThemeDefaults = {
   typography: {

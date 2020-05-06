@@ -25,7 +25,7 @@ export interface RouterLinkProps {
 
 export const RouterLink = memo((props: RouterLinkProps) => {
   const {children, to, pop} = props;
-  const {onClick, ...rest} = children.props;
+  const {onClick} = children.props;
   const {pushState, history} = useRouter();
   const _onClick = useCallback((e: MouseEvent<any>) => {
     if (to) {

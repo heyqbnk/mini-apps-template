@@ -1,9 +1,9 @@
-import {ButtonTheme} from '../../components/Button';
-import {FormControlTheme} from '../../components/FormControl';
-import {InputTheme} from '../../components/Input';
-import {LinkTheme} from '../../components/Link';
-import {SelectTheme} from '../../components/Select';
-import {SeparatorTheme} from '../../components/Separator';
+import {
+  ButtonTheme,
+  FormControlTheme,
+  GlobalStyleSheetTheme,
+  InputTheme, LinkTheme, SelectTheme, SeparatorTheme,
+} from '../component-themes';
 import {PanelTheme} from '../../components/Panel';
 
 /**
@@ -12,6 +12,7 @@ import {PanelTheme} from '../../components/Panel';
 export interface Components {
   Button: ButtonTheme;
   FormControl: FormControlTheme;
+  GlobalStyleSheet: GlobalStyleSheetTheme;
   Input: InputTheme;
   Link: LinkTheme;
   Panel: PanelTheme;

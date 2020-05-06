@@ -2,7 +2,6 @@ import React, {memo} from 'react';
 import c from 'classnames';
 
 import {makeStyles, withStyles} from '@material-ui/styles';
-import {Theme} from '../../theme';
 
 import {Button} from '../Button';
 import {RouterLink} from '../RouterLink';
@@ -26,20 +25,31 @@ const useStyles = makeStyles({
 }, {name: 'PanelHeaderBack'});
 
 export const PanelHeaderBack = memo((props: PanelHeaderBackProps) => {
-  const {...rest} = props;
+  const {iconProps = {}, buttonProps = {}} = props;
   const mc = useStyles(props);
   const os = useOS();
   const isAndroid = os === OS.Android;
+  const IconComponent = isAndroid
+    ? ArrowLeftOutlineIcon
+    : ChevronBackIcon;
+  const {className: _iconClassName, ...restIconProps} = iconProps;
+  const {className: _buttonClassName, ...restButtonProps} = buttonProps;
+
+  const iconClassName = c(_iconClassName, mc.icon);
+  const buttonClassName = c(
+    mc.root,
+    _buttonClassName,
+    {[mc.rootAndroid]: isAndroid},
+  );
 
   return (
     <RouterLink pop={true}>
       <BackButton
-        className={c(mc.root, {[mc.rootAndroid]: isAndroid})}
+        className={buttonClassName}
         variant={'tertiary'}
+        {...restButtonProps}
       >
-        {isAndroid
-          ? <ArrowLeftOutlineIcon className={mc.icon}/>
-          : <ChevronBackIcon className={mc.icon}/>}
+        <IconComponent className={iconClassName} {...restIconProps}/>
       </BackButton>
     </RouterLink>
   );

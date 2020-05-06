@@ -1,12 +1,15 @@
 import {Theme} from '../types';
-import {themeDefaults} from '../themeDefaults';
+import {themeDefaults} from './themeDefaults';
 
-import {buttonSpaceGrayTheme} from '../component-themes';
-import {formControlSpaceGrayTheme} from '../../components/FormControl';
-import {inputSpaceGrayTheme} from '../../components/Input';
-import {linkSpaceGrayTheme} from '../../components/Link';
-import {selectSpaceGrayTheme} from '../../components/Select';
-import {separatorSpaceGrayTheme} from '../../components/Separator';
+import {
+  buttonSpaceGrayTheme,
+  formControlSpaceGrayTheme,
+  globalStyleSheetSpaceGrayTheme,
+  inputSpaceGrayTheme,
+  linkSpaceGrayTheme,
+  selectSpaceGrayTheme,
+  separatorSpaceGrayTheme,
+} from '../component-themes';
 import {panelSpaceGrayTheme} from '../../components/Panel';
 
 export const spaceGrayTheme: Theme = {
@@ -14,6 +17,7 @@ export const spaceGrayTheme: Theme = {
   components: {
     Button: buttonSpaceGrayTheme,
     FormControl: formControlSpaceGrayTheme,
+    GlobalStyleSheet: globalStyleSheetSpaceGrayTheme,
     Input: inputSpaceGrayTheme,
     Link: linkSpaceGrayTheme,
     Panel: panelSpaceGrayTheme,
@@ -21,7 +25,6 @@ export const spaceGrayTheme: Theme = {
     Separator: separatorSpaceGrayTheme,
   },
   palette: {
-    bodyText: '#e1e3e6',
     text: {
       primary: '#e1e3e6',
       secondary: '#76787a',

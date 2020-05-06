@@ -22,38 +22,40 @@ import {isOptionWithValue} from './utils';
 import {SelectProps} from './types';
 
 const useStyles = makeStyles<Theme, SelectProps>(theme => {
-  const {colors} = theme.components.Select;
+  const {
+    foregroundColor, iconColor, placeholderColor,
+  } = theme.components.Select;
 
   return {
     root: {
       padding: '13px 40px 13px 12px',
-        position: 'relative',
+      position: 'relative',
     },
     select: {
       position: 'absolute',
-        left: 0,
-        top: 0,
-        opacity: 0,
-        height: '100%',
-        width: '100%',
-        zIndex: 1,
+      left: 0,
+      top: 0,
+      opacity: 0,
+      height: '100%',
+      width: '100%',
+      zIndex: 1,
     },
     title: {
-      color: colors.foreground,
+      color: foregroundColor,
     },
     arrow: {
-      color: colors.icon,
-        position: 'absolute',
-        right: 12,
-        top: '50%',
-        transform: 'translateY(-50%)',
-        width: 24,
-        zIndex: 0,
+      color: iconColor,
+      position: 'absolute',
+      right: 12,
+      top: '50%',
+      transform: 'translateY(-50%)',
+      width: 24,
+      zIndex: 0,
     },
     placeholder: {
-      color: colors.placeholder,
+      color: placeholderColor,
     },
-  }
+  };
 }, {name: 'Select'});
 
 export const Select = memo((props: SelectProps) => {

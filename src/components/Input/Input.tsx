@@ -17,7 +17,7 @@ import {FormControl} from '../FormControl';
 import {InputProps} from './types';
 
 const useStyles = makeStyles<Theme, InputProps>(theme => {
-  const {colors} = theme.components.Input;
+  const {foregroundColor, placeholderColor} = theme.components.Input;
 
   return {
     root: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles<Theme, InputProps>(theme => {
       border: 'none',
       boxSizing: 'border-box',
       padding: '13px 12px',
-      color: colors.foreground,
+      color: foregroundColor,
       '-webkit-appearance': 'none',
       width: '100%',
 
@@ -44,7 +44,7 @@ const useStyles = makeStyles<Theme, InputProps>(theme => {
       position: 'absolute',
       left: 12,
       top: 13,
-      color: colors.placeholder,
+      color: placeholderColor,
     },
   };
 }, {name: 'Input'});

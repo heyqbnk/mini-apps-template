@@ -10,12 +10,14 @@ import {FormControlProps} from './types';
 import {OS} from '../../types';
 
 const useStyles = makeStyles<Theme, FormControlProps>(theme => {
-  const {colors} = theme.components.FormControl;
+  const {
+    borderColor, borderFocusedColor, backgroundColor,
+  } = theme.components.FormControl;
 
   return {
     root: {
-      backgroundColor: colors.background,
-      border: `1px solid ${colors.border}`,
+      backgroundColor,
+      border: `1px solid ${borderColor}`,
       borderRadius: 10,
       boxSizing: 'border-box',
       fontSize: 16,
@@ -25,8 +27,8 @@ const useStyles = makeStyles<Theme, FormControlProps>(theme => {
     rootAndroid: {
       borderRadius: 8,
     },
-    rootFocused: {
-      borderColor: colors.borderFocused,
+    focused: {
+      borderColor: borderFocusedColor,
     },
   };
 }, {name: 'FormControl'});
@@ -37,7 +39,7 @@ export const FormControl = memo((props: FormControlProps) => {
   const mc = useStyles(props);
 
   const rootClassName = c(mc.root, className, {
-    [mc.rootFocused]: isFocused,
+    [mc.focused]: isFocused,
     [mc.rootAndroid]: os === OS.Android,
   });
 

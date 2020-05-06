@@ -7,6 +7,5 @@ interface PaletteColor {
  * Palette colors
  */
 export interface Palette {
-  bodyText: string;
   text: PaletteColor;
 }

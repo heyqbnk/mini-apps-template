@@ -1,12 +1,15 @@
 import {Theme} from '../types';
-import {themeDefaults} from '../themeDefaults';
+import {themeDefaults} from './themeDefaults';
 
-import {buttonBrightLightTheme} from '../component-themes';
-import {formControlBrightLightTheme} from '../../components/FormControl';
-import {inputBrightLightTheme} from '../../components/Input';
-import {linkBrightLightTheme} from '../../components/Link';
-import {selectBrightLightTheme} from '../../components/Select';
-import {separatorBrightLightTheme} from '../../components/Separator';
+import {
+  buttonBrightLightTheme,
+  formControlBrightLightTheme,
+  globalStyleSheetBrightLightTheme,
+  inputBrightLightTheme,
+  linkBrightLightTheme,
+  selectBrightLightTheme,
+  separatorBrightLightTheme,
+} from '../component-themes';
 import {panelBrightLightTheme} from '../../components/Panel';
 
 export const brightLightTheme: Theme = {
@@ -14,6 +17,7 @@ export const brightLightTheme: Theme = {
   components: {
     Button: buttonBrightLightTheme,
     FormControl: formControlBrightLightTheme,
+    GlobalStyleSheet: globalStyleSheetBrightLightTheme,
     Input: inputBrightLightTheme,
     Link: linkBrightLightTheme,
     Panel: panelBrightLightTheme,
@@ -21,7 +25,6 @@ export const brightLightTheme: Theme = {
     Separator: separatorBrightLightTheme,
   },
   palette: {
-    bodyText: 'black',
     text: {
       primary: 'black',
       secondary: '#818c99',
