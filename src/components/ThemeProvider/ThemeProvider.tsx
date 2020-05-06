@@ -3,8 +3,7 @@ import React, {memo, useMemo} from 'react';
 import MuiThemeProvider from '@material-ui/styles/ThemeProvider';
 
 import {brightLightTheme, spaceGrayTheme, Theme} from '../../theme';
-import {useSelector} from '../../hooks/useSelector';
-import {extendThemeWithOS} from './utils';
+import {useSelector} from '../../hooks';
 
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
 
@@ -13,21 +12,14 @@ import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
  * @type {React.NamedExoticComponent<Props>}
  */
 export const ThemeProvider = memo(props => {
-  const {scheme, os} = useSelector(state => ({
-    scheme: state.appConfig.scheme,
-    os: state.device.os,
-  }));
-  const {brightTheme, darkTheme} = useMemo(() => ({
-    brightTheme: extendThemeWithOS(brightLightTheme, os),
-    darkTheme: extendThemeWithOS(spaceGrayTheme, os),
-  }), [os]);
+  const scheme = useSelector(state => state.appConfig.scheme);
 
   const themesMap: Record<AppearanceSchemeType, Theme> = useMemo(() => ({
-    client_light: brightTheme,
-    bright_light: brightTheme,
-    client_dark: darkTheme,
-    space_gray: darkTheme,
-  }), [brightTheme, darkTheme]);
+    client_light: brightLightTheme,
+    bright_light: brightLightTheme,
+    client_dark: spaceGrayTheme,
+    space_gray: spaceGrayTheme,
+  }), []);
   const theme = useMemo(() => themesMap[scheme], [themesMap, scheme]);
 
   return <MuiThemeProvider theme={theme}>{props.children}</MuiThemeProvider>;
