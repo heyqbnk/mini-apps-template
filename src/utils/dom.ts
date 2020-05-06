@@ -27,3 +27,13 @@ export function getInsets(): Insets {
     ),
   };
 }
+
+/**
+ * Updates body overflow ability.
+ * TODO: Move to GlobalStyleSheet or some context provider
+ * @param {boolean} overflow
+ */
+export function setBodyOverflow(overflow: boolean) {
+  document.body.style.overflow = overflow ? '' : 'hidden';
+  document.body.style.height = overflow ? '' : '100%';
+}
