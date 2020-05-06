@@ -88,8 +88,8 @@ export const Suspend = memo((props: SuspendProps) => {
       componentType: !isActive && lastPoped !== id
         ? undefined
         : (lastHistoryAction === 'push'
-            ? (lastPoped === id ? 'main' : 'side')
-            : (lastPoped === id ? 'side' : 'main')
+            ? (lastPoped === id ? 'main' : 'alternative')
+            : (lastPoped === id ? 'alternative' : 'main')
         ),
     });
   });
