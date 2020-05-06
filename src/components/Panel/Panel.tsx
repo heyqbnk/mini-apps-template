@@ -2,7 +2,7 @@ import React, {
   cloneElement,
   memo,
   ReactNode,
-  ReactNodeArray, useEffect,
+  ReactNodeArray,
   useMemo,
 } from 'react';
 import c from 'classnames';
@@ -14,10 +14,7 @@ import {Separator} from '../Separator';
 import {CSSTransition} from 'react-transition-group';
 
 import {useInsets, useOS} from '../../hooks';
-import {
-  getTransitionActiveCSS,
-  getTransitionBaseCSS,
-} from './utils';
+import {getTransitionActiveCSS, getTransitionBaseCSS} from './utils';
 
 import {OS} from '../../types';
 import {PanelProps} from './types';
@@ -61,21 +58,24 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   },
 }), {name: 'Panel'});
 
-const useTransitionStyles = makeStyles<Theme, UseTransitionStylesProps>(() => ({
-  enter: ({os, componentType}) => {
-    return getTransitionBaseCSS(os, componentType, 'enter');
-  },
-  enterActive: ({componentType}) => {
-    return getTransitionActiveCSS(componentType, 'enter');
-  },
-  exit: ({os, componentType}) => {
-    return getTransitionBaseCSS(os, componentType, 'exit');
-  },
-  exitActive: ({componentType}) => {
-    return getTransitionActiveCSS(componentType, 'exit');
-  },
-  exitDone: {display: 'none'},
-}), {name: 'Panel'});
+const useTransitionStyles = makeStyles<Theme, UseTransitionStylesProps>(
+  theme => ({
+    enter: ({os, componentType}) => {
+      return getTransitionBaseCSS(theme, os, componentType, 'enter');
+    },
+    enterActive: ({componentType}) => {
+      return getTransitionActiveCSS(theme, componentType, 'enter');
+    },
+    exit: ({os, componentType}) => {
+      return getTransitionBaseCSS(theme, os, componentType, 'exit');
+    },
+    exitActive: ({componentType}) => {
+      return getTransitionActiveCSS(theme, componentType, 'exit');
+    },
+    exitDone: {display: 'none'},
+  }),
+  {name: 'Panel'},
+);
 
 export const Panel = memo((props: PanelProps) => {
   const {

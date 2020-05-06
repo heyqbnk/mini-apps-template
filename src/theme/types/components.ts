@@ -2,9 +2,13 @@ import {
   ButtonTheme,
   FormControlTheme,
   GlobalStyleSheetTheme,
-  InputTheme, LinkTheme, SelectTheme, SeparatorTheme,
+  InputTheme,
+  LinkTheme,
+  PanelTheme,
+  PanelHeaderTheme,
+  SelectTheme,
+  SeparatorTheme,
 } from '../component-themes';
-import {PanelTheme} from '../../components/Panel';
 
 /**
  * Description of themes directly connected with project components
@@ -16,6 +20,7 @@ export interface Components {
   Input: InputTheme;
   Link: LinkTheme;
   Panel: PanelTheme;
+  PanelHeader: PanelHeaderTheme;
   Select: SelectTheme;
   Separator: SeparatorTheme;
 }

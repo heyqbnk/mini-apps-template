@@ -3,5 +3,7 @@ export * from './FormControl';
 export * from './GlobalStyleSheet';
 export * from './Input';
 export * from './Link';
+export * from './Panel';
+export * from './PanelHeader';
 export * from './Select';
 export * from './Separator';

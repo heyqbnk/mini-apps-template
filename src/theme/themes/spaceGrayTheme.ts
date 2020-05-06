@@ -6,11 +6,10 @@ import {
   formControlSpaceGrayTheme,
   globalStyleSheetSpaceGrayTheme,
   inputSpaceGrayTheme,
-  linkSpaceGrayTheme,
+  linkSpaceGrayTheme, panelHeaderSpaceGrayTheme, panelSpaceGrayTheme,
   selectSpaceGrayTheme,
   separatorSpaceGrayTheme,
 } from '../component-themes';
-import {panelSpaceGrayTheme} from '../../components/Panel';
 
 export const spaceGrayTheme: Theme = {
   ...themeDefaults,
@@ -21,6 +20,7 @@ export const spaceGrayTheme: Theme = {
     Input: inputSpaceGrayTheme,
     Link: linkSpaceGrayTheme,
     Panel: panelSpaceGrayTheme,
+    PanelHeader: panelHeaderSpaceGrayTheme,
     Select: selectSpaceGrayTheme,
     Separator: separatorSpaceGrayTheme,
   },

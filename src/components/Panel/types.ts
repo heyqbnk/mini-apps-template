@@ -13,7 +13,3 @@ export interface PanelProps
    */
   component?: ComponentType<SuspendableOptionalProps>;
 }
-
-export interface PanelTheme {
-  backgroundColor: string;
-}

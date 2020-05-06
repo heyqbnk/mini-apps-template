@@ -1,23 +1,19 @@
-import {CreateCSSProperties, CSSProperties} from '@material-ui/styles';
+import {PANEL_TRANSITION_DURATION_IOS} from './constants';
+
+import {CreateCSSProperties} from '@material-ui/styles';
 import {OS} from '../../types';
 import {SuspendComponentType} from '../Suspend';
-
-export const PANEL_TRANSITION_DURATION_IOS = 600;
-// TODO: Android options
-export const PANEL_TRANSITION_DURATION_ANDROID = 600;
-export const PANEL_TRANSITION_TIMING_FUNCTION_IOS = 'cubic-bezier(.36,.66,.04,1)';
-// TODO: Move to theme
-export const PANEL_SUSPENDER_COLOR = 'rgba(0,0,0,.5)';
-export const PANEL_SUSPENDER_ENTER_TIMING_FUNCTION = 'cubic-bezier(0, 0.69, 0.28, 0.99)';
-export const PANEL_SUSPENDER_EXIT_TIMING_FUNCTION = 'linear';
+import {Theme} from '../../theme/types';
 
 /**
  * Returns base transition CSS-properties for IOS
- * @param {SuspendComponentType} componentType
- * @param {"enter" | "exit"} transitionType
  * @returns {CreateCSSProperties}
+ * @param theme
+ * @param componentType
+ * @param transitionType
  */
 function getIOSTransitionBaseCSS(
+  theme: Theme,
   componentType: SuspendComponentType,
   transitionType: 'enter' | 'exit',
 ): CreateCSSProperties {
@@ -31,7 +27,7 @@ function getIOSTransitionBaseCSS(
     top: 0,
     pointerEvents: 'none',
     transition: `${PANEL_TRANSITION_DURATION_IOS}ms all `
-      + PANEL_TRANSITION_TIMING_FUNCTION_IOS,
+      + 'cubic-bezier(.36,.66,.04,1)',
     transform,
 
     '&:before': componentType === 'side' ? {} : {
@@ -42,14 +38,14 @@ function getIOSTransitionBaseCSS(
       width: '100%',
       height: '100%',
       backgroundColor: transitionType === 'enter'
-        ? PANEL_SUSPENDER_COLOR
+        ? theme.components.Panel.suspenderColor
         : 'transparent',
       zIndex: 1,
       transitionDuration: `${PANEL_TRANSITION_DURATION_IOS}ms`,
       transitionProperty: 'background-color',
       transitionTimingFunction: transitionType === 'enter'
-        ? PANEL_SUSPENDER_ENTER_TIMING_FUNCTION
-        : PANEL_SUSPENDER_EXIT_TIMING_FUNCTION,
+        ? 'cubic-bezier(0, 0.69, 0.28, 0.99)'
+        : 'linear',
     },
   };
 }
@@ -61,6 +57,7 @@ function getIOSTransitionBaseCSS(
  * @returns {CreateCSSProperties}
  */
 function getAndroidTransitionBaseCSS(
+  theme: Theme,
   componentType: SuspendComponentType,
   transitionType: 'enter' | 'exit',
 ): CreateCSSProperties {
@@ -70,28 +67,32 @@ function getAndroidTransitionBaseCSS(
 /**
  * Returns base transition CSS-properties
  * @param {OS} os
- * @param {SuspendComponentType} componentType
- * @param {"enter" | "exit"} transitionType
+ * @param theme
+ * @param componentType
+ * @param transitionType
  * @returns {CreateCSSProperties}
  */
 export function getTransitionBaseCSS(
+  theme: Theme,
   os: OS,
   componentType: SuspendComponentType,
   transitionType: 'enter' | 'exit',
 ): CreateCSSProperties {
   if (os === OS.IOS) {
-    return getIOSTransitionBaseCSS(componentType, transitionType);
+    return getIOSTransitionBaseCSS(theme, componentType, transitionType);
   }
-  return getAndroidTransitionBaseCSS(componentType, transitionType);
+  return getAndroidTransitionBaseCSS(theme, componentType, transitionType);
 }
 
 /**
  * Returns CSS for active phase of transition
+ * @param theme
  * @param {SuspendComponentType} componentType
  * @param {"enter" | "exit"} transitionType
  * @returns {CreateCSSProperties}
  */
 export function getTransitionActiveCSS(
+  theme: Theme,
   componentType: SuspendComponentType,
   transitionType: 'enter' | 'exit',
 ): CreateCSSProperties {
@@ -106,7 +107,9 @@ export function getTransitionActiveCSS(
 
     '&:before': {
       backgroundColor: componentType === 'main'
-        ? (transitionType === 'enter' ? 'transparent' : PANEL_SUSPENDER_COLOR)
+        ? (transitionType === 'enter'
+          ? 'transparent'
+          : theme.components.Panel.suspenderColor)
         : undefined,
     },
   };

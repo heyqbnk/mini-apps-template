@@ -12,6 +12,11 @@ import {useInsets, useOS} from '../../hooks';
 import {ReactComponent as ArrowLeftOutlineIcon} from '../../assets/arrow-left-outline.svg';
 import {ReactComponent as ChevronBackIcon} from '../../assets/chevron-back.svg';
 
+import {
+  PANEL_HEADER_HEIGHT_ANDROID,
+  PANEL_HEADER_HEIGHT_IOS,
+} from './constants';
+
 import {OS} from '../../types';
 import {PanelHeaderProps} from './types';
 
@@ -30,15 +35,15 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     left: 0,
     top: 0,
     width: '100%',
-    height: ({topInset}) => 52 + topInset,
+    height: PANEL_HEADER_HEIGHT_IOS - 8,
     padding: ({topInset}) => `${topInset + 4}px 4px 4px`,
-    boxSizing: 'border-box',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    backgroundColor: theme.components.PanelHeader.backgroundColor,
   },
   rootAndroid: {
-    height: ({topInset}) => 56 + topInset,
+    height: PANEL_HEADER_HEIGHT_ANDROID - 8,
   },
   backButton: {
     padding: 8,

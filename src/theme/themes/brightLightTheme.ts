@@ -6,11 +6,10 @@ import {
   formControlBrightLightTheme,
   globalStyleSheetBrightLightTheme,
   inputBrightLightTheme,
-  linkBrightLightTheme,
+  linkBrightLightTheme, panelBrightLightTheme, panelHeaderBrightLightTheme,
   selectBrightLightTheme,
   separatorBrightLightTheme,
 } from '../component-themes';
-import {panelBrightLightTheme} from '../../components/Panel';
 
 export const brightLightTheme: Theme = {
   ...themeDefaults,
@@ -21,6 +20,7 @@ export const brightLightTheme: Theme = {
     Input: inputBrightLightTheme,
     Link: linkBrightLightTheme,
     Panel: panelBrightLightTheme,
+    PanelHeader: panelHeaderBrightLightTheme,
     Select: selectBrightLightTheme,
     Separator: separatorBrightLightTheme,
   },
