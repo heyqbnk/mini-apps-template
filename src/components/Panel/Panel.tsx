@@ -145,10 +145,18 @@ export const Panel = memo((props: PanelProps) => {
   );
 
   // Restricts body overflow on panel enter
-  const onEnter = useCallback(() => setBodyOverflow(false), []);
+  const hideBodyOverflow = useCallback(() => {
+    if (componentType === 'alternative') {
+      setBodyOverflow(false);
+    }
+  }, [componentType]);
 
   // Restores body overflow
-  const onEntered = useCallback(() => setBodyOverflow(true), []);
+  const showBodyOverflow = useCallback(() => {
+    if (componentType === 'alternative') {
+      setBodyOverflow(true);
+    }
+  }, [componentType]);
 
   return (
     <CSSTransition
@@ -157,8 +165,10 @@ export const Panel = memo((props: PanelProps) => {
       unmountOnExit={!keepMountedOnExit}
       classNames={mcTransitions}
       timeout={timeout}
-      onEnter={onEnter}
-      onEntered={onEntered}
+      onEnter={hideBodyOverflow}
+      onExit={hideBodyOverflow}
+      onEntered={showBodyOverflow}
+      onExited={showBodyOverflow}
     >
       <div className={rootClassName} id={id} {...rest}>
         <div className={mc.content}>
