@@ -34,7 +34,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     position: 'fixed',
     left: 0,
     top: 0,
-    width: '100%',
+    width: 'calc(100% - 8px)',
     height: PANEL_HEADER_HEIGHT_IOS - 8,
     padding: ({topInset}) => `${topInset + 4}px 4px 4px`,
     display: 'flex',
@@ -43,6 +43,7 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     backgroundColor: theme.components.PanelHeader.backgroundColor,
   },
   rootAndroid: {
+    position: 'absolute',
     height: PANEL_HEADER_HEIGHT_ANDROID - 8,
   },
   backButton: {

@@ -3,7 +3,7 @@ import {ReactElement} from 'react';
 /**
  * Type of suspend component
  */
-export type SuspendComponentType = 'main' | 'side';
+export type SuspendComponentType = 'main' | 'alternative';
 
 /**
  * Last history action
