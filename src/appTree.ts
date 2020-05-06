@@ -6,7 +6,7 @@ import {InputPanel} from './components/_presentation/InputPanel';
 
 /**
  * Represents application views tree
- * @type {{presentation: {panels: {button: {component: React.NamedExoticComponent<object>; header: boolean}; input: {component: React.NamedExoticComponent<object>; header: boolean}; select: {component: React.NamedExoticComponent<object>; header: boolean}; main: {component: React.NamedExoticComponent<object>; header: boolean}}}}}
+ * @type {{presentation: {panels: {button: {keepMounted: boolean; component: React.NamedExoticComponent<object>; header: boolean}; input: {component: React.NamedExoticComponent<object>; header: boolean}; select: {component: React.NamedExoticComponent<object>; header: boolean}; main: {component: React.NamedExoticComponent<object>; header: boolean}}}}}
  */
 export const appTree: ViewTree = {
   presentation: {
@@ -18,6 +18,7 @@ export const appTree: ViewTree = {
       button: {
         header: true,
         component: ButtonPanel,
+        keepMounted: true,
       },
       select: {
         header: true,

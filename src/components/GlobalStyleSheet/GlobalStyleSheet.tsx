@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     // Set body and #root defaults
     body: {
       overflowX: 'hidden',
-      backgroundColor: theme.palette.bodyBackground,
       color: theme.palette.bodyText,
       fontFamily: theme.typography.fontFamily,
       fontSize: theme.typography.fontSize,

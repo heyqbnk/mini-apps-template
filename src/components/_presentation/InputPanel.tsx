@@ -18,11 +18,11 @@ export const InputPanel = memo(() => {
 
   return (
     <>
-      <PanelHeader backButton={true}>Select</PanelHeader>
+      <PanelHeader backButton={true}>Input</PanelHeader>
       <div className={mc.root}>
         <Controls/>
         <Subtitle>Example</Subtitle>
-        <Input placeholder={'You name'}/>
+        <Input placeholder={'Your name'}/>
       </div>
     </>
   );

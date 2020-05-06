@@ -7,6 +7,7 @@ import {inputSpaceGrayTheme} from '../components/Input';
 import {linkSpaceGrayTheme} from '../components/Link';
 import {selectSpaceGrayTheme} from '../components/Select';
 import {separatorSpaceGrayTheme} from '../components/Separator';
+import {panelSpaceGrayTheme} from '../components/Panel';
 
 export const spaceGrayTheme: Theme = {
   ...themeDefaults,
@@ -15,11 +16,11 @@ export const spaceGrayTheme: Theme = {
     FormControl: formControlSpaceGrayTheme,
     Input: inputSpaceGrayTheme,
     Link: linkSpaceGrayTheme,
+    Panel: panelSpaceGrayTheme,
     Select: selectSpaceGrayTheme,
     Separator: separatorSpaceGrayTheme,
   },
   palette: {
-    bodyBackground: '#19191a',
     bodyText: '#e1e3e6',
     text: {
       primary: '#e1e3e6',

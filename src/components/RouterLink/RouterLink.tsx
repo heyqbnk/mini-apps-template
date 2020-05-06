@@ -42,7 +42,6 @@ export const RouterLink = memo((props: RouterLinkProps) => {
   return cloneElement(
     children,
     {
-      ...rest,
       onClick: _onClick,
       href: undefined,
     },

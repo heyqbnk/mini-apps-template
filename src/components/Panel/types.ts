@@ -1,20 +1,19 @@
-import {Suspendable, SuspendableComponent} from '../Suspend';
-import {ClassicElement, ComponentType, HTMLAttributes} from 'react';
+import {SuspendableOptionalProps, SuspendableComponentProps} from '../Suspend';
+import {ComponentType, HTMLAttributes} from 'react';
 
 export interface PanelProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'id'>, SuspendableComponent {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'id' | 'children'>,
+    SuspendableComponentProps {
   /**
    * Does panel contains header
    */
   header?: boolean;
   /**
-   * Component which should be rendered
+   * Component which should be rendered inside panel
    */
-  component?: ComponentType<Suspendable>;
-  /**
-   * Components which can accept suspendable props
-   */
-  children?:
-    | ClassicElement<Suspendable>
-    | ClassicElement<Suspendable>[];
+  component?: ComponentType<SuspendableOptionalProps>;
+}
+
+export interface PanelTheme {
+  backgroundColor: string;
 }

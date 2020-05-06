@@ -1,21 +1,30 @@
 import {ReactElement} from 'react';
 
-export interface Suspendable {
+/**
+ * Type of suspend component
+ */
+export type SuspendComponentType = 'main' | 'side';
+
+/**
+ * Last history action
+ */
+export type SuspendLastHistoryActionType = 'push' | 'pop';
+
+export interface SuspendableOptionalProps {
   /**
    * Means that component is currently suspended (not active)
    */
   isSuspended?: boolean;
-}
-
-export interface SuspendableComponent extends Suspendable {
   /**
-   * Element unique identifier
+   * States if component was mounted earlier
    */
-  id: string;
+  wasMountedBefore?: boolean;
   /**
-   * Guarantees that component is always mounted until its parent is unmounted
+   * Guarantees that component is always mounted until its parent is unmounted.
+   *
+   * To detect, if component is currently active, use "isSuspended" prop
    */
-  isAlwaysMounted?: boolean;
+  keepMounted?: boolean;
   /**
    * Makes component stay in React tree after it became suspended. It means,
    * component will not call methods like componentWillUnmount or something
@@ -24,10 +33,28 @@ export interface SuspendableComponent extends Suspendable {
    * so, all onmount handlers will be called.
    *
    * This feature is required when you don't want to call some handlers each
-   * time component mounts. To detect, if component is currently active, use
-   * "isSuspended" prop
+   * time component mounts.
+   *
+   * To detect, if component is currently active, use "isSuspended" prop
    */
   keepMountedAfterSuspend?: boolean;
+  /**
+   * Current transition animation type
+   */
+  componentType?: SuspendComponentType;
+}
+
+export interface SuspendableComponentProps extends SuspendableOptionalProps {
+  /**
+   * Element unique identifier
+   */
+  id: string;
+  /**
+   * Children which can optionally support passed props by Suspend
+   */
+  children?:
+    | ReactElement<SuspendableOptionalProps>
+    | ReactElement<SuspendableOptionalProps>[];
 }
 
 export interface SuspendProps {
@@ -39,6 +66,6 @@ export interface SuspendProps {
    * List of suspendable items
    */
   children:
-    | ReactElement<SuspendableComponent>
-    | ReactElement<SuspendableComponent>[];
+    | ReactElement<SuspendableComponentProps>
+    | ReactElement<SuspendableComponentProps>[];
 }

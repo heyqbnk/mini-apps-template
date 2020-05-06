@@ -1,17 +1,16 @@
 import {ComponentType} from 'react';
 import {ViewProps} from '../View';
 import {PanelProps} from '../Panel';
-import {Suspendable, SuspendableComponent} from '../Suspend';
-
-interface TreeElementProps extends Pick<SuspendableComponent,
-  'isAlwaysMounted' | 'keepMountedAfterSuspend'> {
-}
+import {SuspendableOptionalProps} from '../Suspend';
 
 export interface Tree<T> {
   [id: string]: T;
 }
 
-export interface TreePanel extends TreeElementProps {
+type AllowedSuspendableProps = Omit<SuspendableOptionalProps,
+  'isSuspended' | 'wasMountedBefore' | 'transitionStatus'>;
+
+export interface TreePanel extends AllowedSuspendableProps {
   /**
    * Component which will be used instead of default "Panel"
    */
@@ -21,12 +20,12 @@ export interface TreePanel extends TreeElementProps {
    */
   header?: boolean;
   /**
-   * Component which should be rendered
+   * Component which should be rendered inside panel
    */
-  component: ComponentType<Suspendable>;
+  component: ComponentType<SuspendableOptionalProps>;
 }
 
-export interface TreeView extends TreeElementProps {
+export interface TreeView extends AllowedSuspendableProps {
   /**
    * Component which will be used instead of default "View"
    */

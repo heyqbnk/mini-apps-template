@@ -1,9 +1,10 @@
 import {ClassicElement, HTMLAttributes} from 'react';
-import {SuspendableComponent} from '../Suspend';
+import {SuspendableComponentProps} from '../Suspend';
 import {PanelProps} from '../Panel';
 
 export interface ViewProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'id'>, SuspendableComponent {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'id'>,
+    SuspendableComponentProps {
   /**
    * Panels array
    */
