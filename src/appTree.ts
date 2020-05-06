@@ -18,6 +18,7 @@ export const appTree: ViewTree = {
       button: {
         header: true,
         component: ButtonPanel,
+        // ButtonPanel will always be in React tree
         keepMounted: true,
       },
       select: {
@@ -27,7 +28,10 @@ export const appTree: ViewTree = {
       input: {
         header: true,
         component: InputPanel,
+        // InputPanel will stay mounted in case if not active, but was active
+        // at least once
+        keepMountedAfterSuspend: true,
       },
-    }
-  }
+    },
+  },
 };
