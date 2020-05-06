@@ -2,8 +2,7 @@ import React, {
   cloneElement,
   memo,
   ReactNode,
-  ReactNodeArray,
-  useMemo,
+  ReactNodeArray, useCallback,
 } from 'react';
 import c from 'classnames';
 
@@ -14,11 +13,23 @@ import {Separator} from '../Separator';
 import {CSSTransition} from 'react-transition-group';
 
 import {useInsets, useOS} from '../../hooks';
-import {getTransitionActiveCSS, getTransitionBaseCSS} from './utils';
+import {
+  createActiveTransitionHandler,
+  createStartTransitionHandler,
+} from './utils';
+import {
+  PANEL_HEADER_HEIGHT_ANDROID,
+  PANEL_HEADER_HEIGHT_IOS,
+} from '../PanelHeader';
 
 import {OS} from '../../types';
 import {PanelProps} from './types';
 import {SuspendComponentType} from '../Suspend';
+import {
+  PANEL_TRANSITION_ANDROID_DURATION,
+  PANEL_TRANSITION_IOS_DURATION,
+} from './constants';
+import {setBodyOverflow} from '../../utils';
 
 interface UseStylesProps extends PanelProps {
   topInset: number;
@@ -34,44 +45,33 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   root: {
     width: '100%',
     height: '100%',
-    position: 'relative',
     boxSizing: 'border-box',
-    backgroundColor: theme.components.Panel.backgroundColor,
     padding: ({topInset, bottomInset, header}) => {
-      return `${topInset + (header ? 52 : 0)}px 0 ${bottomInset}px`;
+      const paddingTop = topInset + (header ? PANEL_HEADER_HEIGHT_IOS : 0);
+      return `${paddingTop}px 0 ${bottomInset}px`;
     },
   },
   rootAndroid: {
     padding: ({topInset, bottomInset, header}) => {
-      return `${topInset + (header ? 56 : 0)}px 0 ${bottomInset}px`;
+      const paddingTop = topInset + (header ? PANEL_HEADER_HEIGHT_ANDROID : 0);
+      return `${paddingTop}px 0 ${bottomInset}px`;
     },
   },
-  rootUnmounted: {display: 'none'},
-  separator: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: ({topInset, header}) => topInset + (header ? 52 : 0),
+  content: {
+    width: '100%',
+    height: '100%',
+    overflow: 'auto',
+    backgroundColor: theme.components.Panel.backgroundColor,
   },
-  separatorAndroid: {
-    top: ({topInset, header}) => topInset + (header ? 56 : 0),
-  },
+  unmounted: {display: 'none'},
 }), {name: 'Panel'});
 
 const useTransitionStyles = makeStyles<Theme, UseTransitionStylesProps>(
   theme => ({
-    enter: ({os, componentType}) => {
-      return getTransitionBaseCSS(theme, os, componentType, 'enter');
-    },
-    enterActive: ({componentType}) => {
-      return getTransitionActiveCSS(theme, componentType, 'enter');
-    },
-    exit: ({os, componentType}) => {
-      return getTransitionBaseCSS(theme, os, componentType, 'exit');
-    },
-    exitActive: ({componentType}) => {
-      return getTransitionActiveCSS(theme, componentType, 'exit');
-    },
+    enter: createStartTransitionHandler(theme, 'enter'),
+    enterActive: createActiveTransitionHandler(theme, 'enter'),
+    exit: createStartTransitionHandler(theme, 'exit'),
+    exitActive: createActiveTransitionHandler(theme, 'exit'),
     exitDone: {display: 'none'},
   }),
   {name: 'Panel'},
@@ -119,8 +119,9 @@ export const Panel = memo((props: PanelProps) => {
   const keepMountedOnExit = keepMounted
     || (keepMountedAfterSuspend && wasMountedBefore);
   const isAndroid = os === OS.Android;
-  // TODO: Replace with value from theme
-  const duration = useMemo(() => 600, [os]);
+  const timeout = isAndroid
+    ? PANEL_TRANSITION_ANDROID_DURATION
+    : PANEL_TRANSITION_IOS_DURATION;
 
   const mc = useStyles({
     ...props,
@@ -130,22 +131,24 @@ export const Panel = memo((props: PanelProps) => {
   });
 
   const mcTransitions = useTransitionStyles({
-    componentType: componentType || 'side',
+    componentType: componentType || 'alternative',
     os,
-  });
-
-  const separatorClassName = c(mc.separator, {
-    [mc.separatorAndroid]: isAndroid,
   });
 
   const rootClassName = c(
     className,
     mc.root,
     {
+      [mc.unmounted]: !wasMountedBefore,
       [mc.rootAndroid]: isAndroid,
-      [mc.rootUnmounted]: !wasMountedBefore,
     },
   );
+
+  // Restricts body overflow on panel enter
+  const onEnter = useCallback(() => setBodyOverflow(false), []);
+
+  // Restores body overflow
+  const onEntered = useCallback(() => setBodyOverflow(true), []);
 
   return (
     <CSSTransition
@@ -153,11 +156,15 @@ export const Panel = memo((props: PanelProps) => {
       mountOnEnter={!keepMounted}
       unmountOnExit={!keepMountedOnExit}
       classNames={mcTransitions}
-      timeout={duration}
+      timeout={timeout}
+      onEnter={onEnter}
+      onEntered={onEntered}
     >
       <div className={rootClassName} id={id} {...rest}>
-        <Separator className={separatorClassName}/>
-        {content}
+        <div className={mc.content}>
+          <Separator/>
+          {content}
+        </div>
       </div>
     </CSSTransition>
   );

@@ -1,5 +1,10 @@
-import {SuspendableOptionalProps, SuspendableComponentProps} from '../Suspend';
+import {
+  SuspendableOptionalProps,
+  SuspendableComponentProps,
+  SuspendComponentType,
+} from '../Suspend';
 import {ComponentType, HTMLAttributes} from 'react';
+import {OS} from '../../types';
 
 export interface PanelProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'id' | 'children'>,
@@ -12,4 +17,14 @@ export interface PanelProps
    * Component which should be rendered inside panel
    */
   component?: ComponentType<SuspendableOptionalProps>;
+}
+
+/**
+ * CSS transition phase types
+ */
+export type PanelTransitionType = 'enter' | 'exit';
+
+export interface PanelCSSHandlerRequiredOptions {
+  os: OS;
+  componentType: SuspendComponentType;
 }
