@@ -31,7 +31,7 @@ const useStyles = makeStyles<Theme, InputProps>(theme => {
       backgroundColor: 'transparent',
       border: 'none',
       boxSizing: 'border-box',
-      padding: '13px 12px',
+      padding: '11.5px 12px',
       color: foregroundColor,
       '-webkit-appearance': 'none',
       width: '100%',
@@ -42,8 +42,9 @@ const useStyles = makeStyles<Theme, InputProps>(theme => {
     },
     placeholder: {
       position: 'absolute',
+      top: '50%',
+      transform: 'translateY(-50%)',
       left: 12,
-      top: 13,
       color: placeholderColor,
     },
   };

@@ -28,7 +28,7 @@ const useStyles = makeStyles<Theme, SelectProps>(theme => {
 
   return {
     root: {
-      padding: '13px 40px 13px 12px',
+      padding: '11.5px 40px 11.5px 12px',
       position: 'relative',
     },
     select: {

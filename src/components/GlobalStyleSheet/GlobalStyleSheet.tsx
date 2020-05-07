@@ -36,8 +36,11 @@ const useStyles = makeStyles<Theme, UseStylesProps>((theme: Theme) => {
         fontWeight: 600,
         src: `url("${ttCommonsDemiBold}") format("truetype")`,
       }],
-      // Set body and #root defaults
+      html: {
+        height: '100%',
+      },
       body: {
+        height: '100%',
         overflowX: 'hidden',
         color: textColor,
         fontFamily: ({os}) => getFontFamily(os),
