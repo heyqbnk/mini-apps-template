@@ -7,3 +7,4 @@ export * from './Panel';
 export * from './PanelHeader';
 export * from './Select';
 export * from './Separator';
+export * from './View';

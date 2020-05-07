@@ -1,7 +1,8 @@
-import {HistoryState, Query} from './types';
+import {IDType, ViewsTree, Query, GetRoutes, TreeView} from '../../types';
+import {AnyViewsTree, HistoryState} from './types';
 
 /**
- * Prepares query
+ * Converts search string to query object
  * @param {string} search
  * @returns {Query}
  */
@@ -17,23 +18,29 @@ export function prepareQuery(search: string): Query {
 /**
  * Parses url and returns history state and query
  * @returns {[(HistoryState | null), Query]}
- * @param rawUrl
+ * @param url
+ * @param tree
  */
 export function historyStateFromURL(
-  rawUrl: string,
-): HistoryState | null {
-  const qIndex = rawUrl.indexOf('?');
-  const hIndex = rawUrl.indexOf('#');
-  const url = rawUrl.slice(hIndex + 1, qIndex === -1 ? rawUrl.length : qIndex);
-  const [view, panel, popup = null] = url.split('/');
-  const search = qIndex === -1 ? null : rawUrl.slice(qIndex + 1);
+  url: string,
+  tree: AnyViewsTree,
+): HistoryState<AnyViewsTree> | null {
+  const qIndex = url.indexOf('?');
+  const hIndex = url.indexOf('#');
+  const _url = url.slice(hIndex + 1, qIndex === -1 ? url.length : qIndex);
+  const [view, panel, popup = null] = _url.split('/');
+  const search = qIndex === -1 ? null : url.slice(qIndex + 1);
 
-  return view && panel ? {
+  if (!view || !panel || !tree[view]?.panels[panel]) {
+    return null;
+  }
+
+  return {
     view,
     panel,
     popup,
     query: search ? prepareQuery(search) : {},
-  } : null;
+  };
 }
 
 /**
@@ -41,7 +48,7 @@ export function historyStateFromURL(
  * @param {HistoryState} state
  * @returns {string}
  */
-export function historyStateToURL(state: HistoryState): string {
+export function historyStateToURL(state: HistoryState<AnyViewsTree>): string {
   const {view, panel, popup, query} = state;
   const queryKeys = Object.keys(query);
   const stringifiedQuery = queryKeys.length === 0
@@ -54,11 +61,36 @@ export function historyStateToURL(state: HistoryState): string {
     + (stringifiedQuery === null ? '' : `?${stringifiedQuery}`);
 }
 
-export function shallowEqual<L extends Record<string, any>,
-  R extends Record<string, any>>(
-  left: L,
-  right: R,
-): boolean {
+/**
+ * Returns available routes for tree
+ * @param {T} tree
+ * @returns {GetRoutes<T>[]}
+ */
+export function getRoutes<T extends ViewsTree<ViewId, PanelId, PopupId>,
+  ViewId extends IDType,
+  PanelId extends IDType,
+  PopupId extends IDType>(tree: T): GetRoutes<T>[] {
+  return Object.keys(tree).reduce<GetRoutes<T>[]>((acc, view) => {
+    const {panels} = tree[view as keyof T] as TreeView<PanelId>;
+
+    // TODO: Popups support
+    Object.keys(panels).forEach(panel => acc.push({
+      view: view,
+      panel: panel,
+    } as any));
+
+    return acc;
+  }, []);
+}
+
+/**
+ * Shallowly compares 2 objects
+ * @param {L} left
+ * @param {R} right
+ * @returns {boolean}
+ */
+export function shallowEqual<L extends Record<any, any>,
+  R extends Record<any, any>>(left: L, right: R): boolean {
   const leftKeys = Object.keys(left);
   const rightKeys = Object.keys(right);
 

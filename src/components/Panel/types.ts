@@ -24,6 +24,9 @@ export interface PanelProps
  */
 export type PanelTransitionType = 'enter' | 'exit';
 
+/**
+ * Required CSS handler options
+ */
 export interface PanelCSSHandlerRequiredOptions {
   os: OS;
   componentType: SuspendComponentType;

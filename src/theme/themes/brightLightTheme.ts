@@ -8,7 +8,7 @@ import {
   inputBrightLightTheme,
   linkBrightLightTheme, panelBrightLightTheme, panelHeaderBrightLightTheme,
   selectBrightLightTheme,
-  separatorBrightLightTheme,
+  separatorBrightLightTheme, viewBrightLightTheme,
 } from '../component-themes';
 
 export const brightLightTheme: Theme = {
@@ -23,6 +23,7 @@ export const brightLightTheme: Theme = {
     PanelHeader: panelHeaderBrightLightTheme,
     Select: selectBrightLightTheme,
     Separator: separatorBrightLightTheme,
+    View: viewBrightLightTheme,
   },
   palette: {
     text: {

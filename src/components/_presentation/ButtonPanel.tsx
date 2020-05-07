@@ -13,13 +13,6 @@ const useStyles = makeStyles({
   root: {
     padding: 18,
   },
-  link: {
-    display: 'block',
-
-    '& + &': {
-      marginTop: 10,
-    },
-  },
   item: {
     '& + &': {
       marginTop: 15,

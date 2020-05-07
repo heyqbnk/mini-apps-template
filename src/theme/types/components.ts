@@ -7,7 +7,7 @@ import {
   PanelTheme,
   PanelHeaderTheme,
   SelectTheme,
-  SeparatorTheme,
+  SeparatorTheme, ViewTheme,
 } from '../component-themes';
 
 /**
@@ -23,4 +23,5 @@ export interface Components {
   PanelHeader: PanelHeaderTheme;
   Select: SelectTheme;
   Separator: SeparatorTheme;
+  View: ViewTheme;
 }

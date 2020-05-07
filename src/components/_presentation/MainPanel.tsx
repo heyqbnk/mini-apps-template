@@ -5,6 +5,10 @@ import {makeStyles} from '@material-ui/styles';
 import {RouterLink} from '../RouterLink';
 import {Link} from '../Link';
 import {PanelHeader} from '../PanelHeader';
+import {PanelsEnum, ViewsEnum} from '../../types';
+import {Controls} from './Controls';
+import {SectionItem} from './SectionItem';
+import {Subtitle} from './Subtitle';
 
 const useStyles = makeStyles({
   root: {
@@ -26,15 +30,30 @@ export const MainPanel = memo(() => {
     <>
       <PanelHeader>Components</PanelHeader>
       <div className={mc.root}>
-        <RouterLink to={{panel: 'button'}}>
-          <Link className={mc.link} href={'#'}>Button</Link>
-        </RouterLink>
-        <RouterLink to={{panel: 'select'}}>
-          <Link className={mc.link} href={'#'}>Select</Link>
-        </RouterLink>
-        <RouterLink to={{panel: 'input'}}>
-          <Link className={mc.link} href={'#'}>Input</Link>
-        </RouterLink>
+        <Controls/>
+        <SectionItem>
+          <Subtitle>Miscellaneous</Subtitle>
+          <RouterLink
+            to={{
+              view: ViewsEnum.PresentationViewExample,
+              panel: PanelsEnum.Main,
+            }}
+          >
+            <Link className={mc.link}>Open new view</Link>
+          </RouterLink>
+        </SectionItem>
+        <SectionItem>
+          <Subtitle>Components</Subtitle>
+          <RouterLink to={{panel: PanelsEnum.Button}}>
+            <Link className={mc.link}>Button</Link>
+          </RouterLink>
+          <RouterLink to={{panel: PanelsEnum.Select}}>
+            <Link className={mc.link}>Select</Link>
+          </RouterLink>
+          <RouterLink to={{panel: PanelsEnum.Input}}>
+            <Link className={mc.link}>Input</Link>
+          </RouterLink>
+        </SectionItem>
       </div>
     </>
   );

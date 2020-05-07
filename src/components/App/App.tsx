@@ -4,7 +4,7 @@ import {AppTree} from '../AppTree';
 
 import {useDoubleTapHandler} from '../../hooks';
 import {useRouter} from '../Router';
-import {appTree} from '../../appTree';
+import {viewsTree} from '../../viewsTree';
 
 /**
  * Visual entry of application
@@ -22,5 +22,5 @@ export const App = memo(() => {
     return () => body.removeEventListener('touchstart', onTouchStart);
   }, [onTouchStart]);
 
-  return <AppTree tree={appTree} activeView={view} activePanel={panel}/>;
+  return <AppTree tree={viewsTree} activeView={view} activePanel={panel}/>;
 });

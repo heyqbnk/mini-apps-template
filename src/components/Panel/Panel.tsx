@@ -2,7 +2,7 @@ import React, {
   cloneElement,
   memo,
   ReactNode,
-  ReactNodeArray, useCallback,
+  ReactNodeArray,
 } from 'react';
 import c from 'classnames';
 
@@ -10,7 +10,7 @@ import {makeStyles} from '@material-ui/styles';
 import {Theme} from '../../theme';
 
 import {Separator} from '../Separator';
-import {CSSTransition} from 'react-transition-group';
+import {SuspendTransition} from '../SuspendTransition';
 
 import {useInsets, useOS} from '../../hooks';
 import {
@@ -21,15 +21,14 @@ import {
   PANEL_HEADER_HEIGHT_ANDROID,
   PANEL_HEADER_HEIGHT_IOS,
 } from '../PanelHeader';
-
-import {OS} from '../../types';
-import {PanelProps} from './types';
-import {SuspendComponentType} from '../Suspend';
 import {
   PANEL_TRANSITION_ANDROID_DURATION,
   PANEL_TRANSITION_IOS_DURATION,
 } from './constants';
-import {setBodyOverflow} from '../../utils';
+
+import {OS} from '../../types';
+import {PanelProps} from './types';
+import {SuspendComponentType} from '../Suspend';
 
 interface UseStylesProps extends PanelProps {
   topInset: number;
@@ -63,7 +62,6 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     overflow: 'auto',
     backgroundColor: theme.components.Panel.backgroundColor,
   },
-  unmounted: {display: 'none'},
 }), {name: 'Panel'});
 
 const useTransitionStyles = makeStyles<Theme, UseTransitionStylesProps>(
@@ -116,13 +114,6 @@ export const Panel = memo((props: PanelProps) => {
   const {top, bottom} = useInsets();
   const os = useOS();
 
-  const keepMountedOnExit = keepMounted
-    || (keepMountedAfterSuspend && wasMountedBefore);
-  const isAndroid = os === OS.Android;
-  const timeout = isAndroid
-    ? PANEL_TRANSITION_ANDROID_DURATION
-    : PANEL_TRANSITION_IOS_DURATION;
-
   const mc = useStyles({
     ...props,
     header,
@@ -138,44 +129,26 @@ export const Panel = memo((props: PanelProps) => {
   const rootClassName = c(
     className,
     mc.root,
-    {
-      [mc.unmounted]: !wasMountedBefore,
-      [mc.rootAndroid]: isAndroid,
-    },
+    {[mc.rootAndroid]: os === OS.Android},
   );
 
-  // Restricts body overflow on panel enter
-  const hideBodyOverflow = useCallback(() => {
-    if (componentType === 'alternative') {
-      setBodyOverflow(false);
-    }
-  }, [componentType]);
-
-  // Restores body overflow
-  const showBodyOverflow = useCallback(() => {
-    if (componentType === 'alternative') {
-      setBodyOverflow(true);
-    }
-  }, [componentType]);
-
   return (
-    <CSSTransition
-      in={!isSuspended}
-      mountOnEnter={!keepMounted}
-      unmountOnExit={!keepMountedOnExit}
+    <SuspendTransition
+      isSuspended={isSuspended}
+      keepMounted={keepMounted}
+      keepMountedAfterSuspend={keepMountedAfterSuspend}
+      componentType={componentType}
+      wasMountedBefore={wasMountedBefore}
       classNames={mcTransitions}
-      timeout={timeout}
-      onEnter={hideBodyOverflow}
-      onExit={hideBodyOverflow}
-      onEntered={showBodyOverflow}
-      onExited={showBodyOverflow}
+      androidTransitionDuration={PANEL_TRANSITION_ANDROID_DURATION}
+      iosTransitionDuration={PANEL_TRANSITION_IOS_DURATION}
     >
-      <div className={rootClassName} id={id} {...rest}>
+      <div data-id={id} className={rootClassName} {...rest}>
         <div className={mc.content}>
           <Separator/>
           {content}
         </div>
       </div>
-    </CSSTransition>
+    </SuspendTransition>
   );
 });

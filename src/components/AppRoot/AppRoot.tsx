@@ -26,13 +26,14 @@ import {Store} from 'redux';
 import {Config} from '../../config';
 import {Insets, LaunchParams, OS} from '../../types';
 import {ApolloClient} from 'apollo-client';
+import {AppViewsTree, viewsTree} from '../../viewsTree';
 
 interface State {
   loading: boolean;
   error: string | null;
 }
 
-interface Props {
+export interface AppRootProps {
   /**
    * Environments-based config
    */
@@ -52,14 +53,14 @@ interface Props {
   /**
    * Initial routing state
    */
-  initialHistory?: HistoryType;
+  initialHistory?: HistoryType<AppViewsTree>;
 }
 
 /**
  * Root application component. Everything application requires for showing
  * first screen is being loaded here.
  */
-export class AppRoot extends PureComponent<Props, State> {
+export class AppRoot extends PureComponent<AppRootProps, State> {
   /**
    * True if first app config was received
    * @type {boolean}
@@ -90,7 +91,7 @@ export class AppRoot extends PureComponent<Props, State> {
     error: null,
   };
 
-  public constructor(props: Readonly<Props>) {
+  public constructor(props: Readonly<AppRootProps>) {
     super(props);
     const {os, launchParams, insets, config} = props;
 
@@ -177,7 +178,7 @@ export class AppRoot extends PureComponent<Props, State> {
       <StoreProvider store={this.store}>
         <RootContextProvider value={this.rootContextValue}>
           <ThemeProvider>
-            <Router initialHistory={initialHistory}>
+            <Router initialHistory={initialHistory} viewsTree={viewsTree}>
               <GlobalStyleSheet/>
               <ModalRoot>
                 {content}

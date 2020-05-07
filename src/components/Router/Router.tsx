@@ -1,12 +1,19 @@
-import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import {routerContext} from './context';
-import {createBrowserHistory, History} from 'history';
+import {createBrowserHistory} from 'history';
 import {historyStateFromURL, historyStateToURL, shallowEqual} from './utils';
 
 import {
-  HistoryState,
-  HistoryStateType,
+  AnyHistoryState,
+  AnyHistoryStateType,
   RouterContext,
   RouterProps,
 } from './types';
@@ -14,49 +21,48 @@ import {
 const {Provider} = routerContext;
 
 export const Router = memo((props: RouterProps) => {
-  const {children, initialHistory} = props;
+  const {children, initialHistory, viewsTree} = props;
 
   const [historyStates, setHistoryStates] = useState(initialHistory || []);
-  const history = useMemo<History<HistoryState>>(() => {
-    const h = createBrowserHistory<HistoryState>();
+  const initialHistoryRef = useRef(initialHistory);
+  const history = useMemo(() => {
+    const initialHistory = initialHistoryRef.current;
+    const h = createBrowserHistory<AnyHistoryState>();
 
     // If initial history was passed, add all states to history
     if (initialHistory) {
-      initialHistory.forEach(state => {
-        h.push(historyStateToURL(state), state);
-      });
+      initialHistory.forEach(state => h.push(historyStateToURL(state), state));
     }
     // Otherwise pass current location
     else {
       const url = window.location.hash;
-      const state = historyStateFromURL(url);
+      const state = historyStateFromURL(url, viewsTree);
 
       if (state) {
         h.push(url, state);
       }
     }
     return h;
-    // eslint-disable-next-line
-  }, []);
-  const prevState = useMemo<HistoryState | null>(() => {
+  }, [viewsTree]);
+  const prevState = useMemo<AnyHistoryState | null>(() => {
     return historyStates[historyStates.length - 2] || null;
   }, [historyStates]);
-  const currentState = useMemo<HistoryState>(() => {
+  const currentState = useMemo(() => {
     return historyStates[historyStates.length - 1];
   }, [historyStates]);
 
   // Pushes state to history
-  const pushState = useCallback((historyState: HistoryStateType) => {
+  const pushState = useCallback((historyState: AnyHistoryStateType) => {
     const state = {...history.location.state, ...historyState};
     const url = historyStateToURL(state);
     history.push(url, state);
   }, [history]);
 
   // Creates url
-  const createHref = useCallback((historyState: HistoryStateType) => {
+  const createHref = useCallback((historyState: AnyHistoryStateType) => {
     const state = {...history.location.state, ...historyState};
     const url = historyStateToURL(state);
-    return history.createHref({hash: url, state});
+    return history.createHref({hash: url, state}).slice(1);
   }, [history]);
 
   // Create router context
@@ -71,7 +77,7 @@ export const Router = memo((props: RouterProps) => {
   // Listen for history changes to update currentState
   useEffect(() => {
     return history.listen((location, action) => {
-      const state = historyStateFromURL(location.hash);
+      const state = historyStateFromURL(location.hash, viewsTree);
 
       if (state) {
         setHistoryStates(historyStates => {
@@ -110,7 +116,7 @@ export const Router = memo((props: RouterProps) => {
         });
       }
     });
-  }, [history]);
+  }, [history, viewsTree]);
 
   return <Provider value={context}>{children}</Provider>;
 });

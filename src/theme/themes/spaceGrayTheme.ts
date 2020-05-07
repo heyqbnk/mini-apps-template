@@ -8,7 +8,7 @@ import {
   inputSpaceGrayTheme,
   linkSpaceGrayTheme, panelHeaderSpaceGrayTheme, panelSpaceGrayTheme,
   selectSpaceGrayTheme,
-  separatorSpaceGrayTheme,
+  separatorSpaceGrayTheme, viewSpaceGrayTheme,
 } from '../component-themes';
 
 export const spaceGrayTheme: Theme = {
@@ -23,6 +23,7 @@ export const spaceGrayTheme: Theme = {
     PanelHeader: panelHeaderSpaceGrayTheme,
     Select: selectSpaceGrayTheme,
     Separator: separatorSpaceGrayTheme,
+    View: viewSpaceGrayTheme,
   },
   palette: {
     text: {

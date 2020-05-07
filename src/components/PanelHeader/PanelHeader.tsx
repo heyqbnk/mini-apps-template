@@ -31,7 +31,7 @@ interface UseStylesProps extends PanelHeaderProps {
 
 const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   root: {
-    position: 'fixed',
+    position: 'absolute',
     left: 0,
     top: 0,
     width: 'calc(100% - 8px)',
@@ -43,7 +43,6 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     backgroundColor: theme.components.PanelHeader.backgroundColor,
   },
   rootAndroid: {
-    position: 'absolute',
     height: PANEL_HEADER_HEIGHT_ANDROID - 8,
   },
   backButton: {
@@ -115,6 +114,7 @@ export const PanelHeader = memo((props: PanelHeaderProps) => {
       : <ArrowLeftOutlineIcon className={mc.backButtonIcon}/>;
   }
 
+  // TODO: Use panel context and render with Portal
   return (
     <div className={rootClassName} {...rest}>
       <div className={beforeClassName}>
