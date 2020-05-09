@@ -4,7 +4,7 @@ import {
   ReactNode,
   ReactNodeArray,
 } from 'react';
-import {SuspendTransitionWrapperProps} from '../SuspendTransition';
+import {CustomTransitionProps} from '../SuspendTransition';
 
 /**
  * Type of suspend component
@@ -87,5 +87,5 @@ export interface SuspendProps {
    * Component which will be wrapped around each children. Should represent
    * a component extending SuspendTransitionWrapperProps
    */
-  Transition: ComponentType<SuspendTransitionWrapperProps>;
+  Transition: ComponentType<CustomTransitionProps>;
 }

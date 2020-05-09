@@ -19,6 +19,8 @@ import {
 
 import {OS} from '../../../types';
 import {PanelHeaderProps} from './types';
+import {usePanelTransition} from '../../suspend/PanelTransition';
+import {useViewTransition} from '../../suspend/ViewTransition';
 
 const BackButton = withStyles({
   root: {border: 'none'},
@@ -31,7 +33,7 @@ interface UseStylesProps extends PanelHeaderProps {
 
 const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
   root: {
-    position: 'absolute',
+    position: 'fixed',
     left: 0,
     top: 0,
     width: 'calc(100% - 8px)',
@@ -41,6 +43,9 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: theme.components.PanelHeader.backgroundColor,
+  },
+  rootTransitioning: {
+    position: 'absolute',
   },
   rootAndroid: {
     height: PANEL_HEADER_HEIGHT_ANDROID - 8,
@@ -87,10 +92,15 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
 export const PanelHeader = memo(function PanelHeader(props: PanelHeaderProps) {
   const {children, className, before, after, backButton, ...rest} = props;
   const {os, insets} = useDevice();
+  const {isTransitioning: isPanelTransitioning} = usePanelTransition();
+  const {isTransitioning: isViewTransitioning} = useViewTransition();
   const mc = useStyles({...props, topInset: insets.top});
 
   const isAndroid = os === OS.Android;
-  const rootClassName = c(className, mc.root, {[mc.rootAndroid]: isAndroid});
+  const rootClassName = c(className, mc.root, {
+    [mc.rootAndroid]: isAndroid,
+    [mc.rootTransitioning]: isPanelTransitioning || isViewTransitioning,
+  });
   const backButtonClassName = c(
     mc.backButton,
     {[mc.backButtonAndroid]: isAndroid},

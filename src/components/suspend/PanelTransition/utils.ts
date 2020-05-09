@@ -1,5 +1,6 @@
 import {
-  PANEL_TRANSITION_ANDROID_DURATION, PANEL_TRANSITION_ANDROID_TOP,
+  PANEL_TRANSITION_ANDROID_DURATION,
+  PANEL_TRANSITION_ANDROID_TOP,
   PANEL_TRANSITION_IOS_DURATION,
 } from './constants';
 
@@ -7,8 +8,10 @@ import {CreateCSSProperties} from '@material-ui/styles';
 import {OS} from '../../../types';
 import {SuspendComponentType} from '../Suspend';
 import {Theme} from '../../../theme/types';
-import {PanelCSSHandlerRequiredOptions} from './types';
-import {SuspendTransitionStartPhaseType} from '../SuspendTransition';
+import {
+  SuspendTransitionStartPhaseType,
+  PhaseTransitionHandlerGenerator,
+} from '../SuspendTransition';
 
 /**
  * Returns base transition CSS-properties for IOS
@@ -101,21 +104,19 @@ function getAndroidTransitionBaseCSS(
  * Creates handler which returns base transition CSS-properties
  * @param {Theme} theme
  * @param {SuspendTransitionStartPhaseType} phase
- * @returns {(options: T) => CreateCSSProperties<{}>}
+ * @returns {(options) => CreateCSSProperties<{}>}
  */
-export function createStartPhaseTransitionHandler<T extends PanelCSSHandlerRequiredOptions>(
-  theme: Theme,
-  phase: SuspendTransitionStartPhaseType,
-) {
-  return (options: T) => {
-    const {os, componentType} = options;
+export const createStartPhaseTransitionHandler: PhaseTransitionHandlerGenerator =
+  (theme, phase) => {
+    return options => {
+      const {os, componentType} = options;
 
-    if (os === OS.IOS) {
-      return getIOSTransitionBaseCSS(theme, componentType, phase);
-    }
-    return getAndroidTransitionBaseCSS(theme, componentType, phase);
+      if (os === OS.IOS) {
+        return getIOSTransitionBaseCSS(theme, componentType, phase);
+      }
+      return getAndroidTransitionBaseCSS(theme, componentType, phase);
+    };
   };
-}
 
 /**
  * Returns CSS for active phase of IOS transition
@@ -182,16 +183,14 @@ function getAndroidTransitionActivePhaseCSS(
  * @param {SuspendTransitionStartPhaseType} phase
  * @returns {(options: T) => CreateCSSProperties<{}>}
  */
-export function createActivePhaseTransitionHandler<T extends PanelCSSHandlerRequiredOptions>(
-  theme: Theme,
-  phase: SuspendTransitionStartPhaseType,
-) {
-  return (options: T) => {
-    const {os, componentType} = options;
+export const createActivePhaseTransitionHandler: PhaseTransitionHandlerGenerator =
+  (theme, phase) => {
+    return options => {
+      const {os, componentType} = options;
 
-    if (os === OS.IOS) {
-      return getIOSTransitionActivePhaseCSS(theme, componentType, phase);
-    }
-    return getAndroidTransitionActivePhaseCSS(theme, componentType, phase);
+      if (os === OS.IOS) {
+        return getIOSTransitionActivePhaseCSS(theme, componentType, phase);
+      }
+      return getAndroidTransitionActivePhaseCSS(theme, componentType, phase);
+    };
   };
-}
