@@ -3,7 +3,6 @@ import {memo} from 'react';
 import {makeStyles} from '@material-ui/styles';
 import {Theme} from '../../../theme';
 
-import {ttCommonsDemiBold, ttCommonsMedium, ttCommonsRegular} from './fonts';
 import {useDevice} from '../../providers/DeviceProvider';
 
 import {OS} from '../../../types';
@@ -19,23 +18,6 @@ const useStyles = makeStyles<Theme, UseStylesProps>((theme: Theme) => {
 
   return {
     '@global': {
-      // Add TT Commons font family
-      '@font-face': [{
-        fontFamily: 'TT Commons',
-        fontStyle: 'normal',
-        fontWeight: 400,
-        src: `url("${ttCommonsRegular}") format("woff")`,
-      }, {
-        fontFamily: 'TT Commons',
-        fontStyle: 'normal',
-        fontWeight: 500,
-        src: `url("${ttCommonsMedium}") format("woff")`,
-      }, {
-        fontFamily: 'TT Commons',
-        fontStyle: 'normal',
-        fontWeight: 600,
-        src: `url("${ttCommonsDemiBold}") format("truetype")`,
-      }],
       html: {
         height: '100%',
       },

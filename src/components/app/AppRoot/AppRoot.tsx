@@ -191,12 +191,12 @@ export class AppRoot extends PureComponent<AppRootProps, AppRootState> {
 
     try {
       // Performing all async operations and getting data to launch application
-      // const [storage] = await Promise.all([
-      //   getStorageKeys<StorageValuesMap>(...Object.values(StorageFieldEnum))
-      // ]);
+      const [storage] = await Promise.all([
+        getStorageKeys<StorageValuesMap>(...Object.values(StorageFieldEnum))
+      ]);
 
-      this.setState({loading: false, storage: {}});
-      // this.setState({loading: false, storage});
+      // this.setState({loading: false, storage: {}});
+      this.setState({loading: false, storage});
     } catch (e) {
       // In case error appears, catch it and display
       this.setState({error: e.message, loading: false});
