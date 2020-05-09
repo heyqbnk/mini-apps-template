@@ -5,7 +5,7 @@ import {InputPanel} from './components/_presentation/InputPanel';
 import {ViewExamplePanel} from './components/_presentation/ViewExamplePanel';
 
 import {ViewsEnum, PanelsEnum, GetRoutes} from './types';
-import {HistoryStateType} from './components/Router';
+import {HistoryStateType} from './components/routing/Router';
 
 /**
  * Represents application views tree

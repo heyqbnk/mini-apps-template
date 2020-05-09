@@ -1,7 +1,7 @@
-import {SuspendableOptionalProps} from '../components/Suspend';
+import {SuspendablePublicProps} from '../components/suspend/Suspend';
 import {ComponentType} from 'react';
-import {PanelProps} from '../components/Panel';
-import {ViewProps} from '../components/View';
+import {PanelProps} from '../components/ui/Panel';
+import {ViewProps} from '../components/ui/View';
 
 export type IDType = string | number;
 
@@ -10,15 +10,9 @@ type Tree<ID extends IDType, T> = {
 };
 
 /**
- * Allowed suspendable props to use in trees
- */
-type AllowedSuspendableProps = Omit<SuspendableOptionalProps,
-  'isSuspended' | 'wasMountedBefore' | 'transitionStatus'>;
-
-/**
  * Panel in a tree
  */
-interface TreePanel extends AllowedSuspendableProps {
+interface TreePanel extends SuspendablePublicProps {
   /**
    * Component which will be used instead of default "Panel"
    */
@@ -26,17 +20,17 @@ interface TreePanel extends AllowedSuspendableProps {
   /**
    * Does panel contains header
    */
-  header?: boolean;
+  header?: PanelProps['header'];
   /**
    * Component which should be rendered inside panel
    */
-  component: ComponentType<SuspendableOptionalProps>;
+  component: PanelProps['component'];
 }
 
 /**
  * View in a tree
  */
-export interface TreeView<PanelId extends IDType> extends AllowedSuspendableProps {
+export interface TreeView<PanelId extends IDType> extends SuspendablePublicProps {
   /**
    * Component which will be used instead of default "View"
    */

@@ -1,22 +1,11 @@
-import {useCallback} from 'react';
-import {useActions} from './useActions';
-import {storageActions, StorageReducerState} from '../redux/reducers/storage';
-import {dropStorage} from '../utils/storage';
-import {useSelector} from './useSelector';
-
-type DropStorage = () => Promise<void>;
+import {
+  useVkStorage,
+  VKStorageContext,
+} from '../components/providers/VKStorageProvider';
+import {StorageValuesMap} from '../types';
 
 /**
- * Позволяет работать с мемоизированными значениями bridge storage
- * @returns {[StorageReducerState, DropStorage]}
- */
-export function useStorage(): [StorageReducerState, DropStorage] {
-  const dropAllValues = useActions(storageActions.dropAllValues);
-  const storage = useSelector(state => state.storage);
-  const drop = useCallback<DropStorage>(async () => {
-    await dropStorage();
-    dropAllValues();
-  }, [dropAllValues]);
-
-  return [storage, drop];
-}
+ * Returns application storage
+ * @returns {VKStorageContext<StorageValuesMap>}
+*/
+export const useStorage = () => useVkStorage() as VKStorageContext<StorageValuesMap>;

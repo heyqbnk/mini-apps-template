@@ -1,16 +1,18 @@
 import React, {memo} from 'react';
 
 import {makeStyles} from '@material-ui/styles';
+import {Theme} from '../../theme/types';
 
-import {RouterLink} from '../RouterLink';
-import {Link} from '../Link';
-import {PanelHeader} from '../PanelHeader';
-import {PanelsEnum, ViewsEnum} from '../../types';
+import {RouterLink} from '../routing/RouterLink';
+import {Link} from '../ui/Link';
+import {PanelHeader} from '../ui/PanelHeader';
 import {Controls} from './Controls';
 import {SectionItem} from './SectionItem';
 import {Subtitle} from './Subtitle';
 
-const useStyles = makeStyles({
+import {PanelsEnum, ViewsEnum} from '../../types';
+
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: 18,
   },
@@ -21,9 +23,12 @@ const useStyles = makeStyles({
       marginTop: 10,
     },
   },
-});
+  topText: {
+    marginBottom: 40,
+  },
+}));
 
-export const MainPanel = memo(() => {
+export const MainPanel = memo(function MainPanel() {
   const mc = useStyles();
 
   return (
@@ -31,6 +36,10 @@ export const MainPanel = memo(() => {
       <PanelHeader>Components</PanelHeader>
       <div className={mc.root}>
         <Controls/>
+        <div className={mc.topText}>
+          Here is a playground where you can try components realised in this
+          template.
+        </div>
         <SectionItem>
           <Subtitle>Miscellaneous</Subtitle>
           <RouterLink

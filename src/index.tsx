@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {AppRoot} from './components/AppRoot';
-
-import '@vkontakte/vkui/dist/vkui.css';
+import {AppRoot} from './components/app/AppRoot';
 
 import {getOS, getLaunchParams, getInsets} from './utils';
-import {historyStateFromURL, HistoryType} from './components/Router';
+import {historyStateFromURL, HistoryType} from './components/routing/Router';
 import config from './config';
 import {viewsTree, AppViewsTree} from './viewsTree';
 
 import {PanelsEnum, ViewsEnum} from './types';
+
+import '@vkontakte/vkui/dist/vkui.css';
 
 // Getting current operating system
 const os = getOS(navigator.userAgent);
@@ -23,11 +23,11 @@ const launchParams = getLaunchParams(window.location.search.slice(1));
 const insets = getInsets();
 
 // Prepare initial routing state
-const state = historyStateFromURL(window.location.hash, viewsTree);
+const historyState = historyStateFromURL(window.location.hash, viewsTree);
 
 // NOTE: Not sure this is the correct way of defining initial history.
-// In production, it is required to define initial history depending on
-// state from URL
+//  In enterprise application, it is required to define initial history
+//  depending on state from URL or other logic, not this simple one
 const history: HistoryType<AppViewsTree> = [{
   view: ViewsEnum.Presentation,
   panel: PanelsEnum.Main,
@@ -36,21 +36,21 @@ const history: HistoryType<AppViewsTree> = [{
 }];
 
 if (
-  state
-  && state.view !== history[0].view
-  && state.panel !== history[0].panel
+  historyState
+  && historyState.view !== history[0].view
+  && historyState.panel !== history[0].panel
 ) {
-  history.push(state);
+  history.push(historyState);
 }
 
 // Display application
 ReactDOM.render(
   <AppRoot
-    config={config}
+    envConfig={config}
     os={os}
     launchParams={launchParams}
     insets={insets}
-    initialHistory={history}
+    history={history}
   />,
   document.getElementById('root'),
 );

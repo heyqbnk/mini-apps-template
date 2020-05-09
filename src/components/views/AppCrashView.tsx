@@ -3,18 +3,17 @@ import React, {memo, useCallback, useState} from 'react';
 import {makeStyles, withStyles} from '@material-ui/styles';
 import {Theme} from '../../theme/types';
 
-import {copyToClipboard} from '../../utils/copying';
+import {copyToClipboard} from '../../utils';
+import {useDevice} from '../providers/DeviceProvider';
 
-import {Button} from '../Button';
-import {Modal} from '../Modal';
-import {ModalHeader} from '../ModalHeader';
-import {ModalBody} from '../ModalBody';
+import {Button} from '../ui/Button';
+import {Modal} from '../ui/Modal';
+import {ModalHeader} from '../ui/ModalHeader';
+import {ModalBody} from '../ui/ModalBody';
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
 import DismissIcon from '@vkontakte/icons/dist/24/dismiss';
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
 import CopyIcon from '@vkontakte/icons/dist/24/copy';
-
-import {useSelector} from '../../hooks/useSelector';
 
 import emojiSadImage from '../../assets/emoji-sad.png';
 
@@ -79,8 +78,8 @@ const useStyles = makeStyles<Theme, UseStylesProps>(theme => ({
  */
 export const AppCrashView = memo((props: Props) => {
   const {onRestartClick, error} = props;
-  const bottomInset = useSelector(state => state.device.insets.bottom);
-  const mc = useStyles({...props, bottomInset});
+  const {insets} = useDevice();
+  const mc = useStyles({...props, bottomInset: insets.bottom});
   const [showError, setShowError] = useState(false);
   const [copying, setCopying] = useState(false);
 

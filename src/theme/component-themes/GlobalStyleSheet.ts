@@ -1,7 +1,9 @@
 import {OS} from '../../types';
+import {panelBrightLightTheme, panelSpaceGrayTheme} from './Panel';
 
 export interface GlobalStyleSheetTheme {
-  textColor: string;
+  backgroundColor: string;
+  foregroundColor: string;
   getFontFamily(os: OS): string;
   fontSize: number;
 }
@@ -13,13 +15,15 @@ function getFontFamily(os: OS) {
 }
 
 export const globalStyleSheetBrightLightTheme: GlobalStyleSheetTheme = {
-  textColor: 'black',
+  backgroundColor: panelBrightLightTheme.backgroundColor,
+  foregroundColor: 'black',
   getFontFamily,
   fontSize: 16,
 };
 
 export const globalStyleSheetSpaceGrayTheme: GlobalStyleSheetTheme = {
-  textColor: '#e1e3e6',
+  backgroundColor: panelSpaceGrayTheme.backgroundColor,
+  foregroundColor: '#e1e3e6',
   getFontFamily,
   fontSize: 16,
 };

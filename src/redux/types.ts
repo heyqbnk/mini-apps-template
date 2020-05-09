@@ -1,13 +1,5 @@
-import {
-  AppConfigReducerState,
-  ConfigReducerState,
-  DeviceReducerState, LaunchParamsReducerState, StorageReducerState,
-} from './reducers';
-
+/**
+ * Redux state fields description
+ */
 export interface ReduxState {
-  appConfig: AppConfigReducerState;
-  config: ConfigReducerState;
-  device: DeviceReducerState;
-  launchParams: LaunchParamsReducerState;
-  storage: StorageReducerState;
 }

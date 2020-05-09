@@ -1,37 +1,40 @@
 import React, {ChangeEvent, memo, useCallback} from 'react';
 
 import {makeStyles} from '@material-ui/styles';
+import {Theme} from '../../theme/types';
 
-import {useActions, useSelector} from '../../hooks';
-import {deviceActions, appConfigActions} from '../../redux/reducers';
+import {useTheme} from '../providers/ThemeProvider';
+import {useDevice} from '../providers/DeviceProvider';
 
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
 import {OS} from '../../types';
 
-const useStyles = makeStyles({
-  select: {
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
     marginBottom: 20,
+  },
+  select: {
+    marginBottom: 15,
 
     '& + &': {
       marginLeft: 15,
     },
   },
-});
+  note: {
+    display: 'block',
+    color: theme.palette.text.secondary,
+    fontSize: 14,
+  },
+}));
 
-export const Controls = memo(() => {
+export const Controls = memo(function Controls() {
   const mc = useStyles();
-  const {updateAppearanceScheme, setOS} = useActions({
-    updateAppearanceScheme: appConfigActions.updateAppearanceScheme,
-    setOS: deviceActions.setOS,
-  });
-  const {scheme, os} = useSelector(state => ({
-    scheme: state.appConfig.scheme,
-    os: state.device.os,
-  }));
+  const {scheme, setScheme} = useTheme();
+  const {os, setOS} = useDevice();
   const onThemeChange = useCallback(
     (event: ChangeEvent<HTMLSelectElement>) => {
-      updateAppearanceScheme(event.target.value as AppearanceSchemeType);
-    }, [updateAppearanceScheme],
+      setScheme(event.target.value as AppearanceSchemeType);
+    }, [setScheme],
   );
   const onOSChange = useCallback(
     (event: ChangeEvent<HTMLSelectElement>) => {
@@ -40,7 +43,7 @@ export const Controls = memo(() => {
   );
 
   return (
-    <div>
+    <div className={mc.root}>
       <select className={mc.select} value={scheme} onChange={onThemeChange}>
         <option value={'bright_light'}>bright_light</option>
         <option value={'space_gray'}>space_gray</option>
@@ -49,6 +52,9 @@ export const Controls = memo(() => {
         <option value={OS.IOS}>IOS</option>
         <option value={OS.Android}>Android</option>
       </select>
+      <i className={mc.note}>
+        NOTE: Stable work while changing OS is not guaranteed
+      </i>
     </div>
   );
 });

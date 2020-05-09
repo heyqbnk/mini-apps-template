@@ -2,9 +2,9 @@ import React, {memo} from 'react';
 
 import {makeStyles} from '@material-ui/styles';
 
-import {PanelHeader} from '../PanelHeader';
+import {PanelHeader} from '../ui/PanelHeader';
 import {Subtitle} from './Subtitle';
-import {Select} from '../Select';
+import {Select} from '../ui/Select';
 import {Controls} from './Controls';
 
 const useStyles = makeStyles({
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const SelectPanel = memo(() => {
+export const SelectPanel = memo(function SelectPanel() {
   const mc = useStyles();
 
   return (

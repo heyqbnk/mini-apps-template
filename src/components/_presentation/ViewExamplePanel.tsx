@@ -2,10 +2,10 @@ import React, {memo} from 'react';
 
 import {makeStyles} from '@material-ui/styles';
 
-import {PanelHeader} from '../PanelHeader';
+import {PanelHeader} from '../ui/PanelHeader';
 import {Controls} from './Controls';
-import {Link} from '../Link';
-import {RouterLink} from '../RouterLink';
+import {Link} from '../ui/Link';
+import {RouterLink} from '../routing/RouterLink';
 
 const useStyles = makeStyles({
   root: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const ViewExamplePanel = memo(() => {
+export const ViewExamplePanel = memo(function ViewExamplePanel() {
   const mc = useStyles();
 
   return (

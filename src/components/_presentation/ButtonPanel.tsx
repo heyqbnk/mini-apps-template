@@ -2,10 +2,10 @@ import React, {memo} from 'react';
 
 import {makeStyles} from '@material-ui/styles';
 
-import {PanelHeader} from '../PanelHeader';
+import {PanelHeader} from '../ui/PanelHeader';
 import {SectionItem} from './SectionItem';
 import {Subtitle} from './Subtitle';
-import {Button} from '../Button';
+import {Button} from '../ui/Button';
 import {Controls} from './Controls';
 import {ReactComponent as StarSvg} from '../../assets/star.svg';
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const ButtonPanel = memo(() => {
+export const ButtonPanel = memo(function ButtonPanel() {
   const mc = useStyles();
 
   return (

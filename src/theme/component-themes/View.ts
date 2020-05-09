@@ -3,9 +3,9 @@ export interface ViewTheme {
 }
 
 export const viewBrightLightTheme: ViewTheme = {
-  suspenderColor: 'rgba(0,0,0,.5)',
+  suspenderColor: 'rgba(0,0,0,.8)',
 };
 
 export const viewSpaceGrayTheme: ViewTheme = {
-  suspenderColor: 'rgba(0,0,0,.5)',
+  suspenderColor: 'rgba(0,0,0,.8)',
 };

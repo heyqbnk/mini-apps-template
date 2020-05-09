@@ -6,3 +6,5 @@ export const Subtitle = styled('div')<Theme>(({theme}) => ({
   marginBottom: 12,
   color: theme.palette.text.secondary,
 }));
+
+Subtitle.displayName = 'Subtitle';

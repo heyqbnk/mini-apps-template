@@ -1,19 +1,13 @@
 /**
- * Список полей, которые могут храниться в хранилище bridge.
+ * List of keys, which can be placed into bridge storage
  */
-export enum StorageField {
+export enum StorageFieldEnum {
   ApplicationVisited = 'application-visited',
 }
 
 /**
- * Описывает то, какое поле имеет какой тип данных в хранилище bridge.
- * Пример - [StorageField.Joined]: boolean или [StorageField.Clubs]: IClub[]
+ * Describes which bridge storage key has stated data type
  */
 export interface StorageValuesMap {
-  [StorageField.ApplicationVisited]: boolean;
+  [StorageFieldEnum.ApplicationVisited]: boolean;
 }
-
-/**
- * Возвращает тип данных для указанного поля хранилища.
- */
-export type StorageValueType<T extends StorageField> = StorageValuesMap[T];
