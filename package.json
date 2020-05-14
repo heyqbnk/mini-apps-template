@@ -47,7 +47,7 @@
   },
   "scripts": {
     "lint": "eslint src/**",
-    "validate-source": "npm-run-all test lint",
+    "validate-source": "npm-run-all lint",
     "validate:dev": "yarn validate-source && cross-env DEPLOY_ENV=development.local node prebuild.js",
     "validate:production": "yarn validate-source && cross-env DEPLOY_ENV=production node prebuild.js",
     "start:http": "yarn validate:dev && cross-env PORT=10889 react-app-rewired start",
@@ -59,6 +59,7 @@
     "deploy": "vk-miniapps-deploy",
     "rollout": "yarn build && yarn deploy",
     "commit": "git-cz",
+    "prerelease": "yarn validate",
     "release": "standard-version -a",
     "release:tags": "git push --follow-tags origin master",
     "release:github": "dotenv -e .conventional.env -- conventional-github-releaser -p eslint",
