@@ -59,7 +59,7 @@
     "deploy": "vk-miniapps-deploy",
     "rollout": "yarn build && yarn deploy",
     "commit": "git-cz",
-    "prerelease": "yarn validate-source",
+    "prerelease": "yarn validate",
     "release": "standard-version -a",
     "release:tags": "git push --follow-tags origin master",
     "release:github": "dotenv -e .conventional.env -- conventional-github-releaser -p eslint",
