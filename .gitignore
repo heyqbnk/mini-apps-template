@@ -24,3 +24,4 @@ yarn-error.log*
 
 .idea
 bundle.zip
+.conventional.env
