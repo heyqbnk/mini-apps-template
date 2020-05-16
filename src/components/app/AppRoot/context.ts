@@ -1,14 +1,9 @@
-import {createContext, useContext} from 'react';
+import {createContext} from 'react';
+import {createUseNullableContext} from '../../../utils';
 
-export interface AppRootContext {
-  init(): void;
-}
+import {AppRootContext} from './types';
 
-export const appRootContext = createContext<AppRootContext>({
-  init: () => {
-  },
-});
+export const appRootContext = createContext<AppRootContext | null>(null);
+export const useAppRootContext = createUseNullableContext('useAppRootContext', appRootContext);
 
 appRootContext.displayName = 'AppRootContext';
-
-export const useAppRootContext = () => useContext(appRootContext);

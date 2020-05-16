@@ -1,13 +1,9 @@
-import {createContext, useContext} from 'react';
+import {createContext} from 'react';
+import {createUseNullableContext} from '../../../utils';
+
 import {VKStorageContext} from './types';
 
-const noop = async () => {
-};
+export const vkStorageContext = createContext<VKStorageContext<any> | null>(null);
+export const useVkStorage = createUseNullableContext('useVkStorage', vkStorageContext);
 
-export const vkStorageContext = createContext<VKStorageContext<any>>({
-  storage: {},
-  memoize: noop,
-  clear: noop,
-});
-
-export const useVkStorage = () => useContext(vkStorageContext);
+vkStorageContext.displayName = 'VKStorageContext';

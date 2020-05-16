@@ -2,7 +2,7 @@ import {useRouter as useVKRouter} from 'vkma-router';
 import {AppTree} from '../trees';
 
 /**
- * Application contexted hook which uses router
+ * Application context hook which uses router
  * @returns {RouterContext<AppTree> | null}
  */
 export const useRouter = () => {

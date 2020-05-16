@@ -58,7 +58,7 @@ function getIOSTransitionBaseCSS(
     transform: 'translateY(0)',
     pointerEvents: 'none',
     transitionDuration: `${VIEW_TRANSITION_IOS_DURATION}ms`,
-    transitionTimingFunction: 'cubic-bezier(0.47, 0.91, 0.64, 0.98)',
+    transitionTimingFunction: 'cubic-bezier(0.47, 0.91, 0.43, 0.94)',
     transitionProperty: 'transform, opacity',
     zIndex: 2,
   };

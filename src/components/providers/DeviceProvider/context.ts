@@ -1,14 +1,9 @@
-import {createContext, useContext} from 'react';
+import {createContext} from 'react';
+import {createUseNullableContext} from '../../../utils';
+
 import {DeviceContext} from './types';
-import {OS} from '../../../types';
 
-const noop = () => {};
+export const deviceContext = createContext<DeviceContext | null>(null);
+export const useDevice = createUseNullableContext('useDevice', deviceContext);
 
-export const deviceContext = createContext<DeviceContext>({
-  os: OS.IOS,
-  insets: {top: 0, bottom: 0, left: 0, right: 0},
-  currentInsets: {top: 0, bottom: 0, left: 0, right: 0},
-  setOS: noop,
-});
-
-export const useDevice = () => useContext(deviceContext);
+deviceContext.displayName = 'DeviceContext';

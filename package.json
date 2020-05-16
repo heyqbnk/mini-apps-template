@@ -44,7 +44,7 @@
     "subscriptions-transport-ws": "^0.9.16",
     "typescript": "~3.8.3",
     "unionize": "^3.0.2",
-    "vkma-router": "^1.1.1"
+    "vkma-router": "^1.2.0"
   },
   "scripts": {
     "check-env:dev": "cross-env DEPLOY_ENV=development.local node prebuild.js",

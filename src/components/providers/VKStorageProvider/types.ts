@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import {ReactNode, ReactNodeArray} from 'react';
 import {StringKeys} from '../../../types';
 
 export type MemoizeKey<S extends {}> = <K extends StringKeys<S>>(key: K, value: S[K]) => Promise<any>;
@@ -6,7 +6,7 @@ export type MemoizeMap<S extends {}> = (values: Partial<S>) => Promise<any>;
 export type ClearAll = () => Promise<any>;
 export type ClearKeys<S extends {}> = (...keys: StringKeys<S>[]) => Promise<any>;
 
-export interface VKStorageContext<S extends {}> {
+export interface VKStorageContext<S extends {} = {}> {
   /**
    * Current storage state
    */
@@ -21,7 +21,14 @@ export interface VKStorageContext<S extends {}> {
   clear: ClearAll | ClearKeys<S>;
 }
 
-export interface VKStorageProviderProps<S extends {}> {
+export interface VKStorageProviderProps<S extends {} = {}> {
+  /**
+   * Description of bridge storage
+   */
   storage?: S;
-  children: ReactNode;
+
+  /**
+   * Children
+   */
+  children: ReactNode | ReactNodeArray;
 }

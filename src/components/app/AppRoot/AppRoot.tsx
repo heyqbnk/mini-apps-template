@@ -17,13 +17,13 @@ import {
 import {Provider as StoreProvider, ReactReduxContext} from 'react-redux';
 
 import {createReduxStore} from '../../../redux';
-import {appRootContext, AppRootContext} from './context';
+import {appRootContext} from './context';
 import vkBridge, {VKBridgeSubscribeHandler} from '@vkontakte/vk-bridge';
 import {prepareUpdateStatePayload} from './utils';
 import {getStorageKeys} from '../../../utils';
 import {routingTree} from '../../../trees';
 
-import {AppRootProps, AppRootState} from './types';
+import {AppRootProps, AppRootState, AppRootContext} from './types';
 import {StorageFieldEnum, StorageValuesMap} from '../../../types';
 
 const {Provider: AppRootProvider} = appRootContext;

@@ -17,7 +17,7 @@ import {StringKeys} from '../../../types';
 const {Provider} = vkStorageContext;
 
 export const VKStorageProvider = memo(
-  function VKStorageProvider<S extends {}>(props: VKStorageProviderProps<S>) {
+  function VKStorageProvider<S extends {} = {}>(props: VKStorageProviderProps<S>) {
     const {storage: parentStorage, children} = props;
 
     const [storage, setStorage] = useState<S>(() => {

@@ -10,8 +10,10 @@ import {Button} from '../ui/Button';
 import {Modal} from '../ui/Modal';
 import {ModalHeader} from '../ui/ModalHeader';
 import {ModalBody} from '../ui/ModalBody';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
 import DismissIcon from '@vkontakte/icons/dist/24/dismiss';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
 import CopyIcon from '@vkontakte/icons/dist/24/copy';
 

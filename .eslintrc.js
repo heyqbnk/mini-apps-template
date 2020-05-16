@@ -10,6 +10,7 @@ module.exports = {
     'react/prop-types': 0,
     '@typescript-eslint/camelcase': 0,
     '@typescript-eslint/no-empty-interface': 0,
+    '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/interface-name-prefix': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
   },

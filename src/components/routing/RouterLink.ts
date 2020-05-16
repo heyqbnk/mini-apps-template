@@ -1,5 +1,4 @@
-import {RouterLink as VKRouterLink, RouterLinkProps} from 'vkma-router';
-import {ComponentType} from 'react';
+import {createRouterLinkComponent} from 'vkma-router';
 import {AppTree} from '../../trees';
 
-export const RouterLink: ComponentType<RouterLinkProps<AppTree>> = VKRouterLink;
+export const RouterLink = createRouterLinkComponent<AppTree>();

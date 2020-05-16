@@ -1,5 +1,4 @@
-import {Router as VKRouter, RouterProps} from 'vkma-router';
-import {ComponentType} from 'react';
+import {createRouterComponent} from 'vkma-router';
 import {AppTree} from '../../trees';
 
-export const Router: ComponentType<RouterProps<AppTree>> = VKRouter;
+export const Router = createRouterComponent<AppTree>();

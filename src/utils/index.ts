@@ -1,3 +1,4 @@
+export * from './context';
 export * from './copying';
 export * from './device';
 export * from './dom';

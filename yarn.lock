@@ -12909,10 +12909,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vkma-router@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/vkma-router/-/vkma-router-1.1.1.tgz#62cbf552e8c193436025058d55ee3f1dc3d2eb14"
-  integrity sha512-jQ46RuRQJOrxCwvgT7q+uu3KGCxIm3slQQIIHWSeUe3Yj12Kml1PypV8qCSz0jigibhfDMAuVfk7C/kiQ93qsw==
+vkma-router@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vkma-router/-/vkma-router-1.2.0.tgz#c4baca1783254dd93f5003070f4f7c34df0fb4c2"
+  integrity sha512-lPuf7Vm6O5eNzSflSzfFO7RS/Mi05VFu3bIPTEjnoRmJ0hQPLF+HeZe8lxmkR3tne3Zxt/YA8KmObXNcM0ritw==
   dependencies:
     history "^4.10.1"
     qs "^6.9.4"

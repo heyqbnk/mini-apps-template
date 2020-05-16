@@ -57,3 +57,10 @@ export interface AppRootProps {
    */
   history?: HistoryState<AppTree>[];
 }
+
+export interface AppRootContext {
+  /**
+   * Initializes application
+   */
+  init(): void;
+}
