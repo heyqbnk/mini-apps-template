@@ -1,12 +1,9 @@
-import {createContext, useContext} from 'react';
+import {createContext} from 'react';
+import {createUseNullableContext} from '../../../utils';
+
 import {ModalContext} from './types';
 
-const noop = () => {
-};
+export const modalContext = createContext<ModalContext | null>(null);
+export const useModalContext = createUseNullableContext('useModalContext', modalContext);
 
-export const modalContext = createContext<ModalContext>({
-  registerBody: noop,
-  registerHeader: noop,
-});
-
-export const useModalContext = () => useContext(modalContext);
+modalContext.displayName = 'ModalContext';
