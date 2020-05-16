@@ -13,9 +13,8 @@ export interface PreparedMVKAppConfig
 }
 
 export interface PreparedDefaultAppConfig
-  extends Omit<DefaultUpdateConfigData, 'app_id' | 'start_time'> {
+  extends Omit<DefaultUpdateConfigData, 'app_id'> {
   appId: string;
-  startTime: number;
 }
 
 export type AppConfig = PreparedMVKAppConfig & PreparedDefaultAppConfig;

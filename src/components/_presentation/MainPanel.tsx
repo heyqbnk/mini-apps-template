@@ -3,7 +3,7 @@ import React, {memo} from 'react';
 import {makeStyles} from '@material-ui/styles';
 import {Theme} from '../../theme/types';
 
-import {RouterLink} from '../routing/RouterLink';
+import {RouterLink} from 'vkma-router';
 import {Link} from '../ui/Link';
 import {PanelHeader} from '../ui/PanelHeader';
 import {Controls} from './Controls';
@@ -53,13 +53,19 @@ export const MainPanel = memo(function MainPanel() {
         </SectionItem>
         <SectionItem>
           <Subtitle>Components</Subtitle>
-          <RouterLink to={{panel: PanelsEnum.Button}}>
+          <RouterLink
+            to={{view: ViewsEnum.Presentation, panel: PanelsEnum.Button}}
+          >
             <Link className={mc.link}>Button</Link>
           </RouterLink>
-          <RouterLink to={{panel: PanelsEnum.Select}}>
+          <RouterLink
+            to={{view: ViewsEnum.Presentation, panel: PanelsEnum.Select}}
+          >
             <Link className={mc.link}>Select</Link>
           </RouterLink>
-          <RouterLink to={{panel: PanelsEnum.Input}}>
+          <RouterLink
+            to={{view: ViewsEnum.Presentation, panel: PanelsEnum.Input}}
+          >
             <Link className={mc.link}>Input</Link>
           </RouterLink>
         </SectionItem>

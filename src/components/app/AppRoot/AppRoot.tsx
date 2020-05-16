@@ -5,7 +5,7 @@ import {AppCrashView} from '../../views/AppCrashView';
 import {App} from '../App';
 import {GlobalStyleSheet} from '../GlobalStyleSheet';
 import {ModalRoot} from '../../ui/ModalRoot';
-import {Router} from '../../routing/Router';
+import {Router} from 'vkma-router';
 import {ServicePanel} from '../../misc/ServicePanel';
 import {
   DeviceProvider,
@@ -21,7 +21,7 @@ import {appRootContext, AppRootContext} from './context';
 import vkBridge, {VKBridgeSubscribeHandler} from '@vkontakte/vk-bridge';
 import {prepareUpdateStatePayload} from './utils';
 import {getStorageKeys} from '../../../utils';
-import {viewsTree} from '../../../viewsTree';
+import {routingTree} from '../../../trees';
 
 import {AppRootProps, AppRootState} from './types';
 import {StorageFieldEnum, StorageValuesMap} from '../../../types';
@@ -55,13 +55,8 @@ export class AppRoot extends PureComponent<AppRootProps, AppRootState> {
     this.state = {
       loading: true,
       error: null,
-      config: null,
-      insets: insets || null,
-      currentInsets: null,
-      appearance: null,
-      scheme: null,
       store: createReduxStore(),
-      storage: null,
+      insets: insets || undefined,
     };
   }
 
@@ -125,20 +120,21 @@ export class AppRoot extends PureComponent<AppRootProps, AppRootState> {
           <VKStorageProvider>
             <DeviceProvider
               defaultOS={os}
-              insets={insets || undefined}
-              currentInsets={currentInsets || undefined}
+              insets={insets}
+              currentInsets={currentInsets}
             >
               <ConfigProvider
-                appConfig={appConfig || undefined}
+                appConfig={appConfig}
                 envConfig={envConfig}
                 launchParams={launchParams}
               >
                 <ApolloProvider>
-                  <ThemeProvider
-                    scheme={scheme || undefined}
-                    appearance={appearance || undefined}
-                  >
-                    <Router initialHistory={history} viewsTree={viewsTree}>
+                  <ThemeProvider scheme={scheme} appearance={appearance}>
+                    <Router
+                      initialHistory={history}
+                      tree={routingTree}
+                      validate={true}
+                    >
                       <GlobalStyleSheet/>
                       <ModalRoot>
                         {content}

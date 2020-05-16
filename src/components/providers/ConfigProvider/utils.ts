@@ -10,13 +10,9 @@ export function prepareAppConfig(
   config: Partial<UpdateConfigData>,
 ): Partial<PreparedMVKAppConfig> | Partial<PreparedDefaultAppConfig> {
   if ('insets' in config) {
-    const {app_id, start_time, ...restConfig} = config;
+    const {app_id, ...restConfig} = config;
 
-    return {
-      ...restConfig,
-      appId: app_id,
-      startTime: start_time,
-    };
+    return {...restConfig, appId: app_id};
   }
   if ('viewport_height' in config && 'viewport_width' in config) {
     const {viewport_height, viewport_width, ...restConfig} = config;

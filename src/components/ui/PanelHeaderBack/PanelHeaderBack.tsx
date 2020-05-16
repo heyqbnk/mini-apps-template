@@ -4,7 +4,7 @@ import c from 'classnames';
 import {makeStyles, withStyles} from '@material-ui/styles';
 
 import {Button} from '../Button';
-import {RouterLink} from '../../routing/RouterLink';
+import {RouterLink} from 'vkma-router';
 
 import {useDevice} from '../../providers/DeviceProvider';
 

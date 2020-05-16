@@ -2,9 +2,8 @@ import React, {memo, useEffect} from 'react';
 
 import {AppTree} from '../AppTree';
 
-import {useDoubleTapHandler} from '../../../hooks';
-import {useRouter} from '../../routing/Router';
-import {viewsTree} from '../../../viewsTree';
+import {useDoubleTapHandler, useRouter} from '../../../hooks';
+import {viewsTree} from '../../../trees';
 
 /**
  * Visual entry of application

@@ -8,7 +8,6 @@ export const configContext = createContext<ConfigContext>({
     appearance: 'light',
     scheme: 'client_light',
     insets: {top: 0, bottom: 0, left: 0, right: 0},
-    startTime: 0,
     viewportHeight: 0,
     viewportWidth: 0,
   },

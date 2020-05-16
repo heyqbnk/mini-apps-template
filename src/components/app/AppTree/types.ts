@@ -1,7 +1,7 @@
 import {ViewsTree} from '../../../types';
 
 export interface AppTreeProps {
-  tree: ViewsTree<any, any, any>;
+  tree: ViewsTree;
   activeView: string;
   activePanel: string;
 }

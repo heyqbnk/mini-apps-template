@@ -5,7 +5,7 @@ import {makeStyles} from '@material-ui/styles';
 import {PanelHeader} from '../ui/PanelHeader';
 import {Controls} from './Controls';
 import {Link} from '../ui/Link';
-import {RouterLink} from '../routing/RouterLink';
+import {RouterLink} from 'vkma-router';
 
 const useStyles = makeStyles({
   root: {

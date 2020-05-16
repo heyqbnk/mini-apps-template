@@ -1,12 +1,14 @@
-import {SuspendablePublicProps} from '../components/suspend/Suspend';
 import {ComponentType} from 'react';
+import {SuspendablePublicProps} from '../components/suspend/Suspend';
 import {PanelProps} from '../components/ui/Panel';
 import {ViewProps} from '../components/ui/View';
+import {IdType} from 'vkma-router';
 
-export type IDType = string | number;
-
-type Tree<ID extends IDType, T> = {
-  [id in ID]: T;
+/**
+ * Map where key has id type and value is passed type
+ */
+type Tree<T> = {
+  [Id in IdType]: T;
 };
 
 /**
@@ -30,7 +32,7 @@ interface TreePanel extends SuspendablePublicProps {
 /**
  * View in a tree
  */
-export interface TreeView<PanelId extends IDType> extends SuspendablePublicProps {
+export interface TreeView extends SuspendablePublicProps {
   /**
    * Component which will be used instead of default "View"
    */
@@ -38,40 +40,13 @@ export interface TreeView<PanelId extends IDType> extends SuspendablePublicProps
   /**
    * List of view panels
    */
-  panels: Tree<PanelId, TreePanel>;
+  panels: Tree<TreePanel>;
 }
 
 /**
  * Describes views tree
  */
-export type ViewsTree<ViewId extends IDType,
-  PanelId extends IDType,
-  PopupID extends IDType> = Tree<ViewId, TreeView<PanelId>>;
-
-/**
- * Returns available routes depending on passed views tree
- */
-export type GetRoutes<T> = T extends ViewsTree<infer ViewId, any, any>
-  ? {
-    [View in ViewId]: T[View] extends TreeView<infer PanelId>
-      ? {
-        // Looks like some bug in TypeScript. It sees the type of "panels" prop
-        // and can use it correctly while assigning GetRoutes to some type
-        // but says "panels" can not be used as index type.
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        [Panel in PanelId]: T[View]['panels'][Panel] extends TreePanel
-          ? { view: View; panel: Panel }
-          : never
-      }[PanelId]
-      : never
-  }[ViewId]
-  : never;
-
-/**
- * Description of URL's query
- */
-export type Query = Record<string, string>;
+export type ViewsTree = Tree<TreeView>;
 
 /**
  * List of available views in project. Required to avoid routing to

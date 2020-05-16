@@ -1,10 +1,10 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
-  extends: ['plugin:@typescript-eslint/recommended', 'plugin:react/recommended'],
+  extends: ['react-app', 'plugin:@typescript-eslint/recommended', 'plugin:react/recommended'],
   rules: {
     'max-len': ['error', 80, {
-      ignorePattern: '^import|^export'
+      ignorePattern: '^import|^export| \* '
     }],
     'react/display-name': 0,
     'react/prop-types': 0,
