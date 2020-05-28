@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/wolframdeus/mini-apps-template/compare/v1.1.0...v1.1.1) (2020-05-28)
+
+
+### Bug Fixes
+
+* **vkma-ui and fixes:** new vkma-ui components and core refactoring ([822391e](https://github.com/wolframdeus/mini-apps-template/commit/822391eff339bd9afd02c0463dce90ab771cfb80))
+
 ## [1.1.0](https://github.com/wolframdeus/mini-apps-template/compare/v1.0.1...v1.1.0) (2020-05-16)
 
 
