@@ -4,12 +4,11 @@ import {makeStyles, withStyles} from '@material-ui/styles';
 import {Theme} from '../../theme/types';
 
 import {copyToClipboard} from '../../utils';
-import {useDevice} from '../providers/DeviceProvider';
 
-import {Button} from '../ui/Button';
-import {Modal} from '../ui/Modal';
-import {ModalHeader} from '../ui/ModalHeader';
-import {ModalBody} from '../ui/ModalBody';
+import {Button, useDevice} from 'vkma-ui';
+import {Modal} from '../Modal';
+import {ModalHeader} from '../ModalHeader';
+import {ModalBody} from '../ModalBody';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore FIXME: https://github.com/VKCOM/icons/issues/14
 import DismissIcon from '@vkontakte/icons/dist/24/dismiss';

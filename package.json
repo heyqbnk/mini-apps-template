@@ -18,8 +18,7 @@
     "@types/react-scroll": "^1.5.4",
     "@types/react-transition-group": "^4.2.4",
     "@vkontakte/icons": "^1.16.3",
-    "@vkontakte/vk-bridge": "^2.2.1",
-    "@vkontakte/vkui": "^3.4.1",
+    "@vkontakte/vk-bridge": "^2.2.2",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "apollo-link": "^1.2.13",
@@ -32,6 +31,7 @@
     "dotenv": "^8.2.0",
     "eruda": "^2.2.2",
     "history": "^4.10.1",
+    "qs": "^6.9.4",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.5",
     "react-dom": "^16.12.0",
@@ -44,7 +44,8 @@
     "subscriptions-transport-ws": "^0.9.16",
     "typescript": "~3.8.3",
     "unionize": "^3.0.2",
-    "vkma-router": "^1.2.0"
+    "vkma-router": "^1.2.2",
+    "vkma-ui": "^1.4.3"
   },
   "scripts": {
     "check-env:dev": "cross-env DEPLOY_ENV=development.local node prebuild.js",
@@ -81,6 +82,7 @@
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
+    "@types/qs": "^6.9.2",
     "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
     "@vkontakte/vk-miniapps-deploy": "^0.0.17",

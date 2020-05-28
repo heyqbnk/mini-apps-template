@@ -1581,6 +1581,11 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
 
+"@types/qs@^6.9.2":
+  version "6.9.2"
+  resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.2.tgz#faab98ec4f96ee72c829b7ec0983af4f4d343113"
+  integrity sha512-a9bDi4Z3zCZf4Lv1X/vwnvbbDYSNz59h3i3KdyuYYN+YrLjSeJD0dnphdULDfySvUv6Exy/O0K6wX/kQpnPQ+A==
+
 "@types/react-dom@^16.9.0":
   version "16.9.5"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.5.tgz#5de610b04a35d07ffd8f44edad93a71032d9aaa7"
@@ -1708,10 +1713,10 @@
     es6-object-assign "^1.1.0"
     svg-baker-runtime "^1.4.2"
 
-"@vkontakte/vk-bridge@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@vkontakte/vk-bridge/-/vk-bridge-2.2.1.tgz#0d809fc3757954a57a88ee5a90a95e094429d782"
-  integrity sha512-6tHTv9kIa707+WSI5OmBN7uH9mJx/cb2elklCOu7rcW1Dr7dzg6DdWGpidkljs6O0CUXNWaeKvBzUgDMoT3SVg==
+"@vkontakte/vk-bridge@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@vkontakte/vk-bridge/-/vk-bridge-2.2.2.tgz#6319c0b5f21c7c50d8e297706b12b7ee2b317685"
+  integrity sha512-eSOO7kt2udW6ukdnuqfvg8sKfNCJ/vUgnarhDWQudd+6vOqipLpQEsUgL0biMrhWGMOMmFPaMhVAHkSv1zWjkw==
 
 "@vkontakte/vk-miniapps-deploy@^0.0.17":
   version "0.0.17"
@@ -1727,11 +1732,6 @@
     prompts "^2.1.0"
     require-module "^0.1.0"
     zip-a-folder "0.0.12"
-
-"@vkontakte/vkui@^3.4.1":
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/@vkontakte/vkui/-/vkui-3.4.1.tgz#1e62dce317d061d1a27e69d54be77423d6d3708b"
-  integrity sha512-yLxRfYIQks2IHLBEo42Ujm4l66F+Nxc0N9uaU2xUE2WAVWDYl/boGKQpc6bc1L7OpzmpueFrHtQf7BsqwaZ1Ng==
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
@@ -10714,6 +10714,16 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-transition-group@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.1.tgz#63868f9325a38ea5ee9535d828327f85773345c9"
+  integrity sha512-Djqr7OQ2aPUiYurhPalTrVy9ddmFCCzwhqQmtN+J3+3DzLO209Fdr70QrN8Z3DsglWql6iY1lDWAfpFiBtuKGw==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    dom-helpers "^5.0.1"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
+
 react@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
@@ -12909,13 +12919,21 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vkma-router@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/vkma-router/-/vkma-router-1.2.0.tgz#c4baca1783254dd93f5003070f4f7c34df0fb4c2"
-  integrity sha512-lPuf7Vm6O5eNzSflSzfFO7RS/Mi05VFu3bIPTEjnoRmJ0hQPLF+HeZe8lxmkR3tne3Zxt/YA8KmObXNcM0ritw==
+vkma-router@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/vkma-router/-/vkma-router-1.2.2.tgz#083d8fdda3b0b8c816d9d611ffc64ab171681e68"
+  integrity sha512-t8LcPNlW74v9uqU3RRJWAajcN7kzfTw8zxXy3s3xLyumPe7f8xIK2c+Tn5o2DibdGYEyFpmADEmcyYXeqP0ixw==
   dependencies:
     history "^4.10.1"
     qs "^6.9.4"
+
+vkma-ui@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/vkma-ui/-/vkma-ui-1.4.3.tgz#4e2d6eff8d31af20a25bd6d75787b950503df796"
+  integrity sha512-RTbkEmKETpd6NidHQXTJYm4PNEmkHIBWQK6rRIGgmPe/twh/UxDWiEiBA2aG48W3HhH/p8tzbaIuJ6IFIPHK6w==
+  dependencies:
+    classnames "^2.2.6"
+    react-transition-group "^4.4.1"
 
 vm-browserify@^1.0.1:
   version "1.1.2"

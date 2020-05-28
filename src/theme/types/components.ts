@@ -1,7 +1,6 @@
 import {
   ButtonTheme,
   FormControlTheme,
-  GlobalStyleSheetTheme,
   InputTheme,
   LinkTheme,
   PanelTheme,
@@ -16,7 +15,6 @@ import {
 export interface Components {
   Button: ButtonTheme;
   FormControl: FormControlTheme;
-  GlobalStyleSheet: GlobalStyleSheetTheme;
   Input: InputTheme;
   Link: LinkTheme;
   Panel: PanelTheme;

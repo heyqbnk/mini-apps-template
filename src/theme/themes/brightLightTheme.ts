@@ -4,7 +4,6 @@ import {themeDefaults} from './themeDefaults';
 import {
   buttonBrightLightTheme,
   formControlBrightLightTheme,
-  globalStyleSheetBrightLightTheme,
   inputBrightLightTheme,
   linkBrightLightTheme, panelBrightLightTheme, panelHeaderBrightLightTheme,
   selectBrightLightTheme,
@@ -16,7 +15,6 @@ export const brightLightTheme: Theme = {
   components: {
     Button: buttonBrightLightTheme,
     FormControl: formControlBrightLightTheme,
-    GlobalStyleSheet: globalStyleSheetBrightLightTheme,
     Input: inputBrightLightTheme,
     Link: linkBrightLightTheme,
     Panel: panelBrightLightTheme,

@@ -1,23 +1,19 @@
-import {MainPanel} from './components/_presentation/MainPanel';
-import {ButtonPanel} from './components/_presentation/ButtonPanel';
-import {SelectPanel} from './components/_presentation/SelectPanel';
-import {InputPanel} from './components/_presentation/InputPanel';
-import {ViewExamplePanel} from './components/_presentation/ViewExamplePanel';
-
-import {ViewsEnum, PanelsEnum, ViewsTree, PopupsEnum} from './types';
+import {PanelsEnum, PopupsEnum, ViewsEnum, ViewsTree} from './types';
 import {createSet, ValidateTree} from 'vkma-router';
+import {Panel1} from './components/panels/Panel1';
+import {Panel2} from './components/panels/Panel2';
 
 /**
- * Application routing tree. Should be an extenstion of vkma-router's
+ * Application routing tree. Should be an extension of vkma-router's
  * RoutingTree
  * @type {{views: {'[ViewsEnum.Presentation]': {main: any; button: any; select: any; input: any}; '[ViewsEnum.PresentationViewExample]': {main: any; button: any; select: any; input: any}}}}
  */
 export const routingTree = {
   views: {
-    [ViewsEnum.Presentation]: createSet([
-      PanelsEnum.Main, PanelsEnum.Button, PanelsEnum.Select, PanelsEnum.Input,
+    [ViewsEnum.Hello]: createSet([
+      PanelsEnum.World,
+      PanelsEnum.Underworld,
     ]),
-    [ViewsEnum.PresentationViewExample]: createSet([PanelsEnum.Main]),
   },
   popups: createSet(Object.values(PopupsEnum)),
 };
@@ -42,36 +38,15 @@ const _: AppTree = routingTree;
  * @type {{'[ViewsEnum.Presentation]': {panels: {'[PanelsEnum.PresentationInput]': {component: React.NamedExoticComponent<object>; header: boolean; keepMountedAfterSuspend: boolean}; '[PanelsEnum.PresentationSelect]': {component: React.NamedExoticComponent<object>; header: boolean}; '[PanelsEnum.PresentationButton]': {keepMounted: boolean; component: React.NamedExoticComponent<object>; header: boolean}; '[PanelsEnum.PresentationMain]': {component: React.NamedExoticComponent<object>; header: boolean}}}; '[ViewsEnum.PresentationViewExample]': {panels: {'[PanelsEnum.PresentationViewExampleMain]': {component: () => string; header: boolean}}}}}
  */
 export const viewsTree: ViewsTree = {
-  [ViewsEnum.Presentation]: {
+  [ViewsEnum.Hello]: {
     panels: {
-      [PanelsEnum.Main]: {
+      [PanelsEnum.World]: {
         header: true,
-        component: MainPanel,
+        component: Panel1,
       },
-      [PanelsEnum.Button]: {
+      [PanelsEnum.Underworld]: {
         header: true,
-        component: ButtonPanel,
-        // ButtonPanel will always be in React tree
-        keepMounted: true,
-      },
-      [PanelsEnum.Select]: {
-        header: true,
-        component: SelectPanel,
-      },
-      [PanelsEnum.Input]: {
-        header: true,
-        component: InputPanel,
-        // InputPanel will stay mounted in case if not active, but was active
-        // at least once
-        keepMountedAfterSuspend: true,
-      },
-    },
-  },
-  [ViewsEnum.PresentationViewExample]: {
-    panels: {
-      [PanelsEnum.Main]: {
-        header: true,
-        component: ViewExamplePanel,
+        component: Panel2,
       },
     },
   },

@@ -4,7 +4,6 @@ import {themeDefaults} from './themeDefaults';
 import {
   buttonSpaceGrayTheme,
   formControlSpaceGrayTheme,
-  globalStyleSheetSpaceGrayTheme,
   inputSpaceGrayTheme,
   linkSpaceGrayTheme, panelHeaderSpaceGrayTheme, panelSpaceGrayTheme,
   selectSpaceGrayTheme,
@@ -16,7 +15,6 @@ export const spaceGrayTheme: Theme = {
   components: {
     Button: buttonSpaceGrayTheme,
     FormControl: formControlSpaceGrayTheme,
-    GlobalStyleSheet: globalStyleSheetSpaceGrayTheme,
     Input: inputSpaceGrayTheme,
     Link: linkSpaceGrayTheme,
     Panel: panelSpaceGrayTheme,

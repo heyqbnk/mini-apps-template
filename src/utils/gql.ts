@@ -1,4 +1,4 @@
-import {APIError} from '../types/gql';
+import {APIError} from '../types';
 import {isApolloError} from 'apollo-client';
 
 /**

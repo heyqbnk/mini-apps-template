@@ -1,7 +1,7 @@
 import {
   useVkStorage,
   VKStorageContext,
-} from '../components/providers/VKStorageProvider';
+} from '../components/VKStorageProvider';
 import {StorageValuesMap} from '../types';
 
 /**

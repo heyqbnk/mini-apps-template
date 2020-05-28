@@ -2,8 +2,6 @@ import React, {memo} from 'react';
 
 import {makeStyles} from '@material-ui/styles';
 
-import Spinner from '@vkontakte/vkui/dist/components/Spinner/Spinner';
-
 const useStyles = makeStyles({
   root: {
     position: 'fixed',
@@ -15,8 +13,9 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
+    textAlign: 'center',
   },
-});
+}, {name: 'AppLoadingView'});
 
 /**
  * Вью которая отображается в случае, когда приложение загружается.
@@ -27,7 +26,7 @@ export const AppLoadingView = memo(() => {
 
   return (
     <div className={mc.root}>
-      <Spinner size={'large'}/>
+      Loading
     </div>
   );
 });
